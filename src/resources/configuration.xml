@@ -7,7 +7,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="org.sqlite.JDBC"/>
-                <property name="url" value="jdbc:sqlite:/Users/xiangjingru/Downloads/test.db"/>
+                <property name="url" value="jdbc:sqlite:/Users/xiangjingru/Package and Projects/INFO5100-final-project-20Sep/src/dao/test.db"/>
             </dataSource>
         </environment>
     </environments>

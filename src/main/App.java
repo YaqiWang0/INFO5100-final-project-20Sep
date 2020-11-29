@@ -20,6 +20,5 @@ public class App {
             xiangjingru.forEach(o->{
                 System.out.println(o.getId());
             });
-            //System.out.println(xiangjingru.stream());
     }
 }
