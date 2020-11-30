@@ -19,40 +19,27 @@ public class DataPersistence {
     private static final String DATA_PATH = "./INFO5100-final-project-20Sep/data/";
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
-    public Map<String, Dealer> readDealerFile() {
+    public Map<String, Dealer> readDealerFile() throws IOException, FileNotFoundException{
         Map<String, Dealer> result = new HashMap<>();
         String dealerFilePath = DATA_PATH + "dealers";
         File csv = new File(dealerFilePath);
         BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(csv));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (br == null) {
-            return null;
-        }
+        br = new BufferedReader(new FileReader(csv));
 
         String line = "";
-        try {
-            line = br.readLine();
-            while (line != null) {
-                String[] fields = line.split(",");
-                for (int i =0; i < fields.length; i++) {
-                        System.out.print(i + " " + fields[i] + " ");
-                }
-                System.out.println();
-                String dealerName = fields[0];
-                String dealerZipCode = fields[3];
-                Address dealerAddress = new Address(null, null, null, null, dealerZipCode);
-                Dealer d = new Dealer(dealerName, dealerAddress);
-                result.put(d.getDealerId(), d);
-                line = br.readLine();
+        line = br.readLine();
+        while (line != null) {
+            String[] fields = line.split(",");
+            for (int i =0; i < fields.length; i++) {
+                    System.out.print(i + " " + fields[i] + " ");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            System.out.println();
+            String dealerName = fields[0];
+            String dealerZipCode = fields[3];
+            Address dealerAddress = new Address(null, null, null, null, dealerZipCode);
+            Dealer d = new Dealer(dealerName, dealerAddress);
+            result.put(d.getDealerId(), d);
+            line = br.readLine();
         return result;
 
     }
