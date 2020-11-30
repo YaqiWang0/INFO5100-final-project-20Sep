@@ -1,7 +1,9 @@
+package dao;
+
 import java.util.*;
 import java.util.UUID;
 
-public class Dealer {
+public class Dealer extends GenericModel{
 	
 	private String dealerId;
 	private String dealerName;
@@ -37,6 +39,10 @@ public class Dealer {
 		return "Dealer Id is: "+this.dealerId
 				+"\nDealer Name is: "+this.dealerName
 				+"\n"+this.dealerAddress.toString();
+	}
+
+	public String toCSVLine() {
+		return this.dealerId + "," + this.dealerName + "," + this.dealerAddress.toCSVLine();
 	}
 	
 	
