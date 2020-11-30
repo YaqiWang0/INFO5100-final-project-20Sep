@@ -30,8 +30,8 @@ public class DataPersistence {
         line = br.readLine();
         while (line != null) {
             String[] fields = line.split(",");
-            for (int i =0; i < fields.length; i++) {
-                    System.out.print(i + " " + fields[i] + " ");
+            for (int i = 0; i < fields.length; i++) {
+                System.out.print(i + " " + fields[i] + " ");
             }
             System.out.println();
             String dealerName = fields[0];
@@ -40,6 +40,7 @@ public class DataPersistence {
             Dealer d = new Dealer(dealerName, dealerAddress);
             result.put(d.getDealerId(), d);
             line = br.readLine();
+        }
         return result;
 
     }
