@@ -21,7 +21,7 @@ public class DataPersistence {
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     public Map<String, Dealer> readDealerFile() throws IOException, FileNotFoundException{
         Map<String, Dealer> result = new HashMap<>();
-        String dealerFilePath = DATA_PATH + "dealers";
+        String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
         BufferedReader br = null;
         br = new BufferedReader(new FileReader(csv));
@@ -34,10 +34,15 @@ public class DataPersistence {
                 System.out.print(i + " " + fields[i] + " ");
             }
             System.out.println();
-            String dealerName = fields[0];
-            String dealerZipCode = fields[3];
-            Address dealerAddress = new Address(null, null, null, null, dealerZipCode);
-            Dealer d = new Dealer(dealerName, dealerAddress);
+            String dealerId = fields[0];
+            String dealerName = fields[1];
+            String address1 = fields[2];
+            String address2 = fields[3];
+            String city = fields[4];
+            String state = fields[5];
+            String dealerZipCode = fields[6];
+            Address dealerAddress = new Address(address1, address2, city, state, dealerZipCode);
+            Dealer d = new Dealer(dealerId, dealerName, dealerAddress);
             result.put(d.getDealerId(), d);
             line = br.readLine();
         }
