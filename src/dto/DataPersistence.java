@@ -1,9 +1,6 @@
 package dto;
 
-import dao.Address;
-import dao.Dealer;
-import dao.GenericModel;
-import dao.Special;
+import dao.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,17 +21,11 @@ public class DataPersistence {
         Map<String, Dealer> result = new HashMap<>();
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
-        BufferedReader br = null;
-        br = new BufferedReader(new FileReader(csv));
+        BufferedReader br = new BufferedReader(new FileReader(csv));
 
-        String line = "";
-        line = br.readLine();
+        String line = br.readLine();
         while (line != null) {
             String[] fields = line.split(",");
-            for (int i = 0; i < fields.length; i++) {
-                System.out.print(i + " " + fields[i] + " ");
-            }
-            System.out.println();
             String dealerId = fields[0];
             String dealerName = fields[1];
             String address1 = fields[2];
