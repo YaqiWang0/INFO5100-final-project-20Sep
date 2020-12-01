@@ -1,13 +1,7 @@
+package dao;
+
 import java.util.*;
 
-enum SpecialScope{
-	ALL,
-	BRAND,
-	NEWORUSED,
-	YEAR,
-	BODYTYPE,
-	UNIQUEONE
-}
 public class Special {
 	
 	private String specialId;
@@ -79,8 +73,8 @@ public class Special {
 		this.brand=brand;
 	}
 	
-	public void setBodyType(BodyType bodyType){
-		this.bodytype=bodyType.toString();
+	public void setBodyType(String bodyType){
+		this.bodytype = bodyType;
 	}
 	
 	public void setIsNew(String isNew) {

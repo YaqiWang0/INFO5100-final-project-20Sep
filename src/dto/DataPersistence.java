@@ -123,7 +123,7 @@ public class DataPersistence {
         String line = br.readLine();
         while (line != null) {
             // converting escaped Strings {title, description, disclaimer} to unescaped Strings
-            String[] escSymbols = new String[]{"ti","de", "di"};
+            String[] escSymbols = new String[]{"ti", "de", "di"};
             String[] unescaped = new String[3];
             for (int i = 0; i < 3; i++) {
                 int escStart = line.indexOf(",\"<" + escSymbols[i] + ">") + 6;
@@ -166,10 +166,6 @@ public class DataPersistence {
         String line = br.readLine();
         while (line != null) {
             String[] fields = line.split(",");
-            for (int i = 0; i < fields.length; i++) {
-                System.out.print(i + " " + fields[i] + " ");
-            }
-            System.out.println();
             String vehicleId = fields[0];
             String dealerId = fields[1];
             String year = fields[2];

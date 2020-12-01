@@ -23,6 +23,9 @@ public class TestVehicle {
 
         dp.saveVehiclesToFile(vehicleMap);
 
-        dp.readVehicleFile();
+        vehicleMap = dp.readVehicleFile();
+        for (String k: vehicleMap.keySet()) {
+            System.out.println(vehicleMap.get(k).toCSVLine());
+        }
     }
 }

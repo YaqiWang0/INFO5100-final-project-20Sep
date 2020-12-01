@@ -1,10 +1,14 @@
 package dto;
 
 import dao.Special;
+import dao.SpecialScope;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestSpecialDataPersistent {
     public static void main(String[] args) throws Exception {
-        DataPersistent dp = new DataPersistent();
+        DataPersistence dp = new DataPersistence();
 
         // special i1 with complete fields
         Special i1 = new Special("1", "01-01-2020", "01-01-2022", "Special: 1", "100");
