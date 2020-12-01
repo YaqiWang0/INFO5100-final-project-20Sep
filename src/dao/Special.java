@@ -35,6 +35,10 @@ public class Special {
 		this.value=Objects.requireNonNull(value,"Value should not be null");
 	}
 
+	public void setSpecialId(String specialId) {
+		this.specialId = specialId;
+	}
+
 	public void setDealerId(String dealerId) {
 		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
 	}
