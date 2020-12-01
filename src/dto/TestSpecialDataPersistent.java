@@ -40,7 +40,7 @@ public class TestSpecialDataPersistent {
         allSpecials.put(i2.getSpecialId(), i2);
         allSpecials.put(i3.getSpecialId(), i3);
 
-        dp.writeSpecialsToFile(allSpecials);
+        dp.saveSpecialsToFile(allSpecials);
 
         Map<String, Special> allSpecialsRead = dp.readSpecialsFromFile();
         System.out.println(allSpecialsRead.get(i1.getSpecialId()).getDisclaimer());

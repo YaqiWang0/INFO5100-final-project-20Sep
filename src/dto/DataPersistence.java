@@ -45,6 +45,7 @@ public class DataPersistence {
     public void saveDealersToFile(Map<String, Dealer> dealerMap) throws IOException{
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
+        if (!csv.exists()) csv.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
 
         for (String dealerId: dealerMap.keySet()) {
@@ -93,7 +94,7 @@ public class DataPersistence {
      * @param allSpecials for overwriting the specials.csv
      * by Tianyu Bai
      */
-    public static void writeSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
+    public static void saveSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
         File csv = new File(DATA_PATH + "specials.csv");
         if (!csv.exists()) csv.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
