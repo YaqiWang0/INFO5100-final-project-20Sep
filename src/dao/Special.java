@@ -1,5 +1,3 @@
-package dao;
-
 import java.util.*;
 
 enum SpecialScope{
