@@ -27,12 +27,18 @@ public class TestVehicle {
         vehicleList.add(v1);
         vehicleList.add(v2);
 
+<<<<<<< HEAD
         dp.writeVehicles(vehicleList);
 
         List<Vehicle> vehicles = dp.getAllVehicles();
         System.out.println("\nAfter Reading From File:");
         for (Vehicle v: vehicles) {
             System.out.println(v.toCSVLine());
+=======
+        vehicleMap = dp.readVehicleFile();
+        for (String k: vehicleMap.keySet()) {
+            System.out.println(vehicleMap.get(k).toCSVLine());
+>>>>>>> c873bae (fixed error on special)
         }
     }
 }
