@@ -3,6 +3,7 @@ package dto;
 import dao.Address;
 import dao.Dealer;
 import dao.GenericModel;
+import dao.Special;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
