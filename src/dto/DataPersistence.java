@@ -154,4 +154,61 @@ public class DataPersistence {
         br.close();
         return allSpecials;
     }
+
+
+    public Map<String, Vehicle> readVehicleFile() throws FileNotFoundException, IOException {
+        Map<String, Vehicle> result = new HashMap<>();
+        String vehicleFilePath = DATA_PATH + "vehicles.csv";
+        File csv = new File(vehicleFilePath);
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(csv));
+
+        String line = br.readLine();
+        while (line != null) {
+            String[] fields = line.split(",");
+            for (int i = 0; i < fields.length; i++) {
+                System.out.print(i + " " + fields[i] + " ");
+            }
+            System.out.println();
+            String vehicleId = fields[0];
+            String dealerId = fields[1];
+            String year = fields[2];
+            String brand = fields[3];
+            String model = fields[4];
+            boolean isNew = Boolean.parseBoolean(fields[5]);
+            String price = fields[6];
+            String exteriorColor = fields[7];
+            String interiorColor = fields[8];
+            BodyType bodyType = BodyType.valueOf(fields[9]);
+            String miles = fields[10];
+            String[] features = fields[11].split("\t");
+            String[] imgUrls = fields[12].split("\t");
+
+            Vehicle v = new Vehicle(dealerId, year, brand, model,
+                    isNew, price, exteriorColor, interiorColor, bodyType, miles);
+            v.setVehicleId(vehicleId);
+            for (String feature : features) {
+                v.addFeatures(feature);
+            }
+            for (String imgUrl : imgUrls) {
+                v.addImgUrl(imgUrl);
+            }
+
+            result.put(v.getVehicleId(), v);
+            line = br.readLine();
+        }
+        return result;
+    }
+
+    public void saveVehiclesToFile(Map<String, Vehicle> vehicleMap) throws IOException{
+        String vehicleFilePath = DATA_PATH + "vehicles.csv";
+        File csv = new File(vehicleFilePath);
+        BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
+
+        for (Vehicle vehicle: vehicleMap.values()) {
+            bw.write(vehicle.toCSVLine());
+            bw.newLine();
+        }
+        bw.close();
+    }
 }
