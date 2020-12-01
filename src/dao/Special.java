@@ -144,4 +144,34 @@ public class Special {
 	public String getScopeParameter() {
 		return this.scopeParameter;
 	}
+
+	/**
+	 * Convert this Special to the csv format.
+	 * by Tianyu Bai
+	 */
+	public String toCSVLine(){
+		// escape comma and double quotes in title, description and disclaimer
+		// other variables of Special should not contain any comma or double quotes
+		String csvTitle = "\"<ti>" + title + "</ti>\"";
+		String csvDescription = description == null ? "\"<de></de>\"" : "\"<de>" + description + "</de>\"";
+		String csvDisclaimer = disclaimer == null ? "\"<di></di>\"" : "\"<di>" + disclaimer + "</di>\"";
+
+		// convert a Special to csv data
+		String row = specialId + ","
+				+ dealerId + ","
+				+ startDate + ","
+				+ endDate + ","
+				+ csvTitle + ","
+				+ csvDescription + ","
+				+ csvDisclaimer + ","
+				+ value + ","
+				+ year + ","
+				+ brand + ","
+				+ bodytype + ","
+				+ isNew + ","
+				+ scopeParameter + ","
+				+ specialScope;
+
+		return row;
+	}
 }
