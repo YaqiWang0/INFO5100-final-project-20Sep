@@ -1,3 +1,5 @@
+package dao;
+
 import java.util.*;
 
 enum SpecialScope{
@@ -35,11 +37,16 @@ public class Special {
 		this.value=Objects.requireNonNull(value,"Value should not be null");
 	}
 
+	public void setSpecialId(String specialId) {
+		this.specialId = specialId;
+	}
+
+
 	public void setDealerId(String dealerId) {
 		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
 	}
 	
-	public void setDealerIdFromExistingDealer(Dealer dealer) {
+	public void setDealerIdFromExistingDealer(dao.Dealer dealer) {
 		this.dealerId=Objects.requireNonNull(dealer.getDealerId(),"The input dealer should not be null");
 	}
 	
