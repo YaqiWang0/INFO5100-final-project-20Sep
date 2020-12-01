@@ -12,6 +12,7 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="resources/TestMapper.xml"/>
+        <mapper resource="resources/DealerMapper.xml"/>
+        <mapper resource="resources/CustomerMapper.xml"/>
     </mappers>
 </configuration>

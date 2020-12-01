@@ -1,6 +1,6 @@
 package dto;
 
-public class Test {
+public class Dealer {
     private String webid;
 
     private String id;

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dao.TestMapper" >
-  <resultMap id="BaseResultMap" type="dto.Test" >
+<mapper namespace="dao.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="dto.Customer" >
     <result column="webId" property="webid" jdbcType="VARCHAR" />
     <result column="Id" property="id" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
   </resultMap>
-  <insert id="insert" parameterType="dto.Test" >
-    insert into test (webId, Id, password
+  <insert id="insert" parameterType="dto.Customer" >
+    insert into customer (webId, Id, password
       )
     values (#{webid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="dto.Test" >
-    insert into test
+  <insert id="insertSelective" parameterType="dto.Customer" >
+    insert into customer
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="webid != null" >
         webId,
@@ -37,9 +37,10 @@
       </if>
     </trim>
   </insert>
-  <select id="dealerSearch" resultMap="BaseResultMap">
-    SELECT
-    webId, Id, password
-    FROM test
-  </select>
+  <select id="customerSearch" resultMap="BaseResultMap">
+  SELECT
+  webId, Id, password
+  FROM customer
+</select>
+
 </mapper>
