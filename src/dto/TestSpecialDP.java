@@ -1,5 +1,7 @@
 package dto;
 
+import dao.Special;
+
 public class TestSpecialDataPersistent {
     public static void main(String[] args) throws Exception {
         DataPersistent dp = new DataPersistent();
