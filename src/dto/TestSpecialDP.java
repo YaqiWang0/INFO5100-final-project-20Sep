@@ -39,9 +39,9 @@ public class TestSpecialDataPersistent {
         dp.writeSpecialsToFile(allSpecials);
 
         Map<String, Special> allSpecialsRead = dp.readSpecialsFromFile();
-        System.out.println(allSpecials.get(i1.getSpecialId()).getDisclaimer());
-        System.out.println(allSpecials.get(i2.getSpecialId()).getBodyType());
-        System.out.println(allSpecials.get(i1.getSpecialId()).getScope());
+        System.out.println(allSpecialsRead.get(i1.getSpecialId()).getDisclaimer());
+        System.out.println(allSpecialsRead.get(i2.getSpecialId()).getBodyType());
+        System.out.println(allSpecialsRead.get(i1.getSpecialId()).getScope());
 
     }
 
