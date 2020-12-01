@@ -70,17 +70,7 @@ public class DataPersistence {
      * @param i the Special to be saved
      * by Tianyu Bai
      */
-    public static void saveSpecialToFile(Special i) throws IOException {
-        // setting file path of special.csv
-        File csv = new File(DATA_PATH + "specials.csv");
-
-        // create new file if it does not previously exist
-        Boolean toWriteHeader = false;
-        if (!csv.exists()) csv.createNewFile();
-
-        // create buffered writer
-        BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true));
-
+    public static String specialToCSV(Special i) throws IOException {
         // escape comma and double quotes in title, description and disclaimer
         // other variables of Special should not contain any comma or double quotes
         String title = "\"<ti>" + i.getTitle() + "</ti>\"";
@@ -103,42 +93,9 @@ public class DataPersistence {
                 + i.getScopeParameter() + ","
                 + i.getScope(); // method naming (not getSpecialScope() in Special.java)
 
-        bw.write(row);
-        bw.newLine();
-        bw.close();
+        return row;
     }
 
-    /**
-     * Update the given special in the file by overwriting it.
-     * @param i the given special to be updated
-     * by Tianyu Bai
-     */
-    public static void updateSpecialFromFile(Special i) throws IOException {
-        // read all specials from the file
-        Map<String, Special> allSpecials = readSpecialsData();
-        if (!allSpecials.containsKey(i.getSpecialId())) {
-            System.out.println("Error: special " + i.getTitle() + " not found in the file");
-        }
-
-        allSpecials.put(i.getSpecialId(), i); // update the special
-        writeSpecialsToFile(allSpecials); // overwrite specials.cvs
-    }
-
-    /**
-     * Remove the given special in the file by overwriting it.
-     * @param i the given special to be removed
-     * by Tianyu Bai
-     */
-    public static void removeSpecialFromFile(Special i) throws IOException {
-        // read all specials from the file
-        Map<String, Special> allSpecials = readSpecialsData();
-        if (!allSpecials.containsKey(i.getSpecialId())) {
-            System.out.println("Error: special " + i.getTitle() + " not found in the file");
-        }
-
-        allSpecials.remove(i.getSpecialId());// remove the special
-        writeSpecialsToFile(allSpecials); // overwrite specials.cvs
-    }
 
     /**
      * Overwrite specials.csv with the given specials.
@@ -146,16 +103,17 @@ public class DataPersistence {
      * by Tianyu Bai
      */
     public static void writeSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
-        // delete the previous specials.csv file
         File csv = new File(DATA_PATH + "specials.csv");
-        if (!csv.delete()) {
-            System.out.println("Error: specials.cvs is not deleted successfully");
-        }
+        if (!csv.exists()) csv.createNewFile();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
 
         // create a new specials.csv and write each special into the file
         for (Special special : allSpecials.values()) {
-            saveSpecialToFile(special);
+            bw.write(specialToCSV(special));
+            bw.newLine();
         }
+
+        bw.close();
     }
 
 
@@ -164,7 +122,7 @@ public class DataPersistence {
      * @return a map of all specials with specialID as the key
      * by Tianyu Bai
      */
-    public static Map<String, Special> readSpecialsData() throws IOException{
+    public static Map<String, Special> readSpecialsFromFile() throws IOException{
         // setting the csv file
         File csv = new File(DATA_PATH + "specials.csv");
         BufferedReader br = new BufferedReader(new FileReader(csv));

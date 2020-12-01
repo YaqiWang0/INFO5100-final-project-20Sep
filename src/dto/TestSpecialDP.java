@@ -31,14 +31,18 @@ public class TestSpecialDataPersistent {
         i3.setScopeParameter("scope parameter");
         i3.setScope(SpecialScope.ALL);
 
-        dp.saveSpecialToFile(i1);
-        dp.saveSpecialToFile(i2);
-        dp.saveSpecialToFile(i3);
+        Map<String, Special> allSpecials = new HashMap<>();
+        allSpecials.put(i1.getSpecialId(), i1);
+        allSpecials.put(i2.getSpecialId(), i2);
+        allSpecials.put(i3.getSpecialId(), i3);
 
-        dp.removeSpecialFromFile(i2);
+        dp.writeSpecialsToFile(allSpecials);
 
-        i1.setYear("1111");
-        dp.updateSpecialFromFile(i1);
+        Map<String, Special> allSpecialsRead = dp.readSpecialsFromFile();
+        System.out.println(allSpecials.get(i1.getSpecialId()).getDisclaimer());
+        System.out.println(allSpecials.get(i2.getSpecialId()).getBodyType());
+        System.out.println(allSpecials.get(i1.getSpecialId()).getScope());
+
     }
 
 
