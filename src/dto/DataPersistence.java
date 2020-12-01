@@ -57,50 +57,18 @@ public class DataPersistence {
     }
 
     /**
-     * Save the given special in the file.
-     * @param i the Special to be saved
-     * by Tianyu Bai
-     */
-    public static String specialToCSV(Special i) throws IOException {
-        // escape comma and double quotes in title, description and disclaimer
-        // other variables of Special should not contain any comma or double quotes
-        String title = "\"<ti>" + i.getTitle() + "</ti>\"";
-        String description = i.getDescription() == null ? "\"<de></de>\"" : "\"<de>" + i.getDescription() + "</de>\"";
-        String disclaimer = i.getDisclaimer() == null ? "\"<di></di>\"" : "\"<di>" + i.getDisclaimer() + "</di>\"";
-
-        // convert a Special to csv data
-        String row = i.getSpecialId() + ","
-                + i.getDealerId() + ","
-                + i.getStartDate() + ","
-                + i.getEndDate() + ","
-                + title + ","
-                + description + ","
-                + disclaimer + ","
-                + i.getValue() + ","
-                + i.getYear() + ","
-                + i.getBrand() + ","
-                + i.getBodyType() + ","
-                + i.isNew() + "," // method naming (not getIsNew() in Special.java)
-                + i.getScopeParameter() + ","
-                + i.getScope(); // method naming (not getSpecialScope() in Special.java)
-
-        return row;
-    }
-
-
-    /**
      * Overwrite specials.csv with the given specials.
      * @param allSpecials for overwriting the specials.csv
      * by Tianyu Bai
      */
-    public static void writeSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
+    public void writeSpecialsToFile(Map<String, Special> allSpecials) throws IOException, FileNotFoundException {
         File csv = new File(DATA_PATH + "specials.csv");
         if (!csv.exists()) csv.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
 
         // create a new specials.csv and write each special into the file
         for (Special special : allSpecials.values()) {
-            bw.write(specialToCSV(special));
+            bw.write(i.toCSVLine());
             bw.newLine();
         }
 
@@ -113,7 +81,7 @@ public class DataPersistence {
      * @return a map of all specials with specialID as the key
      * by Tianyu Bai
      */
-    public static Map<String, Special> readSpecialsFromFile() throws IOException{
+    public Map<String, Special> readSpecialsFromFile() throws IOException{
         // setting the csv file
         File csv = new File(DATA_PATH + "specials.csv");
         BufferedReader br = new BufferedReader(new FileReader(csv));
