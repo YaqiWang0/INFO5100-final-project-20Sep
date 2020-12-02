@@ -3,8 +3,7 @@ package dto;
 import dao.Special;
 import dao.SpecialScope;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TestSpecialDataPersistent {
     public static void main(String[] args) throws Exception {
