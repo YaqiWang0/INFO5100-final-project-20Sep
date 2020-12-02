@@ -9,8 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DataPersistence {
 
@@ -61,7 +60,7 @@ public class DataPersistence {
      * Overwrite specials.csv with the given specials.
      * @param allSpecials are the specials to be saved in the specials.csv
      */
-    public void saveSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
+    public void saveSpecials(Map<String, Special> allSpecials) throws IOException {
         File csv = new File(DATA_PATH + "specials.csv");
         if (!csv.exists()) csv.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
@@ -80,13 +79,13 @@ public class DataPersistence {
      * Read all specials in the file.
      * @return a map of all specials saved in the specials.csv (key: specialId, value: special)
      */
-    public Special[] readSpecialsFromFile() throws IOException{
+    public List<Special> readSpecials() throws IOException{
         // setting the csv file
         File csv = new File(DATA_PATH + "specials.csv");
         BufferedReader br = new BufferedReader(new FileReader(csv));
 
         // iterate through each Special in the file
-        Map<String, Special> allSpecials = new HashMap<>();
+        List<Special> allSpecials = new ArrayList<>();
         String line = br.readLine();
         while (line != null) {
             // converting escaped Strings {title, description, disclaimer} to unescaped Strings
@@ -114,7 +113,7 @@ public class DataPersistence {
             i.setScopeParameter(fields[9]);
             if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
 
-            allSpecials.put(fields[0], i); // add the converted special to the map
+            allSpecials.add(i); // add the converted special to the map
             line = br.readLine(); // read the next line of special
         }
 

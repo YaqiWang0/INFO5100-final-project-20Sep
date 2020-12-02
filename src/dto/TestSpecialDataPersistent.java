@@ -40,12 +40,12 @@ public class TestSpecialDataPersistent {
         allSpecials.put(i2.getSpecialId(), i2);
         allSpecials.put(i3.getSpecialId(), i3);
 
-        dp.saveSpecialsToFile(allSpecials);
+        dp.saveSpecials(allSpecials);
 
-        Map<String, Special> allSpecialsRead = dp.readSpecialsFromFile();
-        System.out.println(allSpecialsRead.get(i1.getSpecialId()).getDisclaimer());
-        System.out.println(allSpecialsRead.get(i2.getSpecialId()).getBodyType());
-        System.out.println(allSpecialsRead.get(i1.getSpecialId()).getScope());
+        List<Special> allSpecialsRead = dp.readSpecials();
+        System.out.println(allSpecialsRead.get(0).getTitle());
+        System.out.println(allSpecialsRead.get(1).getTitle());
+        System.out.println(allSpecialsRead.get(2).getTitle());
 
     }
 
