@@ -62,31 +62,13 @@ public class DataPersistence implements AbstractPersistent {
 
     }
 
-    /**
-     * Overwrite specials.csv with the given specials.
-     * @param allSpecials are the specials to be saved in the specials.csv
-     */
-    public void saveSpecials(Map<String, Special> allSpecials) throws IOException {
-        File csv = new File(DATA_PATH + "specials.csv");
-        if (!csv.exists()) csv.createNewFile();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
-
-        // create a new specials.csv and write each special into the file
-        for (Special special : allSpecials.values()) {
-            bw.write(special.toCSVLine());
-            bw.newLine();
-        }
-
-        bw.close();
-    }
-
 
     /**
      * Read all specials in the file.
      * @return a map of all specials saved in the specials.csv (key: specialId, value: special)
      */
-    public List<Special> readSpecials() throws IOException{
-        // setting the csv file
+    @Override
+    public List<Special> getAllSpecials() throws IOException{
         File csv = new File(DATA_PATH + "specials.csv");
         BufferedReader br = new BufferedReader(new FileReader(csv));
 
@@ -125,6 +107,26 @@ public class DataPersistence implements AbstractPersistent {
 
         br.close();
         return allSpecials;
+    }
+
+
+    /**
+     * Overwrite specials.csv with the given specials.
+     * @param allSpecials are the specials to be saved in the specials.csv
+     */
+    @Override
+    public void writeSpecials(List<Special> allSpecials) throws IOException {
+        File csv = new File(DATA_PATH + "specials.csv");
+        if (!csv.exists()) csv.createNewFile();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
+
+        // create a new specials.csv and write each special into the file
+        for (Special special : allSpecials) {
+            bw.write(special.toCSVLine());
+            bw.newLine();
+        }
+
+        bw.close();
     }
 
 

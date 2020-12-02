@@ -34,14 +34,14 @@ public class TestSpecialDataPersistent {
         i3.setScopeParameter("scope parameter");
         i3.setScope(SpecialScope.ALL);
 
-        Map<String, Special> allSpecials = new HashMap<>();
-        allSpecials.put(i1.getSpecialId(), i1);
-        allSpecials.put(i2.getSpecialId(), i2);
-        allSpecials.put(i3.getSpecialId(), i3);
+        List<Special> allSpecials = new ArrayList<>();
+        allSpecials.add(i1);
+        allSpecials.add(i2);
+        allSpecials.add(i3);
 
-        dp.saveSpecials(allSpecials);
+        dp.writeSpecials(allSpecials);
 
-        List<Special> allSpecialsRead = dp.readSpecials();
+        List<Special> allSpecialsRead = dp.getAllSpecials();
         System.out.println(allSpecialsRead.get(0).getTitle());
         System.out.println(allSpecialsRead.get(1).getTitle());
         System.out.println(allSpecialsRead.get(2).getTitle());
