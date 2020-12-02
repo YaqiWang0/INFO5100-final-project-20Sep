@@ -167,7 +167,7 @@ public class Special {
 	public String toCSVLine(){
 		// escape comma and double quotes in title, description and disclaimer
 		// other variables of Special should not contain any comma or double quotes
-		String csvTitle = title == null ? "\"<ti></ti>\"" : "<ti>" + title + "</ti>\"";
+		String csvTitle = title == null ? "\"<ti></ti>\"" : "\"<ti>" + title + "</ti>\"";
 		String csvDescription = description == null ? "\"<de></de>\"" : "\"<de>" + description + "</de>\"";
 		String csvDisclaimer = disclaimer == null ? "\"<di></di>\"" : "\"<di>" + disclaimer + "</di>\"";
 
