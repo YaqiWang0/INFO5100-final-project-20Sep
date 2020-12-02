@@ -20,12 +20,17 @@ public class TestVehicle {
         v2.addImgUrl("http://inventory-dmg.assets-cdk.com/2/3/5/13411476532x90.jpg");
         v2.addFeatures("2dr Cpe LT w/1LT");
         v2.addFeatures("Test feature");
+        System.out.println("Before Writing To File:");
+        System.out.println(v1.toCSVLine());
+        System.out.println(v2.toCSVLine());
+
         vehicleList.add(v1);
         vehicleList.add(v2);
 
         dp.writeVehicles(vehicleList);
 
         List<Vehicle> vehicles = dp.getAllVehicles();
+        System.out.println("\nAfter Reading From File:");
         for (Vehicle v: vehicles) {
             System.out.println(v.toCSVLine());
         }
