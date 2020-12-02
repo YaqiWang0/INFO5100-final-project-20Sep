@@ -8,11 +8,17 @@ public class Dealer extends GenericModel{
 	private String dealerId;
 	private String dealerName;
 	private Address dealerAddress;
-	
+
+	public Dealer() {}
+
 	public Dealer(String dealerId, String dealerName, Address dealerAddress) {
 		this.dealerId=dealerId==null ? UUID.randomUUID().toString(): dealerId;
 		this.dealerName=Objects.requireNonNull(dealerName,"Dealer's name cannot be null");
 		this.dealerAddress=dealerAddress;
+	}
+
+	public void setDealerId(String dealerId) {
+		this.dealerId=dealerId==null ? UUID.randomUUID().toString(): dealerId;
 	}
 	
 	public void setDealerName(String dealerName) {

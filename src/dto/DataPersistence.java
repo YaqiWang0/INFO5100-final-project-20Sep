@@ -9,46 +9,52 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class DataPersistence {
+public class DataPersistence implements AbstractPersistent {
 
     private static final String DATA_PATH = "./INFO5100-final-project-20Sep/data/";
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
-    public Map<String, Dealer> readDealerFile() throws IOException, FileNotFoundException{
-        Map<String, Dealer> result = new HashMap<>();
+    @Override
+    public List<Dealer> getAllDealers() throws IOException, FileNotFoundException{
+        List<Dealer> result = new ArrayList<>();
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
         BufferedReader br = new BufferedReader(new FileReader(csv));
 
         String line = br.readLine();
         while (line != null) {
+
             String[] fields = line.split(",");
-            String dealerId = fields[0];
-            String dealerName = fields[1];
-            String address1 = fields[2];
-            String address2 = fields[3];
-            String city = fields[4];
-            String state = fields[5];
-            String dealerZipCode = fields[6];
-            Address dealerAddress = new Address(address1, address2, city, state, dealerZipCode);
-            Dealer d = new Dealer(dealerId, dealerName, dealerAddress);
-            result.put(d.getDealerId(), d);
+
+            Dealer d = new Dealer();
+            d.setDealerId(fields[0]);
+            d.setDealerName(fields[1]);
+            Address a = new Address();
+            a.setAddressInfo(fields[2], fields[3]);
+            a.setCity(fields[4]);
+            a.setState(fields[5]);
+            a.setZipCode(fields[6]);
+            d.setDealerAddress(a);
+            result.add(d);
             line = br.readLine();
         }
         return result;
 
     }
 
-    public void saveDealersToFile(Map<String, Dealer> dealerMap) throws IOException{
+    @Override
+    public void writeDealers(List<Dealer> dealers) throws IOException{
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
         if (!csv.exists()) csv.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
 
-        for (String dealerId: dealerMap.keySet()) {
-            Dealer d = dealerMap.get(dealerId);
+        for (Dealer d: dealers) {
             bw.write(d.toCSVLine());
             bw.newLine();
         }
