@@ -68,7 +68,7 @@ public class DataPersistence {
 
         // create a new specials.csv and write each special into the file
         for (Special special : allSpecials.values()) {
-            bw.write(i.toCSVLine());
+            bw.write(special.toCSVLine());
             bw.newLine();
         }
 
@@ -80,7 +80,7 @@ public class DataPersistence {
      * Read all specials in the file.
      * @return a map of all specials saved in the specials.csv (key: specialId, value: special)
      */
-    public Map<String, Special> readSpecialsFromFile() throws IOException{
+    public Special[] readSpecialsFromFile() throws IOException{
         // setting the csv file
         File csv = new File(DATA_PATH + "specials.csv");
         BufferedReader br = new BufferedReader(new FileReader(csv));
