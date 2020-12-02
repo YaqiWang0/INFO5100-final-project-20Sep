@@ -61,7 +61,7 @@ public class DataPersistence {
      * Overwrite specials.csv with the given specials.
      * @param allSpecials are the specials to be saved in the specials.csv
      */
-    public static void saveSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
+    public void saveSpecialsToFile(Map<String, Special> allSpecials) throws IOException {
         File csv = new File(DATA_PATH + "specials.csv");
         if (!csv.exists()) csv.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
