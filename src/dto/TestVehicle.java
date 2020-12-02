@@ -3,13 +3,15 @@ package dto;
 import dao.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TestVehicle {
     public static void main(String[] args)  throws IOException {
         DataPersistence dp = new DataPersistence();
-        Map<String, Vehicle> vehicleMap = new HashMap<>();
+        List<Vehicle> vehicleList = new ArrayList<>();
         Vehicle v1 = new Vehicle("gmps-aj-dohmann", "2014", "Cadillac", "CTS Sedan", true, "57620.0", "Red", "Black", BodyType.CAR, "0");
         v1.addImgUrl("http://inventory-dmg.assets-cdk.com/5/1/7/13411480715x90.jpg");
         v1.addFeatures("3.6L V6 AWD Luxury");
@@ -18,14 +20,14 @@ public class TestVehicle {
         v2.addImgUrl("http://inventory-dmg.assets-cdk.com/2/3/5/13411476532x90.jpg");
         v2.addFeatures("2dr Cpe LT w/1LT");
         v2.addFeatures("Test feature");
-        vehicleMap.put(v1.getVehicleId(), v1);
-        vehicleMap.put(v2.getVehicleId(), v2);
+        vehicleList.add(v1);
+        vehicleList.add(v2);
 
-        dp.saveVehiclesToFile(vehicleMap);
+        dp.writeVehicles(vehicleList);
 
-        vehicleMap = dp.readVehicleFile();
-        for (String k: vehicleMap.keySet()) {
-            System.out.println(vehicleMap.get(k).toCSVLine());
+        List<Vehicle> vehicles = dp.getAllVehicles();
+        for (Vehicle v: vehicles) {
+            System.out.println(v.toCSVLine());
         }
     }
 }

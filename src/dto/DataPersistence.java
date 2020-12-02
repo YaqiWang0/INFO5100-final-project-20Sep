@@ -129,34 +129,30 @@ public class DataPersistence implements AbstractPersistent {
         bw.close();
     }
 
-
-    public Map<String, Vehicle> readVehicleFile() throws FileNotFoundException, IOException {
-        Map<String, Vehicle> result = new HashMap<>();
+    @Override
+    public List<Vehicle> getAllVehicles() throws IOException {
+        List<Vehicle> result = new ArrayList<>();
         String vehicleFilePath = DATA_PATH + "vehicles.csv";
         File csv = new File(vehicleFilePath);
-        BufferedReader br = null;
-        br = new BufferedReader(new FileReader(csv));
+        BufferedReader br = new BufferedReader(new FileReader(csv));
 
         String line = br.readLine();
         while (line != null) {
             String[] fields = line.split(",");
-            String vehicleId = fields[0];
-            String dealerId = fields[1];
-            String year = fields[2];
-            String brand = fields[3];
-            String model = fields[4];
-            boolean isNew = Boolean.parseBoolean(fields[5]);
-            String price = fields[6];
-            String exteriorColor = fields[7];
-            String interiorColor = fields[8];
-            BodyType bodyType = BodyType.valueOf(fields[9]);
-            String miles = fields[10];
             String[] features = fields[11].split("\t");
             String[] imgUrls = fields[12].split("\t");
 
-            Vehicle v = new Vehicle(dealerId, year, brand, model,
-                    isNew, price, exteriorColor, interiorColor, bodyType, miles);
-            v.setVehicleId(vehicleId);
+            Vehicle v = new Vehicle(fields[1]);
+            v.setVehicleId(fields[0]);
+            v.setYear(fields[2]);
+            v.setBrand(fields[3]);
+            v.setModel(fields[4]);
+            v.setIsNew(Boolean.parseBoolean(fields[5]));
+            v.setPrice(fields[6]);
+            v.setExteriorColor(fields[7]);
+            v.setInteriorColor(fields[8]);
+            v.setBodyType(BodyType.valueOf(fields[9]));
+            v.setMiles(fields[10]);
             for (String feature : features) {
                 v.addFeatures(feature);
             }
@@ -164,18 +160,19 @@ public class DataPersistence implements AbstractPersistent {
                 v.addImgUrl(imgUrl);
             }
 
-            result.put(v.getVehicleId(), v);
+            result.add(v);
             line = br.readLine();
         }
         return result;
     }
 
-    public void saveVehiclesToFile(Map<String, Vehicle> vehicleMap) throws IOException{
+    @Override
+    public void writeVehicles(List<Vehicle> vehicles) throws IOException{
         String vehicleFilePath = DATA_PATH + "vehicles.csv";
         File csv = new File(vehicleFilePath);
         BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
 
-        for (Vehicle vehicle: vehicleMap.values()) {
+        for (Vehicle vehicle: vehicles) {
             bw.write(vehicle.toCSVLine());
             bw.newLine();
         }

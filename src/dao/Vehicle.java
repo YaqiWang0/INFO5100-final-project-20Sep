@@ -18,6 +18,8 @@ public class Vehicle {
 	private String miles;
 	private ArrayList<String> features;
 	private ArrayList<String> imgUrls;
+
+	public Vehicle() {}
 	
 	public Vehicle(String dealerId) {
 		this.dealerId=Objects.requireNonNull(dealerId,"Dealer's Id cannot be null");
