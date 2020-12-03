@@ -39,6 +39,7 @@ public class CreateIncentive extends JFrame {
     Vehicle veh;
 
     public CreateIncentive() {
+        spl = new Special();
         initComponents();
     }
 
@@ -48,6 +49,7 @@ public class CreateIncentive extends JFrame {
     }
 
     public void addItemsToComboBoxes(){
+        //startMonth.setPreferredSize(80px);
         //add items for start month combo box
         for(int i=1;i<=12;i++){
             startMonth.addItem(i);
@@ -100,6 +102,7 @@ public class CreateIncentive extends JFrame {
             }
         });
         return spl;
+        //add this special to database
     }
 
     public static void main(String[] args) throws ParseException {

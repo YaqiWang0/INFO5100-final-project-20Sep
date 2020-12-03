@@ -22,8 +22,8 @@ public class Special {
 	public Special() {
 		this.specialId ="";
 		this.dealerId = "";
-		this.startDate = "";
-		this.endDate = "";
+		//this.startDate = "";
+		//this.endDate = "";
 		this.title = "";
 		this.value = "";
 		this.year = "";
@@ -32,8 +32,13 @@ public class Special {
 		this.isNew = "";
 		this.scopeParameter = "";
 		this.specialScope = SpecialScope.ALL;
+		this.specialId=UUID.randomUUID().toString();
 	}
-	
+
+
+
+
+
 	public Special(String dealerId, Date startDate, Date endDate, String title, String value) {
 		this.specialId=UUID.randomUUID().toString();
 		
