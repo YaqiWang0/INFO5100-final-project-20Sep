@@ -1,5 +1,7 @@
 package main;
 
+import ui.IncentiveUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,10 +35,12 @@ public class AppUI extends App {
         JButton dialogBtn = new JButton("special_info_btn");
         dialogBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showConfirmDialog(frame
-                        ,"This is the incentive's information....."
-                        ,"TutorialsPoint.com"
-                        , JOptionPane.CLOSED_OPTION);
+//                JOptionPane.showConfirmDialog(frame
+//                        ,"This is the incentive's information....."
+//                        ,"TutorialsPoint.com"
+//                        , JOptionPane.CLOSED_OPTION);
+
+                new IncentiveUI();
             }
         });
 
