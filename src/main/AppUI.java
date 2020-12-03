@@ -6,49 +6,39 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class AppUI extends App {
 
     private JPanel centerPanel;
+    private boolean isShow = true;
 
     @Override
     protected JPanel getCenterPanel() {
-        // label listener
-        JPanel labelPanel = new JPanel();
-        JLabel special = new JLabel("special_info", JLabel.CENTER);
-        special.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JOptionPane.showConfirmDialog(frame
-                        ,"This is the incentive's information....."
-                        ,"Car Special Price"
-                        , JOptionPane.CLOSED_OPTION);
-            }
+        // pop-up button
+        JButton popBtn = new JButton("special_info");
+        popBtn.setSize(20, 5);
+        popBtn.addActionListener((ActionEvent e) -> {
+            JPanel panel = new JPanel(new GridLayout(0, 2));
+            panel.add(new JLabel("Field 1:", JLabel.CENTER));
+            panel.add(new JLabel("xxxxxxxxx"));
+            panel.add(new JLabel("Field 2:", JLabel.CENTER));
+            panel.add(new JLabel("xxxxxxxxx"));
+            JOptionPane.showConfirmDialog(null, panel, "Test",
+                    JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
         });
-        labelPanel.add(new JLabel("car_title1", JLabel.CENTER));
-        labelPanel.add(new JLabel("car_name1", JLabel.CENTER));
-        labelPanel.add(special);
-
-        // dialog button
-        JButton dialogBtn = new JButton("special_info_btn");
-        dialogBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showConfirmDialog(frame
-                        ,"This is the incentive's information....."
-                        ,"TutorialsPoint.com"
-                        , JOptionPane.CLOSED_OPTION);
-            }
-        });
-
 
         // add Panel's attribute
-        centerPanel = new JPanel();
-        centerPanel.setBackground(Color.gray);
-
+        centerPanel = new JPanel(new GridLayout(0, 2));
         // add Component to centerPanel
-        centerPanel.add(labelPanel); // for label
-        centerPanel.add(dialogBtn); // for button
-
+        centerPanel.add(new JLabel("Field 1:", JLabel.CENTER));
+        centerPanel.add(new JLabel("xxxxxxxxx"));
+        centerPanel.add(new JLabel("Field 2:", JLabel.CENTER));
+        centerPanel.add(new JLabel("xxxxxxxxx"));
+        centerPanel.add(new JLabel("Field 3:", JLabel.CENTER));
+        centerPanel.add(new JLabel("xxxxxxxxx"));
+        centerPanel.add(new JLabel("", JLabel.CENTER));
+        centerPanel.add(popBtn); // for button
 
         return centerPanel;
     }
