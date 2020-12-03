@@ -15,12 +15,20 @@ public class CreateIncentive extends JFrame {
     private JPanel Value;
     private JPanel Details;
     private JPanel Description;
-    private JComboBox startMonth;
-    private JComboBox startDay;
     private JComboBox startYear;
-    private JComboBox endMonth;
-    private JComboBox endDay;
     private JComboBox endYear;
+    private JComboBox startDay;
+    private JComboBox startMonth;
+    private JComboBox endDay;
+    private JComboBox endMonth;
+    private JCheckBox cashPaymentCheckBox;
+    private JCheckBox checkPaymentCheckBox;
+    private JCheckBox loanCheckBox;
+    private JCheckBox checkBox4;
+    private JRadioButton $RadioButton;
+    private JTextField textField1;
+    private JRadioButton radioButton1;
+    private JTextField textField2;
 
     public CreateIncentive() {
         initComponents();
@@ -29,7 +37,6 @@ public class CreateIncentive extends JFrame {
     private void initComponents(){
         publish();
         addItemsToComboBoxes();
-
     }
 
     public void addItemsToComboBoxes(){
@@ -66,7 +73,7 @@ public class CreateIncentive extends JFrame {
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(400, 300));
+        frame.setPreferredSize(new Dimension(600, 400));
         frame.pack();
         frame.setVisible(true);
     }
