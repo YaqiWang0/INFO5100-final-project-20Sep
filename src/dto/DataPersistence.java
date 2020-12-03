@@ -5,7 +5,6 @@ import dao.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -164,53 +163,78 @@ public class DataPersistence implements AbstractPersistent {
     }
 
     @Override
-    public List<Vehicle> getAllVehicles() throws IOException {
+    public List<Vehicle> getAllVehicles() {
         List<Vehicle> result = new ArrayList<>();
         String vehicleFilePath = DATA_PATH + "vehicles.csv";
         File csv = new File(vehicleFilePath);
-        BufferedReader br = new BufferedReader(new FileReader(csv));
+        BufferedReader br = null;
 
-        String line = br.readLine();
-        while (line != null) {
-            String[] fields = line.split(",");
-            String[] features = fields[11].split("\t");
-            String[] imgUrls = fields[12].split("\t");
+        try {
+            br = new BufferedReader(new FileReader(csv));
 
-            Vehicle v = new Vehicle(fields[1]);
-            v.setVehicleId(fields[0]);
-            v.setYear(fields[2]);
-            v.setBrand(fields[3]);
-            v.setModel(fields[4]);
-            v.setIsNew(Boolean.parseBoolean(fields[5]));
-            v.setPrice(fields[6]);
-            v.setExteriorColor(fields[7]);
-            v.setInteriorColor(fields[8]);
-            v.setBodyType(BodyType.valueOf(fields[9]));
-            v.setMiles(fields[10]);
-            for (String feature : features) {
-                v.addFeatures(feature);
+            String line = br.readLine();
+            while (line != null) {
+                String[] fields = line.split(",");
+                String[] features = fields[11].split("\t");
+                String[] imgUrls = fields[12].split("\t");
+
+                Vehicle v = new Vehicle(fields[1]);
+                v.setVehicleId(fields[0]);
+                v.setYear(fields[2]);
+                v.setBrand(fields[3]);
+                v.setModel(fields[4]);
+                v.setIsNew(Boolean.parseBoolean(fields[5]));
+                v.setPrice(fields[6]);
+                v.setExteriorColor(fields[7]);
+                v.setInteriorColor(fields[8]);
+                v.setBodyType(BodyType.valueOf(fields[9]));
+                v.setMiles(fields[10]);
+                for (String feature : features) {
+                    v.addFeatures(feature);
+                }
+                for (String imgUrl : imgUrls) {
+                    v.addImgUrl(imgUrl);
+                }
+
+                result.add(v);
+                line = br.readLine();
             }
-            for (String imgUrl : imgUrls) {
-                v.addImgUrl(imgUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-            result.add(v);
-            line = br.readLine();
         }
-        br.close();
         return result;
     }
 
     @Override
-    public void writeVehicles(List<Vehicle> vehicles) throws IOException{
+    public void writeVehicles(List<Vehicle> vehicles) throws IOException {
         String vehicleFilePath = DATA_PATH + "vehicles.csv";
         File csv = new File(vehicleFilePath);
-        BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-
-        for (Vehicle vehicle: vehicles) {
-            bw.write(vehicle.toCSVLine());
-            bw.newLine();
+        BufferedWriter bw = null;
+        if (!csv.exists()) csv.createNewFile();
+        try {
+            bw = new BufferedWriter(new FileWriter(csv, true));
+            for (Vehicle vehicle: vehicles) {
+                bw.write(vehicle.toCSVLine());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        bw.close();
     }
 }
