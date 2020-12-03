@@ -1,12 +1,15 @@
+package dao;
 
-public class Address {
+public class Address extends GenericModel{
 
 	private String address1;
 	private String address2;
 	private String city;
 	private String state;
 	private String zipCode;
-	
+
+	public Address() {}
+
 	public Address(String address1, String address2, String city, String state, String zipCode) {
 		this.address1=address1;
 		this.address2=address2;
@@ -55,6 +58,10 @@ public class Address {
 				+"\nCity: "+this.city
 				+"\nState: "+this.state
 				+"\nZipCode: "+this.zipCode;
+	}
+
+	public String toCSVLine() {
+		return this.address1 + "," + this.address2 + "," + this.city + "," + this.state + "," + this.zipCode;
 	}
 	
 	
