@@ -53,11 +53,13 @@ public class DataPersistence implements AbstractPersistent {
     }
 
     @Override
-    public void writeDealers(List<Dealer> dealers) throws IOException {
+    public void writeDealers(List<Dealer> dealers) {
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
         BufferedWriter bw = null;
-        if (!csv.exists()) csv.createNewFile();
+        if (!csv.exists()) {
+            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        }
         try {
             bw = new BufferedWriter(new FileWriter(csv, true));
             for (Dealer d: dealers) {
@@ -138,9 +140,11 @@ public class DataPersistence implements AbstractPersistent {
      * @param allSpecials are the specials to be saved in the specials.csv
      */
     @Override
-    public void writeSpecials(List<Special> allSpecials) throws IOException {
+    public void writeSpecials(List<Special> allSpecials) {
         File csv = new File(DATA_PATH + "specials.csv");
-        if (!csv.exists()) csv.createNewFile();
+        if (!csv.exists()) {
+            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        }
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(csv,true));
@@ -214,11 +218,13 @@ public class DataPersistence implements AbstractPersistent {
     }
 
     @Override
-    public void writeVehicles(List<Vehicle> vehicles) throws IOException {
+    public void writeVehicles(List<Vehicle> vehicles) {
         String vehicleFilePath = DATA_PATH + "vehicles.csv";
         File csv = new File(vehicleFilePath);
         BufferedWriter bw = null;
-        if (!csv.exists()) csv.createNewFile();
+        if (!csv.exists()) {
+            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        }
         try {
             bw = new BufferedWriter(new FileWriter(csv, true));
             for (Vehicle vehicle: vehicles) {
