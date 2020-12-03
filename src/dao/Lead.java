@@ -1,13 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintStream;
+import java.util.ArrayList;
 
 
-public class LeadFormDemo extends JFrame {
+public class Lead extends JFrame {
 
     private JLabel quote, dealerInfo, firstName, lastName, emailAddress, phone, message, zipcode,
             contactPreference, purpose, time, privacyConsent;
@@ -15,10 +15,11 @@ public class LeadFormDemo extends JFrame {
     private JTextArea msgArea;
     private JComboBox<String> usePurpose, timeSpan;
     private JRadioButton selectEmail, selectPhone;
+    private ButtonGroup contactMethods;
     private JButton submit, cancel;
 
 
-    public LeadFormDemo() {
+    public Lead() {
         createUI();
         addComponents();
         addActions();
@@ -30,36 +31,6 @@ public class LeadFormDemo extends JFrame {
 
     private void addActions() {
 
-        usePurpose.addActionListener((ActionEvent ae) -> {
-            try {
-                actionPerformed(ae);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        timeSpan.addActionListener((ActionEvent ae) -> {
-            try {
-                actionPerformed(ae);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        selectEmail.addActionListener((ActionEvent ae) -> {
-            try {
-                actionPerformed(ae);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        selectPhone.addActionListener((ActionEvent ae) -> {
-            try {
-                actionPerformed(ae);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
         submit.addActionListener((ActionEvent ae) -> {
             try {
                 actionPerformed(ae);
@@ -67,6 +38,7 @@ public class LeadFormDemo extends JFrame {
                 e.printStackTrace();
             }
         });
+
         cancel.addActionListener((ActionEvent ae) -> {
             try {
                 actionPerformed(ae);
@@ -77,69 +49,78 @@ public class LeadFormDemo extends JFrame {
 
     }
 
-
     private void actionPerformed(ActionEvent ae) throws IOException {
-// initialize member variables to maintain these data, access via getters?
-//        String fName = firstNameText.getText();
-//        String lName = lastNameText.getText();
-//        String emailAdd = emailText.getText();
-//        String phoneNum = phoneDigit.getText();
-//        String zipCode = zipcodeDigit.getText();
-//        String msg = msgArea.getText();
 
-        String purpose = "use purpose not selected";
-        String selectTime = "contact time not selected";
-        String contactBy = "contact method not selected";
-
-        if (ae.getSource() == usePurpose) {
-            purpose = (String) usePurpose.getSelectedItem();
-        }
-
-        if (ae.getSource() == timeSpan) {
-            selectTime = (String) timeSpan.getSelectedItem();
-        }
-
-        contactBy = ae.getActionCommand();
-
-        // assume Save data happens when click Submit.
+        // lead data saved when Submit clicked.
         if (ae.getSource() == submit) {
 
-            // ObjectOutputStream not yet fulfilled and tested
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("lead.txt"));
-            PrintStream ps = new PrintStream(oos);
-            ps.println(firstNameText.getText());
-            ps.println(lastNameText.getText());
-            ps.println(msgArea.getText());
-            ps.close();
+            ArrayList<String> leadInput = new ArrayList<>();
+            leadInput.add(firstNameText.getText());
+            leadInput.add(lastNameText.getText());
+            leadInput.add(emailText.getText());
+            leadInput.add(phoneDigit.getText());
+            leadInput.add(zipcodeDigit.getText());
+            leadInput.add((String) usePurpose.getSelectedItem());
+            leadInput.add((String) timeSpan.getSelectedItem());
+            leadInput.add(contactMethods.getSelection().getActionCommand());
 
-// another thought: using FileWriter?
-//            FileWriter fileWriter = new FileWriter("lead.txt");
-//            firstNameText.write(fileWriter);
-//            lastNameText.write(fileWriter);
-//            emailText.write(fileWriter);
-//            phoneDigit.write(fileWriter);
-//            zipcodeDigit.write(fileWriter);
-//            msgArea.write(fileWriter);
-//            fileWriter.close();
+            String leadFile = "leadOutput.csv";
+            File leadOutput = new File(leadFile);
+            FileWriter fw = null;
+            if (!leadOutput.exists()) {
+                fw = new FileWriter(leadOutput, true);
+                leadOutput.createNewFile();
+                fw.append("First Name");
+                fw.append(",");
+                fw.append("Last Name");
+                fw.append(",");
+                fw.append("Email");
+                fw.append(",");
+                fw.append("Phone Number");
+                fw.append(",");
+                fw.append("Zip Code");
+                fw.append(",");
+                fw.append("Use Purpose");
+                fw.append(",");
+                fw.append("Contact Time");
+                fw.append(",");
+                fw.append("Contact Preference");
+                fw.append("\n");
+                fw.close();
+            }
 
+            try {
+                fw = new FileWriter(leadOutput, true);
+                fw.append(String.join(",", leadInput));
+                fw.append("\n");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            } finally {
+                fw.close();
+            }
 
             System.exit(0);
         }
+
         if (ae.getSource() == cancel) {
             System.exit(0);
         }
+
     }
+
 
     private void createUI() {
         // label description for request info
         quote = new JLabel("Request A Quote");
-        dealerInfo = new JLabel("AUTO Dealer.getName()" + "\nAddress: " + "Dealer.getAddress()");
+        dealerInfo = new JLabel("AUTO Dealer Name " + " Address: " + "Dealer Address");
         firstName = new JLabel("First Name:");
         lastName = new JLabel("Last Name:");
         emailAddress = new JLabel("Email:");
         phone = new JLabel("Phone:");
         message = new JLabel("Message:");
-        zipcode = new JLabel("Zipcode:");
+        zipcode = new JLabel("Zip Code:");
         purpose = new JLabel("Use Purpose");
         time = new JLabel("Available Time");
         contactPreference = new JLabel("Contact Preference");
@@ -164,9 +145,9 @@ public class LeadFormDemo extends JFrame {
         selectPhone = new JRadioButton("Phone");
         selectEmail.setActionCommand("Email");
         selectPhone.setActionCommand("Phone");
-        ButtonGroup contactChoices = new ButtonGroup();
-        contactChoices.add(selectEmail);
-        contactChoices.add(selectPhone);
+        contactMethods = new ButtonGroup();
+        contactMethods.add(selectEmail);
+        contactMethods.add(selectPhone);
 
         submit = new JButton("Submit");
         cancel = new JButton("Cancel");
@@ -228,8 +209,5 @@ public class LeadFormDemo extends JFrame {
 
     }
 
-    public static void main(String[] args) {
-        new LeadFormDemo();
-    }
 
 }
