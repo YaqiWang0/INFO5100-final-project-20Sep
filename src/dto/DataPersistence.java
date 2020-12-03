@@ -80,44 +80,56 @@ public class DataPersistence implements AbstractPersistent {
      * @return a map of all specials saved in the specials.csv (key: specialId, value: special)
      */
     @Override
-    public List<Special> getAllSpecials() throws IOException{
+    public List<Special> getAllSpecials() {
         File csv = new File(DATA_PATH + "specials.csv");
-        BufferedReader br = new BufferedReader(new FileReader(csv));
-
-        // iterate through each Special in the file
+        BufferedReader br = null;
         List<Special> allSpecials = new ArrayList<>();
-        String line = br.readLine();
-        while (line != null) {
-            // converting escaped Strings {title, description, disclaimer} to unescaped Strings
-            String[] escSymbols = new String[]{"ti", "de", "di"};
-            String[] unescaped = new String[3];
-            for (int i = 0; i < 3; i++) {
-                int escStart = line.indexOf(",\"<" + escSymbols[i] + ">") + 6;
-                unescaped[i] = line.substring(escStart); // substring after first double quote
-                int escEnd = unescaped[i].indexOf("</" + escSymbols[i] + ">\",");
-                unescaped[i] = unescaped[i].substring(0, escEnd); // substring in between first double quotes
-                // remove first occurrence of substring with double quotes
-                line = line.replaceFirst(",\"<" + escSymbols[i] + ">" + unescaped[i] + "</" + escSymbols[i] + ">\"", "");
+
+        try {
+            br = new BufferedReader(new FileReader(csv));
+            String line = br.readLine();
+            // iterate through each Special in the file
+            while (line != null) {
+                // converting escaped Strings {title, description, disclaimer} to unescaped Strings
+                String[] escSymbols = new String[]{"ti", "de", "di"};
+                String[] unescaped = new String[3];
+                for (int i = 0; i < 3; i++) {
+                    int escStart = line.indexOf(",\"<" + escSymbols[i] + ">") + 6;
+                    unescaped[i] = line.substring(escStart); // substring after first double quote
+                    int escEnd = unescaped[i].indexOf("</" + escSymbols[i] + ">\",");
+                    unescaped[i] = unescaped[i].substring(0, escEnd); // substring in between first double quotes
+                    // remove first occurrence of substring with double quotes
+                    line = line.replaceFirst(",\"<" + escSymbols[i] + ">" + unescaped[i] + "</" + escSymbols[i] + ">\"", "");
+                }
+
+                // converting csv data to a Special
+                String[] fields = line.split(",");
+                Special i = new Special(fields[1],fields[2],fields[3],unescaped[0],fields[4]);
+                i.setSpecialId(fields[0]); // added to Special.java
+                i.setDescription(unescaped[1]);
+                i.setDisclaimer(unescaped[2]);
+                i.setYear(fields[5]);
+                i.setBrand(fields[6]);
+                i.setBodyType(fields[7]);
+                i.setIsNew(fields[8]);
+                i.setScopeParameter(fields[9]);
+                if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
+
+                allSpecials.add(i); // add the converted special to the map
+                line = br.readLine(); // read the next line of special
             }
-
-            // converting csv data to a Special
-            String[] fields = line.split(",");
-            Special i = new Special(fields[1],fields[2],fields[3],unescaped[0],fields[4]);
-            i.setSpecialId(fields[0]); // added to Special.java
-            i.setDescription(unescaped[1]);
-            i.setDisclaimer(unescaped[2]);
-            i.setYear(fields[5]);
-            i.setBrand(fields[6]);
-            i.setBodyType(fields[7]);
-            i.setIsNew(fields[8]);
-            i.setScopeParameter(fields[9]);
-            if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
-
-            allSpecials.add(i); // add the converted special to the map
-            line = br.readLine(); // read the next line of special
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        br.close();
         return allSpecials;
     }
 
@@ -130,15 +142,25 @@ public class DataPersistence implements AbstractPersistent {
     public void writeSpecials(List<Special> allSpecials) throws IOException {
         File csv = new File(DATA_PATH + "specials.csv");
         if (!csv.exists()) csv.createNewFile();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(csv,true)); // create buffered writer
-
-        // create a new specials.csv and write each special into the file
-        for (Special special : allSpecials) {
-            bw.write(special.toCSVLine());
-            bw.newLine();
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter(csv,true));
+            // create a new specials.csv and write each special into the file
+            for (Special special : allSpecials) {
+                bw.write(special.toCSVLine());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
-        bw.close();
     }
 
     @Override
