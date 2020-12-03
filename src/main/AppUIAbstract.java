@@ -3,17 +3,17 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class App {
+public abstract class AppUIAbstract {
 
     protected JFrame frame;
 
-    public App() {
+    public AppUIAbstract() {
         System.out.println("App constructor starting...");
         initGUI();
         showUI();
     }
 
-    public void initGUI() {
+    private void initGUI() {
         frame = new JFrame();
         frame.setSize(400, 400);
         frame.setTitle("SaleVehicle_showSpecialPrice");
@@ -25,17 +25,12 @@ public abstract class App {
         frame.add(getCenterPanel(), BorderLayout.CENTER);
     }
 
-    public void showUI() {
+    private void showUI() {
         SwingUtilities.invokeLater(() -> {
             frame.setVisible(true);
         });
     }
 
     protected abstract JPanel getCenterPanel();
-
-    public static void main(String[] args) {
-        new AppUI();
-        System.out.println("AppUI main starting...");
-    }
 
 }
