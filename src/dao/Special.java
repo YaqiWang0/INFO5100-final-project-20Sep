@@ -1,13 +1,7 @@
+package dao;
+
 import java.util.*;
 
-enum SpecialScope{
-	ALL,
-	BRAND,
-	NEWORUSED,
-	YEAR,
-	BODYTYPE,
-	UNIQUEONE
-}
 public class Special {
 	
 	private String specialId;
@@ -24,6 +18,21 @@ public class Special {
 	private String isNew;
 	private String scopeParameter;
 	private SpecialScope specialScope;
+
+	public Special() {
+		this.specialId ="";
+		this.dealerId = "";
+		this.startDate = "";
+		this.endDate = "";
+		this.title = "";
+		this.value = "";
+		this.year = "";
+		this.brand = "";
+		this.bodytype = "";
+		this.isNew = "";
+		this.scopeParameter = "";
+		this.specialScope = SpecialScope.ALL;
+	}
 	
 	public Special(String dealerId, String startDate, String endDate, String title, String value) {
 		this.specialId=UUID.randomUUID().toString();
@@ -33,6 +42,10 @@ public class Special {
 		this.endDate=Objects.requireNonNull(endDate,"EndDate should not be null");
 		this.title=Objects.requireNonNull(title,"Title should not be null.");
 		this.value=Objects.requireNonNull(value,"Value should not be null");
+	}
+
+	public void setSpecialId(String specialId) {
+		this.specialId = specialId;
 	}
 
 	public void setDealerId(String dealerId) {
@@ -75,8 +88,8 @@ public class Special {
 		this.brand=brand;
 	}
 	
-	public void setBodyType(BodyType bodyType){
-		this.bodytype=bodyType.toString();
+	public void setBodyType(String bodyType){
+		this.bodytype = bodyType;
 	}
 	
 	public void setIsNew(String isNew) {
@@ -84,7 +97,7 @@ public class Special {
 	}
 	
 	public void setScope(SpecialScope specialScope) {
-		this.specialScope=specialScope;
+		this.specialScope = specialScope;
 	}
 	
 	public void setScopeParameter(String parameter) {
@@ -145,5 +158,35 @@ public class Special {
 	
 	public String getScopeParameter() {
 		return this.scopeParameter;
+	}
+
+	/**
+	 * Convert this Special to the csv format.
+	 * by Tianyu Bai
+	 */
+	public String toCSVLine(){
+		// escape comma and double quotes in title, description and disclaimer
+		// other variables of Special should not contain any comma or double quotes
+		String csvTitle = title == null ? "\"<ti></ti>\"" : "\"<ti>" + title + "</ti>\"";
+		String csvDescription = description == null ? "\"<de></de>\"" : "\"<de>" + description + "</de>\"";
+		String csvDisclaimer = disclaimer == null ? "\"<di></di>\"" : "\"<di>" + disclaimer + "</di>\"";
+
+		// convert a Special to csv data
+		String row = specialId + ","
+				+ dealerId + ","
+				+ startDate + ","
+				+ endDate + ","
+				+ csvTitle + ","
+				+ csvDescription + ","
+				+ csvDisclaimer + ","
+				+ value + ","
+				+ year + ","
+				+ brand + ","
+				+ bodytype + ","
+				+ isNew + ","
+				+ scopeParameter + ","
+				+ specialScope;
+
+		return row;
 	}
 }
