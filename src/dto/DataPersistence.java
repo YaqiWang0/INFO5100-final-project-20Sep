@@ -18,7 +18,7 @@ public class DataPersistence implements AbstractPersistent {
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override
-    public List<Dealer> getAllDealers() throws IOException{
+    public List<Dealer> getAllDealers() {
         List<Dealer> result = new ArrayList<>();
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
@@ -45,7 +45,7 @@ public class DataPersistence implements AbstractPersistent {
             e.printStackTrace();
         } finally {
             if (br != null) {
-                br.close();
+                try {br.close(); } catch (IOException e) {e.printStackTrace();}
             }
         }
 
@@ -54,7 +54,7 @@ public class DataPersistence implements AbstractPersistent {
     }
 
     @Override
-    public void writeDealers(List<Dealer> dealers) throws IOException{
+    public void writeDealers(List<Dealer> dealers) throws IOException {
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
         BufferedWriter bw = null;
@@ -69,7 +69,7 @@ public class DataPersistence implements AbstractPersistent {
             e.printStackTrace();
         } finally {
             if (bw != null) {
-                bw.close();
+                try {bw.close(); } catch (IOException e) {e.printStackTrace();}
             }
         }
     }
