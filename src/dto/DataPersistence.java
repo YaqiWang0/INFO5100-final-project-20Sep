@@ -18,29 +18,37 @@ public class DataPersistence implements AbstractPersistent {
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override
-    public List<Dealer> getAllDealers() throws IOException, FileNotFoundException{
+    public List<Dealer> getAllDealers() throws IOException{
         List<Dealer> result = new ArrayList<>();
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
-        BufferedReader br = new BufferedReader(new FileReader(csv));
+        BufferedReader br = null;
 
-        String line = br.readLine();
-        while (line != null) {
-
-            String[] fields = line.split(",");
-
-            Dealer d = new Dealer();
-            d.setDealerId(fields[0]);
-            d.setDealerName(fields[1]);
-            Address a = new Address();
-            a.setAddressInfo(fields[2], fields[3]);
-            a.setCity(fields[4]);
-            a.setState(fields[5]);
-            a.setZipCode(fields[6]);
-            d.setDealerAddress(a);
-            result.add(d);
-            line = br.readLine();
+        try {
+            br = new BufferedReader(new FileReader(csv));
+            String line = br.readLine();
+            while (line != null) {
+                String[] fields = line.split(",");
+                Dealer d = new Dealer();
+                d.setDealerId(fields[0]);
+                d.setDealerName(fields[1]);
+                Address a = new Address();
+                a.setAddressInfo(fields[2], fields[3]);
+                a.setCity(fields[4]);
+                a.setState(fields[5]);
+                a.setZipCode(fields[6]);
+                d.setDealerAddress(a);
+                result.add(d);
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                br.close();
+            }
         }
+
         return result;
 
     }
@@ -49,15 +57,21 @@ public class DataPersistence implements AbstractPersistent {
     public void writeDealers(List<Dealer> dealers) throws IOException{
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
+        BufferedWriter bw = null;
         if (!csv.exists()) csv.createNewFile();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-
-        for (Dealer d: dealers) {
-            bw.write(d.toCSVLine());
-            bw.newLine();
+        try {
+            bw = new BufferedWriter(new FileWriter(csv, true));
+            for (Dealer d: dealers) {
+                bw.write(d.toCSVLine());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bw != null) {
+                bw.close();
+            }
         }
-        bw.close();
-
     }
 
 
@@ -161,6 +175,7 @@ public class DataPersistence implements AbstractPersistent {
             result.add(v);
             line = br.readLine();
         }
+        br.close();
         return result;
     }
 
