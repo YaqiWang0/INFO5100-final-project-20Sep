@@ -18,6 +18,9 @@ public class CreateIncentive extends JFrame {
     private JComboBox startMonth;
     private JComboBox startDay;
     private JComboBox startYear;
+    private JComboBox endMonth;
+    private JComboBox endDay;
+    private JComboBox endYear;
 
     public CreateIncentive() {
         initComponents();
@@ -33,16 +36,19 @@ public class CreateIncentive extends JFrame {
         //add items for start month combo box
         for(int i=1;i<=12;i++){
             startMonth.addItem(i);
+            endMonth.addItem(i);
         }
 
         //add items for start day combo box
         for(int i = 1;i<=31;i++){
             startDay.addItem(i);
+            endDay.addItem(i);
             //filter as/month
         }
 
         for(int i = 2020;i<2050;i++){
             startYear.addItem(i);
+            endYear.addItem(i);
         }
     }
 
