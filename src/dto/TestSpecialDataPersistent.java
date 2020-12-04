@@ -3,6 +3,7 @@ package dto;
 import dao.Special;
 import dao.SpecialScope;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TestSpecialDataPersistent {
@@ -10,7 +11,7 @@ public class TestSpecialDataPersistent {
         DataPersistence dp = new DataPersistence();
 
         // special i1 with complete fields
-        Special i1 = new Special("1", "01-01-2020", "01-01-2022", "Special: 1", "100");
+        Special i1 = new Special("1", new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2020"), new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2022"), "Special: 1", "100");
         i1.setDescription("This, is, description. Special 1 description.");
         i1.setDisclaimer("This, is \"disclaimer\", blah. Special 1 disclaimer.");
         i1.setYear("2020");
@@ -21,14 +22,14 @@ public class TestSpecialDataPersistent {
         i1.setScope(SpecialScope.ALL);
 
         // special i2 without fields{BodyType, IsNew, ScopeParameter, SpecialScope}
-        Special i2 = new Special("2", "01-01-2020", "01-01-2022", "Special: 2", "200");
+        Special i2 = new Special("2", new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2020"), new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2022"), "Special: 2", "200");
         i2.setDescription("This, is, \"description\". Special 2 description.");
         i2.setDisclaimer("This, is \"disclaimer\", blah. Special 2 disclaimer.");
         i2.setYear("2020");
         i2.setBrand("Toyota");
 
         // specials i3 without fields {Description, Disclaimer, Year, Brand}
-        Special i3 = new Special("3", "01-01-2020", "01-01-2022", "Special: 3", "300");
+        Special i3 = new Special("3", new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2020"), new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2022"), "Special: 3", "300");
         i3.setBodyType("SUV");
         i3.setIsNew("New");
         i3.setScopeParameter("scope parameter");

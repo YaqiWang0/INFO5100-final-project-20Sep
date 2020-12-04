@@ -6,8 +6,8 @@ public class Special {
 	
 	private String specialId;
 	private String dealerId;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private String title;
 	private String description;
 	private String disclaimer;
@@ -22,8 +22,8 @@ public class Special {
 	public Special() {
 		this.specialId ="";
 		this.dealerId = "";
-		this.startDate = "";
-		this.endDate = "";
+		//this.startDate = "";
+		//this.endDate = "";
 		this.title = "";
 		this.value = "";
 		this.year = "";
@@ -32,9 +32,14 @@ public class Special {
 		this.isNew = "";
 		this.scopeParameter = "";
 		this.specialScope = SpecialScope.ALL;
+		this.specialId=UUID.randomUUID().toString();
 	}
-	
-	public Special(String dealerId, String startDate, String endDate, String title, String value) {
+
+
+
+
+
+	public Special(String dealerId, Date startDate, Date endDate, String title, String value) {
 		this.specialId=UUID.randomUUID().toString();
 		
 		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
@@ -56,11 +61,11 @@ public class Special {
 		this.dealerId=Objects.requireNonNull(dealer.getDealerId(),"The input dealer should not be null");
 	}
 	
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate=startDate;
 	}
 	
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate=Objects.requireNonNull(endDate,"EndDate should not be null");
 	}
 	
@@ -112,11 +117,11 @@ public class Special {
 		return this.dealerId;
 	}
 	
-	public String getStartDate() {
+	public Date getStartDate() {
 		return this.startDate;
 	}
 	
-	public String getEndDate() {
+	public Date getEndDate() {
 		return this.endDate;
 	}
 	

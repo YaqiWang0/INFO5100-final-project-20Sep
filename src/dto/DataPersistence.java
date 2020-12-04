@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +106,13 @@ public class DataPersistence implements AbstractPersistent {
 
                 // converting csv data to a Special
                 String[] fields = line.split(",");
-                Special i = new Special(fields[1],fields[2],fields[3],unescaped[0],fields[4]);
+                Special i = null;
+                try {
+                    i = new Special(fields[1], new SimpleDateFormat("dd/MM/yyyy").parse(fields[2]),
+                            new SimpleDateFormat("dd/MM/yyyy").parse(fields[3]),unescaped[0],fields[4]);
+                } catch (Exception e) {
+                    System.out.println("Exception caught will parsing date: " + e);
+                }
                 i.setSpecialId(fields[0]); // added to Special.java
                 i.setDescription(unescaped[1]);
                 i.setDisclaimer(unescaped[2]);
