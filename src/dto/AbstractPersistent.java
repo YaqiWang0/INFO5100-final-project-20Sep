@@ -4,14 +4,13 @@ import dao.Dealer;
 import dao.Special;
 import dao.Vehicle;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface AbstractPersistent {
     List<Dealer> getAllDealers();
-    void writeDealers(List<Dealer> dealers) throws IOException;
+    void writeDealers(List<Dealer> dealers);
     List<Special> getAllSpecials();
-    void writeSpecials(List<Special> allSpecials) throws IOException;
+    void writeSpecials(List<Special> allSpecials);
     List<Vehicle> getAllVehicles();
-    void writeVehicles(List<Vehicle> vehicles) throws IOException;
+    void writeVehicles(List<Vehicle> vehicles);
 }
