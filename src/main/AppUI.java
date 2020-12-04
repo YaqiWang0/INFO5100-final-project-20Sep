@@ -1,5 +1,7 @@
 package main;
 
+import ui.IncentiveUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,6 +42,7 @@ public class AppUI extends AppUIAbstract {
             panel.add(new JLabel("xxxxxxxxx"));
             JOptionPane.showConfirmDialog(null, panel, "Test",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+            new IncentiveUI();
         });
         return popBtn;
     }
