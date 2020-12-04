@@ -1,14 +1,10 @@
-package main;
+package ui;
 
 import ui.IncentiveUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 public class AppUI extends AppUIAbstract {
 
@@ -35,6 +31,8 @@ public class AppUI extends AppUIAbstract {
     private JButton getPopupBtn() {
         JButton popBtn = new JButton("special_info");
         popBtn.addActionListener((ActionEvent e) -> {
+            // new IncentiveUI();
+
             JPanel panel = new JPanel(new GridLayout(0, 2));
             panel.add(new JLabel("Field 1:", JLabel.CENTER));
             panel.add(new JLabel("xxxxxxxxx"));
@@ -42,13 +40,7 @@ public class AppUI extends AppUIAbstract {
             panel.add(new JLabel("xxxxxxxxx"));
             JOptionPane.showConfirmDialog(null, panel, "Test",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
-            new IncentiveUI();
         });
         return popBtn;
-    }
-
-    public static void main(String[] args) {
-        new AppUI();
-        System.out.println("AppUI main starting...");
     }
 }
