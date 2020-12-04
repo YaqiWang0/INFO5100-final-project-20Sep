@@ -1,12 +1,7 @@
+package dao;
+
 import java.util.*;
 import java.util.UUID;
-
-enum BodyType{
-	VAN,
-	SUV,
-	CAR,
-	TRUCK
-}
 
 public class Vehicle {
 	
@@ -23,6 +18,8 @@ public class Vehicle {
 	private String miles;
 	private ArrayList<String> features;
 	private ArrayList<String> imgUrls;
+
+	public Vehicle() {}
 	
 	public Vehicle(String dealerId) {
 		this.dealerId=Objects.requireNonNull(dealerId,"Dealer's Id cannot be null");
@@ -162,5 +159,12 @@ public class Vehicle {
 		}
 		return result;
 	}
-	
+
+	public String toCSVLine() {
+		String featuresString = String.join("\t", features);
+		String imgUrlsString = String.join("\t", imgUrls);
+
+		return vehicleId+","+dealerId+","+year+","+brand+","+model+","+ isNew +","+price+","+exteriorColor
+				+","+interiorColor+","+bodyType+","+miles+","+featuresString+","+imgUrlsString;
+	}
 }
