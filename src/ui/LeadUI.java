@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Lead extends JFrame {
+public class LeadUI extends JFrame {
 
     private JLabel quote, dealerInfo, firstName, lastName, emailAddress, phone, message, zipcode,
             contactPreference, purpose, time, privacyConsent;
@@ -19,7 +19,7 @@ public class Lead extends JFrame {
     private JButton submit, cancel;
 
 
-    public Lead() {
+    public LeadUI() {
         createUI();
         addComponents();
         addActions();
