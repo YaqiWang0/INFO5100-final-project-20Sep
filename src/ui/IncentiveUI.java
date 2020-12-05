@@ -13,28 +13,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+public class IncentiveUI extends JPanel {
 
-public class IncentiveUI {
-
-    private JFrame frame;
-    private JPanel panel;
     private Special special; // get data from showIncentive() in IncentiveApiImpl.
 
     public IncentiveUI(Special special) {
         this.special = special;
         initialize(special);
-        showUI();
-    }
-
-    private void showUI() {
-//        EventQueue.invokeLater(() -> {
-//            frame.setVisible(true);
-//        });
-        frame.pack();
-        // place the JFrame on the center of the screen.
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void initialize(Special special) {
@@ -43,15 +28,7 @@ public class IncentiveUI {
         final int DEFAULT_FONT_SIZE = 20;
         final Color DEFAULT_COLOR = Color.black;
 
-        frame = new JFrame();
-        frame.setTitle("Incentive details");
-//        // set the width and height of JFrame.
-//        frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-        // create a panel.
-        panel = new JPanel();
-        panel.setLayout(new GridLayout(9, 1));
-        frame.add(panel);
+        this.setLayout(new GridLayout(9, 1));
 
         // create the great label and add the label to panel.
         String greatMessage = "Great incentive for you!";
@@ -61,7 +38,7 @@ public class IncentiveUI {
 //        addSingleLabelInOneLine(new JLabel(), greatMessage, 36, Color.red);
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(greatLabel);
+        this.add(greatLabel);
 
         // create the title label and add the label to panel.
         String titleMessage = "Title: " + special.getTitle();
@@ -90,7 +67,7 @@ public class IncentiveUI {
 
         // create a countdown label and add the label to panel.
         JLabel countdownLabel = new JLabel();
-            Date endDate = special.getEndDate();
+        Date endDate = special.getEndDate();
 //            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
 //            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(" 2020/12/04 23:35:00");
         countingDown(countdownLabel, endDate);
@@ -123,7 +100,7 @@ public class IncentiveUI {
         smallPanel.add(label);
         smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        panel.add(smallPanel);
+        this.add(smallPanel);
     }
 
     private void addTwoLabelsInOneLine(JLabel label1, String message1, int fontSize1, Color color1,
@@ -144,7 +121,7 @@ public class IncentiveUI {
         smallPanel.add(label2);
         smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        panel.add(smallPanel);
+        this.add(smallPanel);
     }
 
     // set the style of time showing, if I do not do so, then,
@@ -165,8 +142,7 @@ public class IncentiveUI {
 
                     // if it is at the endDate, dispose the whole frame,
                     // because at this time the sales promotion is ended.
-                    if (time <= 0) {
-                        frame.dispose();
+                    if (time < 0) {
                         break;
                     }
 
@@ -178,7 +154,7 @@ public class IncentiveUI {
 
 
                     // update the text on countdownLabel.
-                    countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours" 
+                    countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
                             + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds");
 
                     try {

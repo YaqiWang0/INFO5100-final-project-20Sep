@@ -1,6 +1,10 @@
 package service;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -54,15 +58,34 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	// read title, description, discount value(percentage) and dates here
 	@Override
 	public Special getSpecial(String specialId) {
-
+		/* TODO: test dao
 		List<Special> list = dao.getAllSpecials();
 
 		for (int i = 0; i < list.size(); i++) {
 			if (specialId.equals(list.get(i).getSpecialId())) {
+
+		 */
+				// TODO: test code
+				Special obj = new Special();
+				Calendar calStart = Calendar.getInstance();
+				calStart.add(Calendar.DAY_OF_MONTH, -5);
+				Calendar calEnd = Calendar.getInstance();
+				calEnd.add(Calendar.SECOND, 5);
+				obj.setStartDate(calStart.getTime());
+				obj.setEndDate(calEnd.getTime());
+				obj.setTitle("Incentive demo");
+				obj.setDescription("Demo description  XXXXXX");
+				obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+				obj.setValue("500");
+				obj.setBrand("Honda");
+				return obj;
+
+		/*	TODO: test dao
 				return list.get(i);
 			}
 		}
 		return null;
+		*/
 	}
 
 	// read incentive types here

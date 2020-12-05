@@ -1,5 +1,6 @@
 package ui;
 
+import service.IncentiveApi;
 import service.IncentiveApiImpl;
 import ui.IncentiveUI;
 
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 
 public class AppUI extends AppUIAbstract {
 
+    private IncentiveApi incentiveApi = new IncentiveApiImpl();
     private JPanel centerPanel;
 
     @Override
@@ -31,19 +33,13 @@ public class AppUI extends AppUIAbstract {
 
     private JButton getPopupBtn() {
         JButton popBtn = new JButton("special_info");
-        popBtn.addActionListener((ActionEvent e) -> {
-            // new IncentiveUI();
 
-            JPanel panel = new JPanel(new GridLayout(0, 2));
-            panel.add(new JLabel("Field 1:", JLabel.CENTER));
-            panel.add(new JLabel("xxxxxxxxx"));
-            panel.add(new JLabel("Field 2:", JLabel.CENTER));
-            panel.add(new JLabel("xxxxxxxxx"));
-            JOptionPane.showConfirmDialog(null, panel, "Test",
-                    JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
-            // ??? actually, this should pass the Special object from showIncentive().
-            new IncentiveUI(new IncentiveApiImpl().showIncentive(""));
+        popBtn.addActionListener((ActionEvent e) -> {
+            Object panel = new IncentiveUI(incentiveApi.getSpecial("xxxxxx"));
+            JOptionPane.showConfirmDialog(centerPanel, panel, "Incentive details",
+                        JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
         });
+
         return popBtn;
     }
 }

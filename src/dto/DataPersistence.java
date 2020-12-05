@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DataPersistence implements AbstractPersistent {
 
-    private static final String DATA_PATH = "./INFO5100-final-project-20Sep/data/";
+    private static final String DATA_PATH = "./data/";
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override
