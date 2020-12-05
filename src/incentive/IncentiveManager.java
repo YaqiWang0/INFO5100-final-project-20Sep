@@ -61,6 +61,9 @@ public class IncentiveManager extends JFrame {
     private JLabel modelJLabel;
     private JLabel trimJLabel;
     private JLabel searchJLabel;
+    private JTextField titleField;
+    private JTextArea descriptionArea;
+    private JTextArea disclaimerArea;
 
     Special spl;
     Vehicle veh;
@@ -146,7 +149,13 @@ public class IncentiveManager extends JFrame {
         }
     }
 
+    public void setTitleAndDescription(){
+        spl.setTitle(titleField.getText());
+        spl.setDescription(descriptionArea.getText());
+        spl.setDisclaimer(disclaimerArea.getText());
+    }
 
+    //TODO get & set dealerID
 
     public Special publish(){
         button1.addActionListener(new ActionListener() {
@@ -161,6 +170,7 @@ public class IncentiveManager extends JFrame {
                 }
                 setDiscountValue();
                 setPaymentValidity();
+                setTitleAndDescription();
 
                 DataPersistence dp = new DataPersistence();
                 //add this special to database
@@ -180,7 +190,7 @@ public class IncentiveManager extends JFrame {
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(600, 400));
+        frame.setPreferredSize(new Dimension(1000, 400));
         frame.pack();
         frame.setVisible(true);
     }
