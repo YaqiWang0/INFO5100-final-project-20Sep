@@ -173,6 +173,14 @@ public class Special {
 		this.discountPercent = discountPercent;
 	}
 
+	public int getDiscountValue() {
+		return discountValue;
+	}
+
+	public int getDiscountPercent() {
+		return discountPercent;
+	}
+
 	/**
 	 * Convert this Special to the csv format.
 	 * by Tianyu Bai

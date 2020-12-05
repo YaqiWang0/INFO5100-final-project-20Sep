@@ -157,6 +157,7 @@ public class DataPersistence implements AbstractPersistent {
         try {
             bw = new BufferedWriter(new FileWriter(csv,true));
             // create a new specials.csv and write each special into the file
+                bw.newLine();
                 bw.write(special.toCSVLine());
         } catch (IOException e) {
             e.printStackTrace();

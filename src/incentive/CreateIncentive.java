@@ -90,6 +90,7 @@ public class CreateIncentive extends JFrame {
     public void setDiscountValue(){
         //TODO one of the two values have to be selected
         if(flatValue.isSelected()){
+            System.out.println("#1");
             //TODO if the value entered is not int, throw exception, give pop up
             int value = Integer.parseInt(inputValue.getText());
             spl.setDiscountValue(value);
@@ -104,7 +105,7 @@ public class CreateIncentive extends JFrame {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Incentive Created!");
+
                 //call the setters here
                 try {
                     setDates();
@@ -112,12 +113,18 @@ public class CreateIncentive extends JFrame {
                     parseException.printStackTrace();
                 }
                 setDiscountValue();
+
+                DataPersistence dp = new DataPersistence();
+                //add this special to database
+                System.out.println("#2 " + spl.getDiscountValue());;
+                dp.writeSpecials(spl);
+
+                JOptionPane.showMessageDialog(null,"Incentive Created!");
+
             }
         });
-        DataPersistence dp = new DataPersistence();
-        dp.writeSpecials(spl);
+
         return spl;
-        //add this special to database
     }
 
     public static void main(String[] args) throws ParseException {
