@@ -5,11 +5,18 @@ import java.util.*;
 public class Special {
 	
 	private String specialId;
-	private String dealerId;
 	private Date startDate;
 	private Date endDate;
 	private String title;
 	private String description;
+	private int discountValue;
+	private int discountPercent;
+	private boolean isValidOnCashPayment;
+	private boolean isValidOnLoan;
+	private boolean isValidOnLease;
+	private boolean isValidOnCheckPayment;
+
+	private String dealerId;
 	private String disclaimer;
 	private String value;
 	private String year;
@@ -18,8 +25,6 @@ public class Special {
 	private String isNew;
 	private String scopeParameter;
 	private SpecialScope specialScope;
-	private int discountValue;
-	private int discountPercent;
 
 	public Special() {
 		//this.specialId ="";
@@ -37,6 +42,10 @@ public class Special {
 		this.specialId=UUID.randomUUID().toString();
 		this.discountValue = 0;
 		this.discountPercent = 0;
+		this.isValidOnCashPayment = false;
+		this.isValidOnCheckPayment = false;
+		this.isValidOnLoan = false;
+		this.isValidOnLease = false;
 	}
 
 	public Special(String dealerId, Date startDate, Date endDate, String title, String value) {
@@ -181,6 +190,38 @@ public class Special {
 		return discountPercent;
 	}
 
+	public boolean getIsValidOnCashPayment() {
+		return isValidOnCashPayment;
+	}
+
+	public void setValidOnCashPayment(boolean validOnCashPayment) {
+		isValidOnCashPayment = validOnCashPayment;
+	}
+
+	public boolean getIsValidOnLoan() {
+		return isValidOnLoan;
+	}
+
+	public void setValidOnLoan(boolean validOnLoan) {
+		isValidOnLoan = validOnLoan;
+	}
+
+	public boolean getIsValidOnLease() {
+		return isValidOnLease;
+	}
+
+	public void setValidOnLease(boolean validOnLease) {
+		isValidOnLease = validOnLease;
+	}
+
+	public boolean getIsValidOnCheckPayment() {
+		return isValidOnCheckPayment;
+	}
+
+	public void setValidOnCheckPayment(boolean validOnCheckPayment) {
+		isValidOnCheckPayment = validOnCheckPayment;
+	}
+
 	/**
 	 * Convert this Special to the csv format.
 	 * by Tianyu Bai
@@ -201,6 +242,10 @@ public class Special {
 				+ csvDescription + ","
 				+ discountValue + ","
 				+ discountPercent + "%" + ","
+				+ isValidOnCashPayment + ","
+				+ isValidOnCheckPayment + ","
+				+ isValidOnLoan + ","
+				+ isValidOnLease + ","
 				+ csvDisclaimer + ","
 				+ value + ","
 				+ year + ","

@@ -12,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CreateIncentive extends JFrame {
+public class IncentiveManager extends JFrame {
     private JButton button1;
     private JPanel panelMain;
     private JTabbedPane tabbedPane1;
@@ -28,7 +28,7 @@ public class CreateIncentive extends JFrame {
     private JCheckBox cashPaymentCheckBox;
     private JCheckBox checkPaymentCheckBox;
     private JCheckBox loanCheckBox;
-    private JCheckBox checkBox4;
+    private JCheckBox leaseCheckBox;
     private JRadioButton flatValue;
     private JTextField inputValue;
     private JRadioButton percentValue;
@@ -37,7 +37,7 @@ public class CreateIncentive extends JFrame {
     Special spl;
     Vehicle veh;
 
-    public CreateIncentive() {
+    public IncentiveManager() {
         spl = new Special();
         initComponents();
     }
@@ -85,6 +85,8 @@ public class CreateIncentive extends JFrame {
         //System.out.println(date.toString());
         spl.setStartDate(sDate);
         spl.setEndDate(eDate);
+
+        //TODO write logic to validate end date i.e endDate > startDate
     }
 
     public void setDiscountValue(){
@@ -101,6 +103,23 @@ public class CreateIncentive extends JFrame {
         }
     }
 
+    public void setPaymentValidity(){
+        if(cashPaymentCheckBox.isSelected()){
+            spl.setValidOnCashPayment(true);
+        }
+        if(checkPaymentCheckBox.isSelected()){
+            spl.setValidOnCheckPayment(true);
+        }
+        if(loanCheckBox.isSelected()){
+            spl.setValidOnLoan(true);
+        }
+        if(leaseCheckBox.isSelected()){
+            spl.setValidOnLease(true);
+        }
+    }
+
+
+
     public Special publish(){
         button1.addActionListener(new ActionListener() {
             @Override
@@ -113,6 +132,7 @@ public class CreateIncentive extends JFrame {
                     parseException.printStackTrace();
                 }
                 setDiscountValue();
+                setPaymentValidity();
 
                 DataPersistence dp = new DataPersistence();
                 //add this special to database
@@ -128,7 +148,7 @@ public class CreateIncentive extends JFrame {
     }
 
     public static void main(String[] args) throws ParseException {
-        CreateIncentive frame = new CreateIncentive();
+        IncentiveManager frame = new IncentiveManager();
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
