@@ -15,8 +15,8 @@ import java.util.Date;
 public class IncentiveManager extends JFrame {
     private JButton button1;
     private JPanel panelMain;
-    private JTabbedPane tabbedPane1;
-    private JPanel Value;
+    private JTabbedPane tabbedPanel;
+    private JPanel Inventory;
     private JPanel Details;
     private JPanel Description;
     private JComboBox startYear;
@@ -33,6 +33,37 @@ public class IncentiveManager extends JFrame {
     private JTextField inputValue;
     private JRadioButton percentValue;
     private JTextField inputPercent;
+    private JLabel categoryJLabel;
+    private JComboBox categoryComboBox;
+    private JTextField textField1;
+    private JComboBox yearComboBox;
+    private JComboBox makeComboBox;
+    private JComboBox modelComboBox4;
+    private JComboBox trimsComboBox;
+    private JButton clearAllButton;
+    private JRadioButton applyRadioButton;
+    private JRadioButton manuallyRadioButton;
+    private JComboBox priceComboBox;
+    private JComboBox comboBox;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
+    private JTextField priceTextField;
+    private JTextField mileageTextField;
+    private JTextField dayTextField;
+    private JButton clearCriteriaButton;
+    private JComboBox additionalComboBox;
+    private JComboBox additionalComboBox1;
+    private JCheckBox splitCheckBox;
+    private JTable table1;
+    private JLabel vinJLabel;
+    private JLabel yearJLabel;
+    private JLabel makeJLabel;
+    private JLabel modelJLabel;
+    private JLabel trimJLabel;
+    private JLabel searchJLabel;
+    private JTextField titleField;
+    private JTextArea descriptionArea;
+    private JTextArea disclaimerArea;
 
     Special spl;
     Vehicle veh;
@@ -118,7 +149,13 @@ public class IncentiveManager extends JFrame {
         }
     }
 
+    public void setTitleAndDescription(){
+        spl.setTitle(titleField.getText());
+        spl.setDescription(descriptionArea.getText());
+        spl.setDisclaimer(disclaimerArea.getText());
+    }
 
+    //TODO get & set dealerID
 
     public Special publish(){
         button1.addActionListener(new ActionListener() {
@@ -133,6 +170,7 @@ public class IncentiveManager extends JFrame {
                 }
                 setDiscountValue();
                 setPaymentValidity();
+                setTitleAndDescription();
 
                 DataPersistence dp = new DataPersistence();
                 //add this special to database
@@ -152,7 +190,7 @@ public class IncentiveManager extends JFrame {
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(600, 400));
+        frame.setPreferredSize(new Dimension(1000, 400));
         frame.pack();
         frame.setVisible(true);
     }

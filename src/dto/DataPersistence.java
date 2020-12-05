@@ -116,12 +116,18 @@ public class DataPersistence implements AbstractPersistent {
                 i.setSpecialId(fields[0]); // added to Special.java
                 i.setDescription(unescaped[1]);
                 i.setDisclaimer(unescaped[2]);
-                i.setYear(fields[5]);
-                i.setBrand(fields[6]);
-                i.setBodyType(fields[7]);
-                i.setIsNew(fields[8]);
-                i.setScopeParameter(fields[9]);
-                if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
+                //i.setYear(fields[5]);
+                //i.setBrand(fields[6]);
+                //i.setBodyType(fields[7]);
+                //i.setIsNew(fields[8]);
+                //i.setScopeParameter(fields[9]);
+                //if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
+                i.setDiscountValue(Integer.parseInt(fields[4]));
+                i.setDiscountPercent(Integer.parseInt(fields[5]));
+                i.setValidOnCashPayment(Boolean.parseBoolean(fields[6]));
+                i.setValidOnCheckPayment(Boolean.parseBoolean(fields[7]));
+                i.setValidOnLoan(Boolean.parseBoolean(fields[8]));
+                i.setValidOnLease(Boolean.parseBoolean(fields[9]));
 
                 allSpecials.add(i); // add the converted special to the map
                 line = br.readLine(); // read the next line of special
