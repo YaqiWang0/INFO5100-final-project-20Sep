@@ -40,7 +40,8 @@ public class TestSpecialDataPersistent {
         allSpecials.add(i2);
         allSpecials.add(i3);
 
-        dp.writeSpecials(allSpecials);
+        //
+        // dp.writeSpecials(allSpecials);
 
         List<Special> allSpecialsRead = dp.getAllSpecials();
         System.out.println(allSpecialsRead.get(0).getTitle());

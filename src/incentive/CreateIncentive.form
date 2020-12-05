@@ -163,7 +163,7 @@
                   <text value="Discount Value"/>
                 </properties>
               </component>
-              <component id="70dde" class="javax.swing.JRadioButton" binding="$RadioButton" default-binding="true">
+              <component id="70dde" class="javax.swing.JRadioButton" binding="flatValue">
                 <constraints>
                   <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="176" height="20"/>
@@ -173,7 +173,7 @@
                   <text value="-$"/>
                 </properties>
               </component>
-              <component id="ac8b1" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+              <component id="ac8b1" class="javax.swing.JTextField" binding="inputValue">
                 <constraints>
                   <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="176" height="30"/>
@@ -181,7 +181,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="a9262" class="javax.swing.JRadioButton" binding="radioButton1" default-binding="true">
+              <component id="a9262" class="javax.swing.JRadioButton" binding="percentValue">
                 <constraints>
                   <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="176" height="20"/>
@@ -191,7 +191,7 @@
                   <text value="-%"/>
                 </properties>
               </component>
-              <component id="82fd5" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+              <component id="82fd5" class="javax.swing.JTextField" binding="inputPercent">
                 <constraints>
                   <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="176" height="30"/>

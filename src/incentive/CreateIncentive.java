@@ -2,8 +2,7 @@ package incentive;
 
 import dao.Special;
 import dao.Vehicle;
-import org.jdatepicker.DateModel;
-import org.jdatepicker.JDatePicker;
+import dto.DataPersistence;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,10 +29,10 @@ public class CreateIncentive extends JFrame {
     private JCheckBox checkPaymentCheckBox;
     private JCheckBox loanCheckBox;
     private JCheckBox checkBox4;
-    private JRadioButton $RadioButton;
-    private JTextField textField1;
-    private JRadioButton radioButton1;
-    private JTextField textField2;
+    private JRadioButton flatValue;
+    private JTextField inputValue;
+    private JRadioButton percentValue;
+    private JTextField inputPercent;
 
     Special spl;
     Vehicle veh;
@@ -88,6 +87,19 @@ public class CreateIncentive extends JFrame {
         spl.setEndDate(eDate);
     }
 
+    public void setDiscountValue(){
+        //TODO one of the two values have to be selected
+        if(flatValue.isSelected()){
+            //TODO if the value entered is not int, throw exception, give pop up
+            int value = Integer.parseInt(inputValue.getText());
+            spl.setDiscountValue(value);
+        }
+        else if(percentValue.isSelected()){
+            int percent = Integer.parseInt(inputPercent.getText());
+            spl.setDiscountPercent(percent);
+        }
+    }
+
     public Special publish(){
         button1.addActionListener(new ActionListener() {
             @Override
@@ -99,8 +111,11 @@ public class CreateIncentive extends JFrame {
                 } catch (ParseException parseException) {
                     parseException.printStackTrace();
                 }
+                setDiscountValue();
             }
         });
+        DataPersistence dp = new DataPersistence();
+        dp.writeSpecials(spl);
         return spl;
         //add this special to database
     }

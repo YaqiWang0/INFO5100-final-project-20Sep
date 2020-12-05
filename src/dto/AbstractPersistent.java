@@ -10,7 +10,7 @@ public interface AbstractPersistent {
     List<Dealer> getAllDealers();
     void writeDealers(List<Dealer> dealers);
     List<Special> getAllSpecials();
-    void writeSpecials(List<Special> allSpecials);
+    void writeSpecials(Special special);
     List<Vehicle> getAllVehicles();
     void writeVehicles(List<Vehicle> vehicles);
 }

@@ -18,9 +18,11 @@ public class Special {
 	private String isNew;
 	private String scopeParameter;
 	private SpecialScope specialScope;
+	private int discountValue;
+	private int discountPercent;
 
 	public Special() {
-		this.specialId ="";
+		//this.specialId ="";
 		this.dealerId = "";
 		//this.startDate = "";
 		//this.endDate = "";
@@ -33,11 +35,9 @@ public class Special {
 		this.scopeParameter = "";
 		this.specialScope = SpecialScope.ALL;
 		this.specialId=UUID.randomUUID().toString();
+		this.discountValue = 0;
+		this.discountPercent = 0;
 	}
-
-
-
-
 
 	public Special(String dealerId, Date startDate, Date endDate, String title, String value) {
 		this.specialId=UUID.randomUUID().toString();
@@ -165,6 +165,14 @@ public class Special {
 		return this.scopeParameter;
 	}
 
+	public void setDiscountValue(int discountValue) {
+		this.discountValue = discountValue;
+	}
+
+	public void setDiscountPercent(int discountPercent) {
+		this.discountPercent = discountPercent;
+	}
+
 	/**
 	 * Convert this Special to the csv format.
 	 * by Tianyu Bai
@@ -183,6 +191,8 @@ public class Special {
 				+ endDate + ","
 				+ csvTitle + ","
 				+ csvDescription + ","
+				+ discountValue + ","
+				+ discountPercent + "%" + ","
 				+ csvDisclaimer + ","
 				+ value + ","
 				+ year + ","
