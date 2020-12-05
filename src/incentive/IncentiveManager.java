@@ -2,8 +2,7 @@ package incentive;
 
 import dao.Special;
 import dao.Vehicle;
-import org.jdatepicker.DateModel;
-import org.jdatepicker.JDatePicker;
+import dto.DataPersistence;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CreateIncentive extends JFrame {
+public class IncentiveManager extends JFrame {
     private JButton button1;
     private JPanel panelMain;
     private JTabbedPane tabbedPane1;
@@ -29,16 +28,16 @@ public class CreateIncentive extends JFrame {
     private JCheckBox cashPaymentCheckBox;
     private JCheckBox checkPaymentCheckBox;
     private JCheckBox loanCheckBox;
-    private JCheckBox checkBox4;
-    private JRadioButton $RadioButton;
-    private JTextField textField1;
-    private JRadioButton radioButton1;
-    private JTextField textField2;
+    private JCheckBox leaseCheckBox;
+    private JRadioButton flatValue;
+    private JTextField inputValue;
+    private JRadioButton percentValue;
+    private JTextField inputPercent;
 
     Special spl;
     Vehicle veh;
 
-    public CreateIncentive() {
+    public IncentiveManager() {
         spl = new Special();
         initComponents();
     }
@@ -86,27 +85,70 @@ public class CreateIncentive extends JFrame {
         //System.out.println(date.toString());
         spl.setStartDate(sDate);
         spl.setEndDate(eDate);
+
+        //TODO write logic to validate end date i.e endDate > startDate
     }
+
+    public void setDiscountValue(){
+        //TODO one of the two values have to be selected
+        if(flatValue.isSelected()){
+            System.out.println("#1");
+            //TODO if the value entered is not int, throw exception, give pop up
+            int value = Integer.parseInt(inputValue.getText());
+            spl.setDiscountValue(value);
+        }
+        else if(percentValue.isSelected()){
+            int percent = Integer.parseInt(inputPercent.getText());
+            spl.setDiscountPercent(percent);
+        }
+    }
+
+    public void setPaymentValidity(){
+        if(cashPaymentCheckBox.isSelected()){
+            spl.setValidOnCashPayment(true);
+        }
+        if(checkPaymentCheckBox.isSelected()){
+            spl.setValidOnCheckPayment(true);
+        }
+        if(loanCheckBox.isSelected()){
+            spl.setValidOnLoan(true);
+        }
+        if(leaseCheckBox.isSelected()){
+            spl.setValidOnLease(true);
+        }
+    }
+
+
 
     public Special publish(){
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Incentive Created!");
+
                 //call the setters here
                 try {
                     setDates();
                 } catch (ParseException parseException) {
                     parseException.printStackTrace();
                 }
+                setDiscountValue();
+                setPaymentValidity();
+
+                DataPersistence dp = new DataPersistence();
+                //add this special to database
+                System.out.println("#2 " + spl.getDiscountValue());;
+                dp.writeSpecials(spl);
+
+                JOptionPane.showMessageDialog(null,"Incentive Created!");
+
             }
         });
+
         return spl;
-        //add this special to database
     }
 
     public static void main(String[] args) throws ParseException {
-        CreateIncentive frame = new CreateIncentive();
+        IncentiveManager frame = new IncentiveManager();
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
