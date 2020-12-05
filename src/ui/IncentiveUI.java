@@ -6,6 +6,7 @@ import service.IncentiveApiImpl;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -18,7 +19,7 @@ public class IncentiveUI {
 
     private JFrame frame;
     private JPanel panel;
-    private Special special;
+    private Special special; // get data from showIncentive() in IncentiveApiImpl.
 
     public IncentiveUI(Special special) {
         this.special = special;
@@ -54,9 +55,13 @@ public class IncentiveUI {
 
         // create the great label and add the label to panel.
         String greatMessage = "Great incentive for you!";
-        addSingleLabelInOneLine(new JLabel(), greatMessage, 36, Color.red);
-//        // place the great label on the middle.
-//        greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel greatLabel = new JLabel(greatMessage);
+        greatLabel.setForeground(Color.red);
+        greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
+//        addSingleLabelInOneLine(new JLabel(), greatMessage, 36, Color.red);
+        // place the great label on the middle.
+        greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(greatLabel);
 
         // create the title label and add the label to panel.
         // ??? how to pass title to it.
@@ -88,8 +93,6 @@ public class IncentiveUI {
 
         // create a countdown label and add the label to panel.
         JLabel countdownLabel = new JLabel();
-        // ???这里倒计时描述语句是啥？？？
-        String countdownMessage = "Remaining discount days: ";
         try {
             Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
 //            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(" 2020/12/04 23:35:00");
@@ -97,7 +100,7 @@ public class IncentiveUI {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        addTwoLabelsInOneLine(new JLabel(), "Remaining discount days: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
+        addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 countdownLabel, "", 28, Color.red);
 
         // create the Discount period label and add the label to panel.
@@ -109,7 +112,7 @@ public class IncentiveUI {
         // create the disclaimer label and add the label to panel.
         // ??? how to pass data to it.
         String disclaimerMessage = "Disclaimer: " + special.getDisclaimer();
-        addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, DEFAULT_COLOR);
+        addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, Color.gray);
         frame.add(panel);
     }
 
