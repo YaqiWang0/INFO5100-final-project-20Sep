@@ -5,11 +5,18 @@ import java.util.*;
 public class Special {
 	
 	private String specialId;
-	private String dealerId;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private String title;
 	private String description;
+	private int discountValue;
+	private int discountPercent;
+	private boolean isValidOnCashPayment;
+	private boolean isValidOnLoan;
+	private boolean isValidOnLease;
+	private boolean isValidOnCheckPayment;
+
+	private String dealerId;
 	private String disclaimer;
 	private String value;
 	private String year;
@@ -20,10 +27,10 @@ public class Special {
 	private SpecialScope specialScope;
 
 	public Special() {
-		this.specialId ="";
+		//this.specialId ="";
 		this.dealerId = "";
-		this.startDate = "";
-		this.endDate = "";
+		//this.startDate = "";
+		//this.endDate = "";
 		this.title = "";
 		this.value = "";
 		this.year = "";
@@ -32,9 +39,16 @@ public class Special {
 		this.isNew = "";
 		this.scopeParameter = "";
 		this.specialScope = SpecialScope.ALL;
+		this.specialId=UUID.randomUUID().toString();
+		this.discountValue = 0;
+		this.discountPercent = 0;
+		this.isValidOnCashPayment = false;
+		this.isValidOnCheckPayment = false;
+		this.isValidOnLoan = false;
+		this.isValidOnLease = false;
 	}
-	
-	public Special(String dealerId, String startDate, String endDate, String title, String value) {
+
+	public Special(String dealerId, Date startDate, Date endDate, String title, String value) {
 		this.specialId=UUID.randomUUID().toString();
 		
 		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
@@ -56,11 +70,11 @@ public class Special {
 		this.dealerId=Objects.requireNonNull(dealer.getDealerId(),"The input dealer should not be null");
 	}
 	
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate=startDate;
 	}
 	
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate=Objects.requireNonNull(endDate,"EndDate should not be null");
 	}
 	
@@ -112,11 +126,11 @@ public class Special {
 		return this.dealerId;
 	}
 	
-	public String getStartDate() {
+	public Date getStartDate() {
 		return this.startDate;
 	}
 	
-	public String getEndDate() {
+	public Date getEndDate() {
 		return this.endDate;
 	}
 	
@@ -160,6 +174,54 @@ public class Special {
 		return this.scopeParameter;
 	}
 
+	public void setDiscountValue(int discountValue) {
+		this.discountValue = discountValue;
+	}
+
+	public void setDiscountPercent(int discountPercent) {
+		this.discountPercent = discountPercent;
+	}
+
+	public int getDiscountValue() {
+		return discountValue;
+	}
+
+	public int getDiscountPercent() {
+		return discountPercent;
+	}
+
+	public boolean getIsValidOnCashPayment() {
+		return isValidOnCashPayment;
+	}
+
+	public void setValidOnCashPayment(boolean validOnCashPayment) {
+		isValidOnCashPayment = validOnCashPayment;
+	}
+
+	public boolean getIsValidOnLoan() {
+		return isValidOnLoan;
+	}
+
+	public void setValidOnLoan(boolean validOnLoan) {
+		isValidOnLoan = validOnLoan;
+	}
+
+	public boolean getIsValidOnLease() {
+		return isValidOnLease;
+	}
+
+	public void setValidOnLease(boolean validOnLease) {
+		isValidOnLease = validOnLease;
+	}
+
+	public boolean getIsValidOnCheckPayment() {
+		return isValidOnCheckPayment;
+	}
+
+	public void setValidOnCheckPayment(boolean validOnCheckPayment) {
+		isValidOnCheckPayment = validOnCheckPayment;
+	}
+
 	/**
 	 * Convert this Special to the csv format.
 	 * by Tianyu Bai
@@ -178,6 +240,12 @@ public class Special {
 				+ endDate + ","
 				+ csvTitle + ","
 				+ csvDescription + ","
+				+ discountValue + ","
+				+ discountPercent + "%" + ","
+				+ isValidOnCashPayment + ","
+				+ isValidOnCheckPayment + ","
+				+ isValidOnLoan + ","
+				+ isValidOnLease + ","
 				+ csvDisclaimer + ","
 				+ value + ","
 				+ year + ","

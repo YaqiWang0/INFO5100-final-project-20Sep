@@ -1,19 +1,18 @@
 package ui;
 
 import dao.Special;
-import service.IncentiveApiImpl;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class IncentiveUI {
 
@@ -52,6 +51,7 @@ public class IncentiveUI {
         // create a panel.
         panel = new JPanel();
         panel.setLayout(new GridLayout(9, 1));
+        frame.add(panel);
 
         // create the great label and add the label to panel.
         String greatMessage = "Great incentive for you!";
@@ -64,56 +64,49 @@ public class IncentiveUI {
         panel.add(greatLabel);
 
         // create the title label and add the label to panel.
-        // ??? how to pass title to it.
         String titleMessage = "Title: " + special.getTitle();
         addSingleLabelInOneLine(new JLabel(), titleMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Description label and add the label to panel.
-        // ??? how to pass data to it.
         String descriptionMessage = "Description: " + special.getDescription();
         addSingleLabelInOneLine(new JLabel(), descriptionMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
-        // ??? 1. how to pass data to it. 2. there is no discount type in Special.java.
+        // ??? there is no discount type in Special.java.
         String discountTypeMessage = "Discount type: " + "XXXXXX";
         addSingleLabelInOneLine(new JLabel(), discountTypeMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount value label and add the label to panel.
-        // ??? how to pass data to it.
         // the value attribute in Special.java represents:
         // how much discount the dealer want to give , CANNOT be null
         String discountValueMessage = "Discount value: " + special.getValue();
         addSingleLabelInOneLine(new JLabel(), discountValueMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
-        // ??? 1. how to pass data to it. 2. there is no discount type in Special.java.
+        // ??? there is no discount type in Special.java.
         String priceAfterDiscount = "$XXXXXX";
         addTwoLabelsInOneLine(new JLabel(), "Price after discount: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 new JLabel(), priceAfterDiscount, 28, Color.red);
 
         // create a countdown label and add the label to panel.
         JLabel countdownLabel = new JLabel();
-        try {
-            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
+            Date endDate = special.getEndDate();
+//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
 //            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(" 2020/12/04 23:35:00");
-            countingDown(countdownLabel, endDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        countingDown(countdownLabel, endDate);
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 countdownLabel, "", 28, Color.red);
 
         // create the Discount period label and add the label to panel.
-        // ??? how to pass data to it.
-        String discountPeriod = special.getStartDate() + "-" + special.getEndDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+        String discountPeriod = sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate());
         addTwoLabelsInOneLine(new JLabel(), "Discount period: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 new JLabel(), discountPeriod, 28, Color.orange);
 
         // create the disclaimer label and add the label to panel.
-        // ??? how to pass data to it.
         String disclaimerMessage = "Disclaimer: " + special.getDisclaimer();
         addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, Color.gray);
-        frame.add(panel);
+
     }
 
     private void addSingleLabelInOneLine(JLabel label, String message, int fontSize, Color color) {
