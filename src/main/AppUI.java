@@ -1,5 +1,8 @@
 package main;
 
+import dao.Special;
+import service.IncentiveApi;
+import service.IncentiveApiImpl;
 import ui.IncentiveUI;
 
 import javax.swing.*;
@@ -40,7 +43,9 @@ public class AppUI extends App {
 //                        ,"TutorialsPoint.com"
 //                        , JOptionPane.CLOSED_OPTION);
 
-                new IncentiveUI();
+                // ??? just for demo, should be deleted for the final version.
+                IncentiveApi myObj = new IncentiveApiImpl();
+                new IncentiveUI(myObj.showIncentive(""));
             }
         });
 

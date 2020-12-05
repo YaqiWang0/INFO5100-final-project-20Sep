@@ -38,6 +38,16 @@ public final class IncentiveApiImpl implements IncentiveApi {
      */
     public Special showIncentive(String id) {
         // read incentiveVO from dao(database)
-        return new Special();
+//        return new Special();
+        // ??? just for demo, should be deleted for the final version.
+        Special obj = new Special();
+        obj.setStartDate("2020/12/04");
+        obj.setEndDate("2020/12/18");
+        obj.setTitle("Incentive demo");
+        obj.setDescription("Demo description  XXXXXX");
+        obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        obj.setValue("500");
+        obj.setBrand("Honda");
+        return obj;
     }
 }
