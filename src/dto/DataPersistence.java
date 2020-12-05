@@ -148,8 +148,8 @@ public class DataPersistence implements AbstractPersistent {
      */
     @Override
     public void writeSpecials(Special special) {
-        //File csv = new File(DATA_PATH + "specials.csv");
-        File csv = new File("/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/specials.csv");
+        File csv = new File(DATA_PATH + "specials.csv");
+        //File csv = new File("/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/specials.csv");
         if (!csv.exists()) {
             try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
         }
