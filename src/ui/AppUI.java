@@ -1,5 +1,6 @@
 package ui;
 
+import service.IncentiveApiImpl;
 import ui.IncentiveUI;
 
 import javax.swing.*;
@@ -40,7 +41,10 @@ public class AppUI extends AppUIAbstract {
             panel.add(new JLabel("xxxxxxxxx"));
             JOptionPane.showConfirmDialog(null, panel, "Test",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+            // ??? actually, this should pass the Special object from showIncentive().
+            new IncentiveUI(new IncentiveApiImpl().showIncentive(""));
         });
         return popBtn;
     }
 }
+
