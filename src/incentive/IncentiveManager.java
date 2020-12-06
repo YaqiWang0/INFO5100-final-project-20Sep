@@ -83,12 +83,12 @@ public class IncentiveManager extends JFrame {
         clearCriteriaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO clear model
                 categoryComboBox.setSelectedIndex(0);
                 vinTextField.setText("");
                 yearComboBox.setSelectedIndex(0);
                 makeComboBox.setSelectedIndex(0);
                 modelComboBox.setSelectedIndex(0);
+                clearModelItems();
                 priceOperatorComboBox.setSelectedIndex(0);
                 priceTextField.setText("");
                 mileageOperatorComboBox.setSelectedIndex(0);
@@ -114,11 +114,7 @@ public class IncentiveManager extends JFrame {
                 var vehicleList = dataPersistence.getAllVehicles();
                 var brand = (String) makeComboBox.getSelectedItem();
                 if (brand == null || brand.equals("All Makes")) {
-                    modelComboBox.setSelectedIndex(0);
-                    var itemsCount = modelComboBox.getItemCount();
-                    for (int i = 1; i < itemsCount; i++) {
-                        modelComboBox.removeItemAt(i);
-                    }
+                    clearModelItems();
                 } else {
                     vehicleList.stream().filter(vehicle -> vehicle.getBrand()
                                         .equals(brand))
@@ -130,6 +126,14 @@ public class IncentiveManager extends JFrame {
                 }
             }
         });
+    }
+
+    private void clearModelItems() {
+        modelComboBox.setSelectedIndex(0);
+        var itemsCount = modelComboBox.getItemCount();
+        for (int i = 1; i < itemsCount; i++) {
+            modelComboBox.removeItemAt(i);
+        }
     }
 
     public void addItemsToComboBoxes(){
