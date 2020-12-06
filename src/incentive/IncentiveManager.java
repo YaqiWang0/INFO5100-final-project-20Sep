@@ -46,7 +46,6 @@ public class IncentiveManager extends JFrame {
     private JButton clearAllButton;
     private JRadioButton applyRadioButton;
     private JRadioButton manuallyRadioButton;
-    private JComboBox priceComboBox;
     private JComboBox priceOperatorComboBox;
     private JComboBox mileageOperatorComboBox;
     private JTextField priceTextField;
