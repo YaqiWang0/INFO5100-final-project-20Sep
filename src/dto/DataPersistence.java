@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,16 +109,28 @@ public class DataPersistence implements AbstractPersistent {
 
                 // converting csv data to a Special
                 String[] fields = line.split(",");
-                Special i = new Special(fields[1],fields[2],fields[3],unescaped[0],fields[4]);
+                Special i = null;
+                try {
+                    i = new Special(fields[1], new SimpleDateFormat("dd/MM/yyyy").parse(fields[2]),
+                            new SimpleDateFormat("dd/MM/yyyy").parse(fields[3]),unescaped[0],fields[4]);
+                } catch (Exception e) {
+                    System.out.println("Exception caught will parsing date: " + e);
+                }
                 i.setSpecialId(fields[0]); // added to Special.java
                 i.setDescription(unescaped[1]);
                 i.setDisclaimer(unescaped[2]);
-                i.setYear(fields[5]);
-                i.setBrand(fields[6]);
-                i.setBodyType(fields[7]);
-                i.setIsNew(fields[8]);
-                i.setScopeParameter(fields[9]);
-                if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
+                //i.setYear(fields[5]);
+                //i.setBrand(fields[6]);
+                //i.setBodyType(fields[7]);
+                //i.setIsNew(fields[8]);
+                //i.setScopeParameter(fields[9]);
+                //if (!fields[10].equals("null")) i.setScope(SpecialScope.valueOf(fields[10]));
+                i.setDiscountValue(Integer.parseInt(fields[4]));
+                i.setDiscountPercent(Integer.parseInt(fields[5]));
+                i.setValidOnCashPayment(Boolean.parseBoolean(fields[6]));
+                i.setValidOnCheckPayment(Boolean.parseBoolean(fields[7]));
+                i.setValidOnLoan(Boolean.parseBoolean(fields[8]));
+                i.setValidOnLease(Boolean.parseBoolean(fields[9]));
 
                 allSpecials.add(i); // add the converted special to the map
                 line = br.readLine(); // read the next line of special
@@ -140,11 +153,12 @@ public class DataPersistence implements AbstractPersistent {
 
     /**
      * Overwrite specials.csv with the given specials.
-     * @param allSpecials are the specials to be saved in the specials.csv
+     * @param special are the specials to be saved in the specials.csv
      */
     @Override
-    public void writeSpecials(List<Special> allSpecials) {
+    public void writeSpecials(Special special) {
         File csv = new File(DATA_PATH + "specials.csv");
+        //File csv = new File("/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/specials.csv");
         if (!csv.exists()) {
             try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
         }
@@ -152,10 +166,8 @@ public class DataPersistence implements AbstractPersistent {
         try {
             bw = new BufferedWriter(new FileWriter(csv,true));
             // create a new specials.csv and write each special into the file
-            for (Special special : allSpecials) {
-                bw.write(special.toCSVLine());
                 bw.newLine();
-            }
+                bw.write(special.toCSVLine());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
