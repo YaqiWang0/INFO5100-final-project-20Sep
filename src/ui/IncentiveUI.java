@@ -1,30 +1,33 @@
 package ui;
 
 import dao.Special;
+import job.InventiveTimeJob;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
-public class IncentiveUI extends JPanel {
+import java.util.Observable;
+import java.util.Observer;
 
-    private Special special; // get data from showIncentive() in IncentiveApiImpl.
+public class IncentiveUI extends JPanel implements Observer {
 
-    public IncentiveUI(Special special) {
-        this.special = special;
-        initialize(special);
+    private JLabel title;
+    private JLabel description;
+    private JLabel discountType;
+    private JLabel discountValue;
+    private JLabel priceAfterDiscount;
+    private JLabel countdownLabel;
+    private JLabel discountPeriod;
+    private JLabel disclaimer;
+
+    public IncentiveUI() {
+        initialize();
     }
 
-    private void initialize(Special special) {
-//        final int DEFAULT_WIDTH = 500;
-//        final int DEFAULT_HEIGHT = 500;
+    private void initialize() {
         final int DEFAULT_FONT_SIZE = 20;
         final Color DEFAULT_COLOR = Color.black;
 
@@ -35,55 +38,48 @@ public class IncentiveUI extends JPanel {
         JLabel greatLabel = new JLabel(greatMessage);
         greatLabel.setForeground(Color.red);
         greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
-//        addSingleLabelInOneLine(new JLabel(), greatMessage, 36, Color.red);
+
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.add(greatLabel);
 
         // create the title label and add the label to panel.
-        String titleMessage = "Title: " + special.getTitle();
-        addSingleLabelInOneLine(new JLabel(), titleMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        title = new JLabel();
+        addSingleLabelInOneLine(title, "Title: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Description label and add the label to panel.
-        String descriptionMessage = "Description: " + special.getDescription();
-        addSingleLabelInOneLine(new JLabel(), descriptionMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        description = new JLabel();
+        addSingleLabelInOneLine(description, "Description: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
         // ??? there is no discount type in Special.java.
-        String discountTypeMessage = "Discount type: " + "XXXXXX";
-        addSingleLabelInOneLine(new JLabel(), discountTypeMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        discountType = new JLabel();
+        addSingleLabelInOneLine(discountType, "Discount type: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount value label and add the label to panel.
         // the value attribute in Special.java represents:
         // how much discount the dealer want to give , CANNOT be null
-        String discountValueMessage = "Discount value: " + special.getValue();
-        addSingleLabelInOneLine(new JLabel(), discountValueMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        discountValue = new JLabel();
+        addSingleLabelInOneLine(discountValue, "Discount value: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
         // ??? there is no discount type in Special.java.
-        String priceAfterDiscount = "$XXXXXX";
+        priceAfterDiscount = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Price after discount: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                new JLabel(), priceAfterDiscount, 28, Color.red);
+                priceAfterDiscount, "$XXXXXX", 28, Color.red);
 
-        // create a countdown label and add the label to panel.
-        JLabel countdownLabel = new JLabel();
-        Date endDate = special.getEndDate();
-//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
-//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(" 2020/12/04 23:35:00");
-        countingDown(countdownLabel, endDate);
+        countdownLabel = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 countdownLabel, "", 28, Color.red);
 
         // create the Discount period label and add the label to panel.
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-        String discountPeriod = sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate());
+        discountPeriod = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Discount period: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                new JLabel(), discountPeriod, 28, Color.orange);
+                discountPeriod, "", 28, Color.orange);
 
         // create the disclaimer label and add the label to panel.
-        String disclaimerMessage = "Disclaimer: " + special.getDisclaimer();
-        addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, Color.gray);
-
+        disclaimer = new JLabel();
+        addSingleLabelInOneLine(new JLabel(), "Disclaimer: ", 12, Color.gray);
     }
 
     private void addSingleLabelInOneLine(JLabel label, String message, int fontSize, Color color) {
@@ -124,48 +120,24 @@ public class IncentiveUI extends JPanel {
         this.add(smallPanel);
     }
 
-    // set the style of time showing, if I do not do so, then,
-    // the countdownLabel may show like this: 12Seconds and 2Seconds,
-    // I think 02Seconds seems better than 2Seconds.
-    private String setTimeStyle(int num) {
-        return num <= 9 ? "0" + num : "" + num;
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof InventiveTimeJob) {
+            InventiveTimeJob job = (InventiveTimeJob) arg;
+            countdownLabel.setText(job.getCountdownText());
+
+            Special special = job.getSpecial();
+            title.setText("Title: "+ special.getTitle());
+            description.setText("Description: " + special.getDescription());
+            discountType.setText("Discount type: " + "XXXXXX");
+            discountValue.setText("Discount value: " + special.getValue());
+            priceAfterDiscount.setText("$XXXXXX");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+            discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
+
+            disclaimer.setText("Disclaimer: " + special.getDisclaimer());
+        }
+        repaint();
     }
-
-    private void countingDown(JLabel countdownLabel, Date endDate) {
-        new Thread() {
-            public void run() {
-                while (true) {
-                    // get current time.
-                    Date now = new Date();
-                    // counting the time between current time and the endDate.
-                    long time = (endDate.getTime() - now.getTime()) / 1000;
-
-                    // if it is at the endDate, dispose the whole frame,
-                    // because at this time the sales promotion is ended.
-                    if (time < 0) {
-                        break;
-                    }
-
-                    // counting the remaining days, hours, minutes and seconds according to the time.
-                    int days = (int) (time / (60 * 60 * 24));
-                    int hours = (int) ((time % (60 * 60 * 24)) / (60 * 60));
-                    int minutes = (int) ((time % (60 * 60)) / 60);
-                    int seconds = (int) (time % 60);
-
-
-                    // update the text on countdownLabel.
-                    countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
-                            + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds");
-
-                    try {
-                        // update the text on countdownLabel every second.
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
-    }
-
 }
