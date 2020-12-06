@@ -10,7 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class IncentiveManager extends JFrame {
     private JButton button1;
@@ -35,47 +39,100 @@ public class IncentiveManager extends JFrame {
     private JTextField inputPercent;
     private JLabel categoryJLabel;
     private JComboBox categoryComboBox;
-    private JTextField textField1;
+    private JTextField vinTextField;
     private JComboBox yearComboBox;
     private JComboBox makeComboBox;
-    private JComboBox modelComboBox4;
-    private JComboBox trimsComboBox;
+    private JComboBox modelComboBox;
     private JButton clearAllButton;
     private JRadioButton applyRadioButton;
     private JRadioButton manuallyRadioButton;
-    private JComboBox priceComboBox;
-    private JComboBox comboBox;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
+    private JComboBox priceOperatorComboBox;
+    private JComboBox mileageOperatorComboBox;
     private JTextField priceTextField;
     private JTextField mileageTextField;
-    private JTextField dayTextField;
     private JButton clearCriteriaButton;
-    private JComboBox additionalComboBox;
-    private JComboBox additionalComboBox1;
     private JCheckBox splitCheckBox;
     private JTable table1;
     private JLabel vinJLabel;
     private JLabel yearJLabel;
     private JLabel makeJLabel;
     private JLabel modelJLabel;
-    private JLabel trimJLabel;
     private JLabel searchJLabel;
+    private JButton searchTheResultButton;
     private JTextField titleField;
     private JTextArea descriptionArea;
     private JTextArea disclaimerArea;
 
     Special spl;
     Vehicle veh;
+    private List<Vehicle> vehicleList;
+    private DataPersistence dataPersistence;
 
     public IncentiveManager() {
         spl = new Special();
+        dataPersistence = new DataPersistence();
         initComponents();
     }
 
     private void initComponents(){
         publish();
         addItemsToComboBoxes();
+        clearCriteria();
+        searchResult();
+        selectMake();
+    }
+
+    public void clearCriteria() {
+        clearCriteriaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO clear model
+                categoryComboBox.setSelectedIndex(0);
+                vinTextField.setText("");
+                yearComboBox.setSelectedIndex(0);
+                makeComboBox.setSelectedIndex(0);
+                modelComboBox.setSelectedIndex(0);
+                priceOperatorComboBox.setSelectedIndex(0);
+                priceTextField.setText("");
+                mileageOperatorComboBox.setSelectedIndex(0);
+                mileageTextField.setText("");
+            }
+        });
+    }
+
+    public void searchResult() {
+        searchTheResultButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vehicleList = getFilteredVehicleList();
+            }
+        });
+    }
+
+    public void selectMake() {
+        var dataPersistence = this.dataPersistence;
+        makeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                var vehicleList = dataPersistence.getAllVehicles();
+                var brand = (String) makeComboBox.getSelectedItem();
+                if (brand == null || brand.equals("All Makes")) {
+                    modelComboBox.setSelectedIndex(0);
+                    var itemsCount = modelComboBox.getItemCount();
+                    for (int i = 1; i < itemsCount; i++) {
+                        modelComboBox.removeItemAt(i);
+                    }
+                } else {
+                    vehicleList.stream().filter(vehicle -> vehicle.getBrand()
+                                        .equals(brand))
+                                        .map(Vehicle::getModel)
+                                        .sorted()
+                                        .forEach(model -> {
+                                            modelComboBox.addItem(model);
+                                        });
+                }
+            }
+        });
     }
 
     public void addItemsToComboBoxes(){
@@ -97,6 +154,13 @@ public class IncentiveManager extends JFrame {
             startYear.addItem(i);
             endYear.addItem(i);
         }
+
+        // add items for make combo box
+        var vehicleList = this.dataPersistence.getAllVehicles();
+        vehicleList.stream().map(Vehicle::getBrand)
+                            .distinct()
+                            .sorted()
+                            .forEach(brand -> makeComboBox.addItem(brand));
     }
 
     //setting information
@@ -183,6 +247,96 @@ public class IncentiveManager extends JFrame {
         });
 
         return spl;
+    }
+
+    private List<Vehicle> getFilteredVehicleList() {
+        var vehicleList = this.dataPersistence.getAllVehicles();
+        var vin = vinTextField.getText();
+        if (vin.length() > 0) {
+            return vehicleList.stream().filter(vehicle -> vehicle.getVehicleId().equals(vin)).collect(Collectors.toList());
+        }
+
+        return vehicleList.stream().filter(vehicle -> {
+            // Category filter
+            var selectedCategory = (String) categoryComboBox.getSelectedItem();
+            var status = vehicle.getStatus();
+            if (selectedCategory == null || selectedCategory.equals("New")) {
+                return status;
+            }
+
+            if (selectedCategory.equals("Used")) {
+                return !status;
+            }
+
+            return true;
+        }).filter(vehicle -> {
+            // Year filter
+            var selectedYear = (String)yearComboBox.getSelectedItem();
+            if (selectedYear == null || selectedYear.equals("All Years")) {
+                return true;
+            }
+
+            return vehicle.getYear().equals(selectedYear);
+        }).filter(vehicle -> {
+            // Make and model filter
+            var selectedMake = (String) makeComboBox.getSelectedItem();
+            var selectedModel = (String) modelComboBox.getSelectedItem();
+            if (selectedMake == null || selectedMake.equals("All Makes")) {
+                return true;
+            }
+            var makeCondition = vehicle.getBrand().equals(selectedMake);
+            if (selectedModel == null || selectedModel.equals("All Models")) {
+                return makeCondition;
+            }
+
+            return makeCondition && selectedModel.equals(vehicle.getModel());
+        }).filter(vehicle -> {
+            // Price filter
+            var price = 0;
+            try {
+                price = Integer.parseInt(priceTextField.getText());
+            } catch (Exception e) {
+                return true;
+            }
+            var operator = (String)priceOperatorComboBox.getSelectedItem();
+            if (price == 0) {
+                return true;
+            }
+
+            var vehiclePrice = 0;
+            try {
+                vehiclePrice = Integer.parseInt(vehicle.getPrice());
+            } catch (Exception e) {
+                return true;
+            }
+            if (operator == null || operator.equals("< or =")) {
+                return vehiclePrice <= price;
+            }
+            return vehiclePrice >= price;
+        }).filter(vehicle -> {
+            // Mileage filter
+            var mileage = 0;
+            try {
+                 mileage = Integer.parseInt(mileageTextField.getText());
+            } catch (Exception e) {
+                return true;
+            }
+            var operator = (String)mileageOperatorComboBox.getSelectedItem();
+            if (mileage == 0) {
+                return true;
+            }
+
+            var vehicleMileage = 0;
+            try {
+                vehicleMileage = Integer.parseInt(vehicle.getPrice());
+            } catch (Exception e) {
+                return true;
+            }
+            if (operator == null || operator.equals("< or =")) {
+                return vehicleMileage <= mileage;
+            }
+            return vehicleMileage >= mileage;
+        }).collect(Collectors.toList());
     }
 
     public static void main(String[] args) throws ParseException {
