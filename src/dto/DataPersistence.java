@@ -21,6 +21,9 @@ public class DataPersistence implements AbstractPersistent {
         List<Dealer> result = new ArrayList<>();
         String dealerFilePath = DATA_PATH + "dealers.csv";
         File csv = new File(dealerFilePath);
+        if (!csv.exists()) {
+            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        }
         BufferedReader br = null;
 
         try {
