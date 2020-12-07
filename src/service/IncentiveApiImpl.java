@@ -14,7 +14,11 @@ import dto.DataPersistence;
 
 public final class IncentiveApiImpl implements IncentiveApi {
 
-	private final AbstractPersistent dao = new DataPersistence();
+	private static AbstractPersistent dao;
+
+	public IncentiveApiImpl() {
+		dao = new DataPersistence();
+	}
 
 	public static Date getCurrentTime() {
 		Date currentTime = new Date();
@@ -44,17 +48,15 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	 */
 	@Override
 	public VehicleModel updateSpecialPrice(Vehicle vehicle) {
-		// read incentive from dao
+		// get vehicle id from
 
+		// read all incentive from dao
 
-		// find a certain incentive rule: today is between startdate and enddate
-
+		// find a certain incentive rule
 
 		// calc special price
 
-
-		// vehicleVO setter -> change price
-
+		// save all UI necessary value to VehicleModel
 
 		return new VehicleModel(vehicle, getSpecialTest(""));
 
@@ -130,7 +132,13 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	}
 
 
-    public Special getSpecialTest(String id) {
+	/**
+	 * // TODO: remove after finished
+	 * only for test
+	 * @param specialid
+	 * @return
+	 */
+    public Special getSpecialTest(String specialid) {
 
         Calendar calStart = Calendar.getInstance();
         calStart.add(Calendar.DAY_OF_MONTH, -5);
