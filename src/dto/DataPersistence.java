@@ -14,12 +14,12 @@ import java.util.List;
 
 public class DataPersistence implements AbstractPersistent {
 
-    private static final String DATA_PATH = "./INFO5100-final-project-20Sep/data/";
     private String dataPath;
 
+    // constructor for the DataPersistence model. Reads the absolute path of the current project
+    // and uses it as the path to read and write csv file.
     public DataPersistence() {
         this.dataPath = new File("").getAbsolutePath() + "/data/";
-        System.out.println(this.dataPath);
     }
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
@@ -164,7 +164,6 @@ public class DataPersistence implements AbstractPersistent {
     @Override
     public void writeSpecials(Special special) {
         File csv = new File(this.dataPath + "specials.csv");
-        //File csv = new File("/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/specials.csv");
         if (!csv.exists()) {
             try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
         }
