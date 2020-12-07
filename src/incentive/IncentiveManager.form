@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="panelMain" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="494" y="20" width="1309" height="508"/>
+      <xy x="494" y="20" width="1309" height="513"/>
     </constraints>
     <properties>
       <preferredSize width="374" height="100"/>
@@ -225,7 +225,7 @@
               </component>
             </children>
           </grid>
-          <grid id="518e3" binding="Inventory" layout-manager="GridLayoutManager" row-count="12" column-count="10" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="518e3" binding="Inventory" layout-manager="GridLayoutManager" row-count="11" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Inventory"/>
@@ -246,12 +246,12 @@
                   <grid row="5" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="VIN or Stock#"/>
+                  <text value="VIN"/>
                 </properties>
               </component>
               <component id="efaa" class="javax.swing.JLabel" binding="yearJLabel">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Year"/>
@@ -273,21 +273,15 @@
                   <text value="Model"/>
                 </properties>
               </component>
-              <component id="6d454" class="javax.swing.JLabel" binding="trimJLabel">
-                <constraints>
-                  <grid row="9" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Trim"/>
-                </properties>
-              </component>
-              <component id="c16b" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+              <component id="c16b" class="javax.swing.JTextField" binding="vinTextField">
                 <constraints>
                   <grid row="5" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
               <component id="234c" class="javax.swing.JComboBox" binding="yearComboBox">
                 <constraints>
@@ -296,6 +290,17 @@
                 <properties>
                   <model>
                     <item value="All Years"/>
+                    <item value="2020"/>
+                    <item value="2019"/>
+                    <item value="2018"/>
+                    <item value="2017"/>
+                    <item value="2016"/>
+                    <item value="2015"/>
+                    <item value="2014"/>
+                    <item value="2013"/>
+                    <item value="2012"/>
+                    <item value="2011"/>
+                    <item value="2010"/>
                   </model>
                 </properties>
               </component>
@@ -309,7 +314,7 @@
                   </model>
                 </properties>
               </component>
-              <component id="35bf5" class="javax.swing.JComboBox" binding="modelComboBox4">
+              <component id="35bf5" class="javax.swing.JComboBox" binding="modelComboBox">
                 <constraints>
                   <grid row="8" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -319,24 +324,6 @@
                   </model>
                 </properties>
               </component>
-              <component id="97d68" class="javax.swing.JComboBox" binding="trimsComboBox">
-                <constraints>
-                  <grid row="9" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="All Trims"/>
-                  </model>
-                </properties>
-              </component>
-              <component id="a9a0d" class="javax.swing.JButton" binding="clearAllButton" default-binding="true">
-                <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Clear All"/>
-                </properties>
-              </component>
               <component id="fb31f" class="javax.swing.JComboBox" binding="categoryComboBox">
                 <constraints>
                   <grid row="1" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
@@ -344,12 +331,14 @@
                 <properties>
                   <model>
                     <item value="New"/>
+                    <item value="Used"/>
+                    <item value="All"/>
                   </model>
                 </properties>
               </component>
               <component id="f2d94" class="javax.swing.JRadioButton" binding="applyRadioButton">
                 <constraints>
-                  <grid row="10" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Apply this Special to All Maching Vehicles"/>
@@ -357,7 +346,7 @@
               </component>
               <component id="6c97a" class="javax.swing.JRadioButton" binding="manuallyRadioButton">
                 <constraints>
-                  <grid row="10" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Manually select vehicles from list"/>
@@ -371,16 +360,6 @@
                   <text value="Search by Price"/>
                 </properties>
               </component>
-              <component id="26d09" class="javax.swing.JComboBox" binding="priceComboBox">
-                <constraints>
-                  <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="Retail Price"/>
-                  </model>
-                </properties>
-              </component>
               <component id="b0c5b" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -389,41 +368,25 @@
                   <text value="Mileage"/>
                 </properties>
               </component>
-              <component id="9515a" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="6" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Days in inventory"/>
-                </properties>
-              </component>
-              <component id="2db51" class="javax.swing.JComboBox" binding="comboBox">
+              <component id="2db51" class="javax.swing.JComboBox" binding="priceOperatorComboBox">
                 <constraints>
                   <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <model>
                     <item value="&lt; or ="/>
+                    <item value="&gt; or ="/>
                   </model>
                 </properties>
               </component>
-              <component id="e1d38" class="javax.swing.JComboBox" binding="comboBox2">
-                <constraints>
-                  <grid row="6" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="&lt; or ="/>
-                  </model>
-                </properties>
-              </component>
-              <component id="adfb2" class="javax.swing.JComboBox" binding="comboBox1">
+              <component id="adfb2" class="javax.swing.JComboBox" binding="mileageOperatorComboBox">
                 <constraints>
                   <grid row="5" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <model>
                     <item value="&lt; or ="/>
+                    <item value="&gt; or ="/>
                   </model>
                 </properties>
               </component>
@@ -433,15 +396,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
-              </component>
-              <component id="8c5cd" class="javax.swing.JTextField" binding="dayTextField">
-                <constraints>
-                  <grid row="6" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
               <component id="659e" class="javax.swing.JTextField" binding="mileageTextField">
                 <constraints>
@@ -451,58 +408,43 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="9b335" class="javax.swing.JLabel">
+              <component id="14143" class="javax.swing.JButton" binding="searchTheResultButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="8" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Additional Criteria"/>
+                  <text value="Search the Result"/>
                 </properties>
               </component>
               <component id="74b8" class="javax.swing.JButton" binding="clearCriteriaButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="7" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Clear Criteria"/>
                 </properties>
               </component>
-              <component id="24d4" class="javax.swing.JComboBox" binding="additionalComboBox">
+              <component id="42f6b" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <model>
-                    <item value="Choose"/>
-                  </model>
+                  <text value="Retail Price"/>
                 </properties>
               </component>
-              <component id="da9f1" class="javax.swing.JComboBox" binding="additionalComboBox1">
+              <scrollpane id="c803e">
                 <constraints>
-                  <grid row="1" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="Choose"/>
-                  </model>
-                </properties>
-              </component>
-              <component id="a0ad7" class="javax.swing.JCheckBox" binding="splitCheckBox">
-                <constraints>
-                  <grid row="10" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Split Offers Individually"/>
-                </properties>
-              </component>
-              <component id="9aad3" class="javax.swing.JTable" binding="table1" default-binding="true">
-                <constraints>
-                  <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
+                  <grid row="10" column="0" row-span="1" col-span="8" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="9aad3" class="javax.swing.JTable" binding="vehicleTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="ee6c0" binding="Description" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
