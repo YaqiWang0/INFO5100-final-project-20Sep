@@ -4,15 +4,9 @@ package ui.CheckLead;
 import dao.*;
 
 import java.awt.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.*;
 import java.awt.event.*;
- 
-
+import java.util.concurrent.ThreadFactory;
 
 
 public class DetailsWindow {
@@ -24,7 +18,7 @@ public class DetailsWindow {
     JTextArea vehicleInfoTextArea;
     JTextArea userNotesTextArea;
     JTextArea userNotesReplyTextArea;
-    JButton replyButton;
+    JButton replyButton, saveButton;
     JButton vehicleInfoPreviousButton, vehicleInfoNextButton;
     private JTabbedPane mainPanel;
     private JFrame theFrame;
@@ -255,7 +249,9 @@ public class DetailsWindow {
         userNotesgrid.setVgap(10);
         userNotesgrid.setHgap(1);
         JPanel userNotesSubPanel = new JPanel(userNotesgrid);
-
+        /**
+         * user notes
+         */
         userNotesTextArea = new JTextArea(12,40);
         userNotesTextArea.setEditable(false);
         userNotesTextArea.setLineWrap(true);
@@ -265,8 +261,14 @@ public class DetailsWindow {
         userNotesTextScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         userNotesTextScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        /**
+         * reply notes
+         */
         userNotesReplyTextArea = new JTextArea();
         userNotesReplyTextArea.setLineWrap(true);
+        if (!customer.replyNotes.isEmpty()) {
+            userNotesReplyTextArea.setText(customer.replyNotes);
+        }
 
         JScrollPane userNotesReplyTextScroller = new JScrollPane(userNotesReplyTextArea);
         userNotesReplyTextScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -282,23 +284,113 @@ public class DetailsWindow {
         replyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showConfirmDialog(theFrame,"Do you want to continue sending the message",
-                        "Swing Tester",
+                if (userNotesReplyTextArea.getText().trim().isEmpty()) {
+                    JOptionPane.showConfirmDialog(null, "The message is empty!",
+                                "Warning",JOptionPane.WARNING_MESSAGE);
+                } else {
+                    int result = JOptionPane.showConfirmDialog(theFrame,
+                            "Do you want to continue sending the message",
+                                                            "Reply window",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
-                    replyButton.setText("message sent");
-                    sendMessage(customer, userNotesReplyTextArea.getText());
-                    userNotesReplyTextArea.setText(null);
+                    if(result == JOptionPane.YES_OPTION){
+                        customer.replyNotes = userNotesReplyTextArea.getText();
+                        replyButton.setText("message sent");
+                        sendMessage(customer, userNotesReplyTextArea.getText());
+                        replyButton.setEnabled(false);
+                        userNotesReplyTextArea.setText(null);
+                        Timer timer = new Timer(1000, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                replyButton.setText("reply");
+                                replyButton.setEnabled(true);
+                            }
+                        });
+                        timer.start();
+                    }
                 }
             }
         });
+        /**
+         * save reply notes manually
+         */
+        JLabel saveLabel = new JLabel();
+        saveLabel.setText("");
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    if (userNotesReplyTextArea.getText().trim().isEmpty()) {
+                        JOptionPane.showConfirmDialog(null, "The message is empty!",
+                                "Warning",JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        customer.replyNotes = userNotesReplyTextArea.getText();
+                        saveLabel.setText("saved");
+                        Timer timer = new Timer(1000, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                saveLabel.setText("");
+                            }
+                        });
+                        timer.start();
+                    }
+                }
 
+        });
+        /**
+         * save reply notes after losing focus
+         */
+        userNotesReplyTextArea.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                customer.replyNotes = userNotesReplyTextArea.getText();
+                saveLabel.setText("saved");
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        saveLabel.setText("");
+                    }
+                });
+                timer.start();
+            }
+        });
+
+        /**
+         * save reply notes every 60 seconds
+         */
+        java.util.Timer t = new java.util.Timer();
+        t.schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                customer.replyNotes = userNotesReplyTextArea.getText();
+                saveLabel.setText("saved");
+                /*Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        saveLabel.setText("");
+                    }
+                });
+                timer.start();*/
+                try {
+                    Thread.sleep(1000);
+                    saveLabel.setText("");
+                } catch(Exception exp) {
+
+                }
+            }
+        }, 0, 1000 * 60);
 
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+
+        buttonPane.add(saveLabel);
         buttonPane.add(Box.createHorizontalGlue());
+        buttonPane.add(saveButton);
         buttonPane.add(replyButton);
 
 
@@ -395,6 +487,7 @@ class Customer {
     public Address customerAddress;
     public String phoneNumber;
     public String email;
+    public String replyNotes;
 
     Customer (String firstName, String lastName, Address customerAddress, String phoneNumber, String email) {
         this.firstName = firstName;
@@ -402,6 +495,7 @@ class Customer {
         this.customerAddress = customerAddress;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.replyNotes = "";
     }
     public String toString () {
 	    return "";
