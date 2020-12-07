@@ -15,12 +15,18 @@ import java.util.List;
 public class DataPersistence implements AbstractPersistent {
 
     private static final String DATA_PATH = "./INFO5100-final-project-20Sep/data/";
+    private String dataPath;
+
+    public DataPersistence() {
+        this.dataPath = new File("").getAbsolutePath() + "/data/";
+        System.out.println(this.dataPath);
+    }
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override
     public List<Dealer> getAllDealers() {
         List<Dealer> result = new ArrayList<>();
-        String dealerFilePath = DATA_PATH + "dealers.csv";
+        String dealerFilePath = this.dataPath + "dealers.csv";
         File csv = new File(dealerFilePath);
         if (!csv.exists()) {
             try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
@@ -58,7 +64,7 @@ public class DataPersistence implements AbstractPersistent {
 
     @Override
     public void writeDealers(List<Dealer> dealers) {
-        String dealerFilePath = DATA_PATH + "dealers.csv";
+        String dealerFilePath = this.dataPath + "dealers.csv";
         File csv = new File(dealerFilePath);
         BufferedWriter bw = null;
         if (!csv.exists()) {
@@ -86,7 +92,7 @@ public class DataPersistence implements AbstractPersistent {
      */
     @Override
     public List<Special> getAllSpecials() {
-        File csv = new File(DATA_PATH + "specials.csv");
+        File csv = new File(this.dataPath + "specials.csv");
         BufferedReader br = null;
         List<Special> allSpecials = new ArrayList<>();
 
@@ -157,7 +163,7 @@ public class DataPersistence implements AbstractPersistent {
      */
     @Override
     public void writeSpecials(Special special) {
-        File csv = new File(DATA_PATH + "specials.csv");
+        File csv = new File(this.dataPath + "specials.csv");
         //File csv = new File("/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/specials.csv");
         if (!csv.exists()) {
             try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
@@ -184,8 +190,7 @@ public class DataPersistence implements AbstractPersistent {
     @Override
     public List<Vehicle> getAllVehicles() {
         List<Vehicle> result = new ArrayList<>();
-        String vehicleFilePath = DATA_PATH + "vehicles.csv";
-        //String vehicleFilePath = "/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/" + "vehicles.csv";
+        String vehicleFilePath = this.dataPath + "vehicles.csv";
 
         File csv = new File(vehicleFilePath);
         BufferedReader br = null;
@@ -236,7 +241,7 @@ public class DataPersistence implements AbstractPersistent {
 
     @Override
     public void writeVehicles(List<Vehicle> vehicles) {
-        String vehicleFilePath = DATA_PATH + "vehicles.csv";
+        String vehicleFilePath = this.dataPath + "vehicles.csv";
         File csv = new File(vehicleFilePath);
         BufferedWriter bw = null;
         if (!csv.exists()) {
