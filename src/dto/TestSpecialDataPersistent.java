@@ -1,7 +1,6 @@
 package dto;
 
 import dao.Special;
-import dao.SpecialScope;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
