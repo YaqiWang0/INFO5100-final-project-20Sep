@@ -246,12 +246,12 @@
                   <grid row="5" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="VIN or Stock#"/>
+                  <text value="VIN"/>
                 </properties>
               </component>
               <component id="efaa" class="javax.swing.JLabel" binding="yearJLabel">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Year"/>
@@ -322,14 +322,6 @@
                   <model>
                     <item value="All Models"/>
                   </model>
-                </properties>
-              </component>
-              <component id="a9a0d" class="javax.swing.JButton" binding="clearAllButton" default-binding="true">
-                <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Clear All"/>
                 </properties>
               </component>
               <component id="fb31f" class="javax.swing.JComboBox" binding="categoryComboBox">
@@ -416,22 +408,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="a0ad7" class="javax.swing.JCheckBox" binding="splitCheckBox">
-                <constraints>
-                  <grid row="9" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Split Offers Individually"/>
-                </properties>
-              </component>
-              <component id="9aad3" class="javax.swing.JTable" binding="table1" default-binding="true">
-                <constraints>
-                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
               <component id="14143" class="javax.swing.JButton" binding="searchTheResultButton" default-binding="true">
                 <constraints>
                   <grid row="8" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -456,6 +432,19 @@
                   <text value="Retail Price"/>
                 </properties>
               </component>
+              <scrollpane id="c803e">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="8" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="9aad3" class="javax.swing.JTable" binding="vehicleTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="ee6c0" binding="Description" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -522,6 +511,34 @@
                 </constraints>
                 <properties/>
               </component>
+            </children>
+          </grid>
+          <grid id="784fd" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Untitled"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a3e5e" class="javax.swing.JButton" binding="button2" default-binding="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Button"/>
+                </properties>
+              </component>
+              <hspacer id="95c15">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="aee68">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
             </children>
           </grid>
         </children>
