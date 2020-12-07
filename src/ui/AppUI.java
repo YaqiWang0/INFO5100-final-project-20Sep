@@ -1,6 +1,6 @@
 package ui;
 
-import job.InventiveTimeJob;
+import service.InventiveTimeJob;
 
 import javax.swing.*;
 import java.awt.*;
