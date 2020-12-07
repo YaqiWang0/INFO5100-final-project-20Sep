@@ -299,15 +299,15 @@ public class IncentiveManager extends JFrame {
     }
 
     private List<Vehicle> getFilteredVehicleList() {
-        var vin = vinTextField.getText();
+        String vin = vinTextField.getText();
         if (vin.length() > 0) {
             return vehicleList.stream().filter(vehicle -> vehicle.getVehicleId().equals(vin)).collect(Collectors.toList());
         }
 
         return vehicleList.stream().filter(vehicle -> {
             // Category filter
-            var selectedCategory = (String) categoryComboBox.getSelectedItem();
-            var status = vehicle.getStatus();
+            String selectedCategory = (String) categoryComboBox.getSelectedItem();
+            boolean status = vehicle.getStatus();
             if (selectedCategory == null || selectedCategory.equals("New")) {
                 return status;
             }
@@ -319,7 +319,7 @@ public class IncentiveManager extends JFrame {
             return true;
         }).filter(vehicle -> {
             // Year filter
-            var selectedYear = (String) yearComboBox.getSelectedItem();
+            String selectedYear = (String) yearComboBox.getSelectedItem();
             if (selectedYear == null || selectedYear.equals("All Years")) {
                 return true;
             }
@@ -327,12 +327,12 @@ public class IncentiveManager extends JFrame {
             return vehicle.getYear().equals(selectedYear);
         }).filter(vehicle -> {
             // Make and model filter
-            var selectedMake = (String) makeComboBox.getSelectedItem();
-            var selectedModel = (String) modelComboBox.getSelectedItem();
+            String selectedMake = (String) makeComboBox.getSelectedItem();
+            String selectedModel = (String) modelComboBox.getSelectedItem();
             if (selectedMake == null || selectedMake.equals("All Makes")) {
                 return true;
             }
-            var makeCondition = vehicle.getBrand().equals(selectedMake);
+            boolean makeCondition = vehicle.getBrand().equals(selectedMake); //TODO makeCondition review
             if (selectedModel == null || selectedModel.equals("All Models")) {
                 return makeCondition;
             }
@@ -340,18 +340,18 @@ public class IncentiveManager extends JFrame {
             return makeCondition && selectedModel.equals(vehicle.getModel());
         }).filter(vehicle -> {
             // Price filter
-            var price = 0;
+            int price = 0;
             try {
                 price = Integer.parseInt(priceTextField.getText());
             } catch (Exception e) {
                 return true;
             }
-            var operator = (String) priceOperatorComboBox.getSelectedItem();
+            String operator = (String) priceOperatorComboBox.getSelectedItem();
             if (price == 0) {
                 return true;
             }
 
-            var vehiclePrice = 0;
+            int vehiclePrice = 0;
             try {
                 vehiclePrice = Integer.parseInt(vehicle.getPrice());
             } catch (Exception e) {
@@ -363,18 +363,18 @@ public class IncentiveManager extends JFrame {
             return vehiclePrice >= price;
         }).filter(vehicle -> {
             // Mileage filter
-            var mileage = 0;
+            int mileage = 0;
             try {
                 mileage = Integer.parseInt(mileageTextField.getText());
             } catch (Exception e) {
                 return true;
             }
-            var operator = (String) mileageOperatorComboBox.getSelectedItem();
+            String operator = (String) mileageOperatorComboBox.getSelectedItem();
             if (mileage == 0) {
                 return true;
             }
 
-            var vehicleMileage = 0;
+            int vehicleMileage = 0;
             try {
                 vehicleMileage = Integer.parseInt(vehicle.getPrice());
             } catch (Exception e) {
