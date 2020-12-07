@@ -6,30 +6,49 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class IncentiveUI {
-
+    private static IncentiveUI instance = null;
     private JFrame frame;
     private JPanel panel;
     // get data from showIncentive() in IncentiveApiImpl.
     private Special special;
+    private static final Object lock = new Object();
+    private boolean incentiveUIIsOpen = false;
 
     public IncentiveUI(Special special) {
         this.special = special;
-        initialize(special);
+        initialize();
+    }
+
+//    public static IncentiveUI getInstance(Special special) {
+//        synchronized (lock) {
+//            if (instance == null) {
+//                instance = new IncentiveUI(special);
+//            }
+//            return instance;
+//        }
+//    }
+//
+//    public static void setInstance(IncentiveUI instance) {
+//        IncentiveUI.instance = instance;
+//    }
+
+    public void setIncentiveUIIsOpen(boolean incentiveUIIsOpen) {
+        this.incentiveUIIsOpen = incentiveUIIsOpen;
+    }
+
+    public boolean isIncentiveUIIsOpen() {
+        return incentiveUIIsOpen;
     }
 
     public void showUI() {
-//        EventQueue.invokeLater(() -> {
-//            frame.setVisible(true);
-//        });
         if (!salesIsEnded()) {
             frame.pack();
             // place the JFrame on the center of the screen.
@@ -37,25 +56,28 @@ public class IncentiveUI {
             frame.setVisible(true);
             // if we press the closing button, just hide the frame.
             frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//            frame.addWindowListener(new WindowAdapter() {
+//                @Override
+//                public void windowClosing(WindowEvent e) {
+//                    incentiveUIIsOpen = false;
+//                }
+//            });
         } else {
-            frame.dispose();
+            frame.setVisible(false);
         }
     }
 
-    private void initialize(Special special) {
-//        final int DEFAULT_WIDTH = 500;
-//        final int DEFAULT_HEIGHT = 500;
+    public void initialize() {
         final int DEFAULT_FONT_SIZE = 20;
         final Color DEFAULT_COLOR = Color.black;
 
         frame = new JFrame();
         frame.setTitle("Incentive details");
-//        // set the width and height of JFrame.
-//        frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         // create a panel.
         panel = new JPanel();
-        panel.setLayout(new GridLayout(9, 1));
+        // ??? need to count how many rows.
+        panel.setLayout(new GridLayout(10, 1));
         frame.add(panel);
 
         // create the great label and add the label to panel.
@@ -96,11 +118,9 @@ public class IncentiveUI {
         // create a countdown label and add the label to panel.
         JLabel countdownLabel = new JLabel();
             Date endDate = special.getEndDate();
-//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
-//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(" 2020/12/04 23:35:00");
         countingDown(countdownLabel, endDate);
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                countdownLabel, "", 28, Color.red);
+                countdownLabel, countdownLabel.getText(), 28, Color.red);
 
         // create the Discount period label and add the label to panel.
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
@@ -111,6 +131,9 @@ public class IncentiveUI {
         // create the disclaimer label and add the label to panel.
         String disclaimerMessage = "Disclaimer: " + special.getDisclaimer();
         addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, Color.gray);
+
+        // ??? demo, should be deleted.
+        addSingleLabelInOneLine(new JLabelWithStrikeout("" + special.getValue()), "" + special.getValue(), 24, DEFAULT_COLOR);
 
     }
 
@@ -185,7 +208,7 @@ public class IncentiveUI {
                     // update the text on countdownLabel.
                     countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours" 
                             + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds");
-
+//                    System.out.println(countdownLabel.getText());
                     try {
                         // update the text on countdownLabel every second.
                         Thread.sleep(1000);
@@ -201,5 +224,44 @@ public class IncentiveUI {
     public boolean salesIsEnded() {
         Date now = new Date();
         return now.getTime() >= special.getEndDate().getTime();
+    }
+
+    // ??? is used for case 2, delete the original price.
+    class JLabelWithStrikeout extends JLabel {
+//        String message;
+
+        public JLabelWithStrikeout(String text) {
+            super(text);
+        }
+
+//        @Override
+//        public void paint(Graphics g) {
+//            Rectangle r;
+//            super.paint(g);
+//            r = g.getClipBounds();
+//            g.drawLine(0, (r.height - getFontMetrics(getFont()).getDescent()) / 2,
+//                    getFontMetrics(getFont()).stringWidth(getText()), (r.height
+//                            - getFontMetrics(getFont()).getDescent()) / 2);
+//        }
+
+
+        @Override
+        public void paint(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+
+            Font f = new Font("Serif", Font.BOLD, 36);
+
+//            FontRenderContext context = g2.getFontRenderContext();
+//            Rectangle2D bounds = f.getStringBounds(getText(), context);
+//
+//            double x = (getWidth() - bounds.getWidth()) / 2;
+//            double y = (getHeight() - bounds.getHeight()) / 2;
+//
+            int stringHeight = getHeight();
+//            double stringWidth = getFontMetrics(getFont()).stringWidth(getText());
+
+            super.paint(g);
+            g2.drawLine(0, stringHeight/2, getFontMetrics(getFont()).stringWidth(getText()), stringHeight / 2);
+        }
     }
 }

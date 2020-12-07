@@ -2,6 +2,8 @@ package ui.CheckLead;
 
 
 import dao.*;
+import service.IncentiveApiImpl;
+import ui.IncentiveUI;
 
 import java.awt.*;
 import javax.imageio.ImageIO;
@@ -28,7 +30,11 @@ public class DetailsWindow {
     JButton vehicleInfoPreviousButton, vehicleInfoNextButton;
     private JTabbedPane mainPanel;
     private JFrame theFrame;
-
+    // ??? demo
+    JButton incentiveDetailsButton;
+    private IncentiveUI[] incentiveUIs = new IncentiveUI[10];
+    private Special[] specials;
+//    private IncentiveUI incentiveUI;
 
     public DetailsWindow (Customer customer, Vehicle[] vehicles, String userNotes) {
 	    this.customer = customer;
@@ -44,7 +50,45 @@ public class DetailsWindow {
         Address address = new Address("401 Terry Ave N #103", "","Seattle", "WA", "98109");
         Customer customer = new Customer("Xingfu", "Du", address, "(206) 467-5480", "Xingfu@gmail.com");
         String userNotes = "user notes here";
-	    new DetailsWindow(customer, vehicles, userNotes).buildGUI();
+        // ??? demo
+        Special[] specials = {new Special(), new Special()};
+        Calendar calStart = Calendar.getInstance();
+        calStart.add(Calendar.DAY_OF_MONTH, -5);
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.add(Calendar.SECOND, 15);
+        specials[0].setSpecialId("1");
+        specials[0].setStartDate(calStart.getTime());
+        specials[0].setEndDate(calEnd.getTime());
+        specials[0].setTitle("Incentive demo");
+        specials[0].setDescription("Demo description  XXXXXX");
+        specials[0].setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        specials[0].setValue("500");
+        specials[0].setBrand("Honda");
+
+        calStart = Calendar.getInstance();
+        calStart.add(Calendar.DAY_OF_MONTH, -10);
+        calEnd = Calendar.getInstance();
+        calEnd.add(Calendar.SECOND, 45);
+        specials[1].setSpecialId("2");
+        specials[1].setStartDate(calStart.getTime());
+        specials[1].setEndDate(calEnd.getTime());
+        specials[1].setTitle("ANOTHER DEMO");
+        specials[1].setDescription("ANOTHER Demo description  XXXXXX");
+        specials[1].setDisclaimer("ANOTHER Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        specials[1].setValue("700");
+        specials[1].setBrand("BENZ");
+	    new DetailsWindow(specials, customer, vehicles, userNotes).buildGUI();
+    }
+
+    // ??? demo
+    public DetailsWindow (Special[] specials, Customer customer, Vehicle[] vehicles, String userNotes) {
+        this.customer = customer;
+        this.vehicles = vehicles;
+        this.userNotes = userNotes;
+        vehicleIndex = 0;
+        this.specials = specials;
+        incentiveUIs[0] = new IncentiveUI(specials[0]);
+        incentiveUIs[1] = new IncentiveUI(specials[1]);
     }
 
     public void buildGUI () {
@@ -359,6 +403,20 @@ public class DetailsWindow {
                     }
 		        }
 	    });
+
+        // ??? demo.
+        incentiveDetailsButton = new JButton("Show incentives");
+
+        incentiveDetailsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // this will create only one IncentiveUI frame.
+//                incentiveUIs[vehicleIndex] = new IncentiveUI(specials[vehicleIndex]);
+
+                incentiveUIs[vehicleIndex] .showUI();
+            }
+        });
+        toolBar.add(incentiveDetailsButton);
 
         if (vehicleIndex== 0) {
             vehicleInfoPreviousButton.setEnabled(false);
