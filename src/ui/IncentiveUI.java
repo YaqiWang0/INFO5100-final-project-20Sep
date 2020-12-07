@@ -1,24 +1,33 @@
 package ui;
 
 import dao.Special;
+import service.InventiveTimeJob;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
-public class IncentiveUI extends JPanel {
+import java.util.Observable;
+import java.util.Observer;
 
-    private Special special; // get data from showIncentive() in IncentiveApiImpl.
+public class IncentiveUI extends JPanel implements Observer {
 
-    public IncentiveUI(Special special) {
-        this.special = special;
-        initialize(special);
+    private JLabel title;
+    private JLabel description;
+    private JLabel discountType;
+    private JLabel discountValue;
+    private JLabel priceAfterDiscount;
+    private JLabel countdownLabel;
+    private JLabel discountPeriod;
+    private JLabel disclaimer;
+
+    public IncentiveUI() {
+        initialize();
     }
 
-    public void initialize(Special special) {
+    private void initialize() {
         final int DEFAULT_FONT_SIZE = 20;
         final Color DEFAULT_COLOR = Color.black;
 
@@ -29,55 +38,49 @@ public class IncentiveUI extends JPanel {
         JLabel greatLabel = new JLabel(greatMessage);
         greatLabel.setForeground(Color.red);
         greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
-//        addSingleLabelInOneLine(new JLabel(), greatMessage, 36, Color.red);
+
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.add(greatLabel);
 
         // create the title label and add the label to panel.
-        String titleMessage = "Title: " + special.getTitle();
-        addSingleLabelInOneLine(new JLabel(), titleMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        title = new JLabel();
+        addSingleLabelInOneLine(title, "Title: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Description label and add the label to panel.
-        String descriptionMessage = "Description: " + special.getDescription();
-        addSingleLabelInOneLine(new JLabel(), descriptionMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        description = new JLabel();
+        addSingleLabelInOneLine(description, "Description: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
         // ??? there is no discount type in Special.java.
-        String discountTypeMessage = "Discount type: " + "XXXXXX";
-        addSingleLabelInOneLine(new JLabel(), discountTypeMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        discountType = new JLabel();
+        addSingleLabelInOneLine(discountType, "Discount type: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount value label and add the label to panel.
         // the value attribute in Special.java represents:
         // how much discount the dealer want to give , CANNOT be null
-        String discountValueMessage = "Discount value: " + special.getValue();
-        addSingleLabelInOneLine(new JLabel(), discountValueMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+        discountValue = new JLabel();
+        addSingleLabelInOneLine(discountValue, "Discount value: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
-        // ??? there is no price after discount in Special.java.
-        String priceAfterDiscount = "$XXXXXX";
+        // ??? there is no discount type in Special.java.
+        priceAfterDiscount = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Price after discount: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                new JLabel(), priceAfterDiscount, 28, Color.red);
+                priceAfterDiscount, "$XXXXXX", 28, Color.red);
 
-        // create a countdown label and add the label to panel.
-        JLabel countdownLabel = new JLabel();
-        Date endDate = special.getEndDate();
-        countingDown(countdownLabel, endDate);
+        countdownLabel = new JLabel();
+
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 countdownLabel, countdownLabel.getText(), 28, Color.red);
 
         // create the Discount period label and add the label to panel.
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-        String discountPeriod = sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate());
+        discountPeriod = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Discount period: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                new JLabel(), discountPeriod, 28, Color.orange);
+                discountPeriod, "", 28, Color.orange);
 
         // create the disclaimer label and add the label to panel.
-        String disclaimerMessage = "Disclaimer: " + special.getDisclaimer();
-        addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, Color.gray);
-
-        // ??? demo, should be deleted.
-        addSingleLabelInOneLine(new JLabelWithStrikeout("" + special.getValue()), "" + special.getValue(), 24, DEFAULT_COLOR);
+        disclaimer = new JLabel();
+        addSingleLabelInOneLine(new JLabel(), "Disclaimer: ", 12, Color.gray);
 
     }
 
@@ -119,92 +122,24 @@ public class IncentiveUI extends JPanel {
         this.add(smallPanel);
     }
 
-    // set the style of time showing, if I do not do so, then,
-    // the countdownLabel may show like this: 12Seconds and 2Seconds,
-    // I think 02Seconds seems better than 2Seconds.
-    private String setTimeStyle(int num) {
-        return num <= 9 ? "0" + num : "" + num;
-    }
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof InventiveTimeJob) {
+            InventiveTimeJob job = (InventiveTimeJob) arg;
+            countdownLabel.setText(job.getCountdownText());
 
-    // to update the text on countdownLabel.
-    private void countingDown(JLabel countdownLabel, Date endDate) {
-        new Thread() {
-            public void run() {
-                while (true) {
-                    // get current time.
-                    Date now = new Date();
-                    // counting the time between current time and the endDate.
-                    long time = (endDate.getTime() - now.getTime()) / 1000;
+            Special special = job.getSpecial();
+            title.setText("Title: "+ special.getTitle());
+            description.setText("Description: " + special.getDescription());
+            discountType.setText("Discount type: " + "XXXXXX");
+            discountValue.setText("Discount value: " + special.getValue());
+            priceAfterDiscount.setText("$XXXXXX");
 
-                    // if it is at the endDate, dispose the whole frame,
-                    // because at this time the sales promotion is ended.
-                    if (time < 0) {
-                        break;
-                    }
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+            discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
 
-                    // counting the remaining days, hours, minutes and seconds according to the time.
-                    int days = (int) (time / (60 * 60 * 24));
-                    int hours = (int) ((time % (60 * 60 * 24)) / (60 * 60));
-                    int minutes = (int) ((time % (60 * 60)) / 60);
-                    int seconds = (int) (time % 60);
-
-                    // update the text on countdownLabel.
-                    countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
-                            + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds");
-//                    System.out.println(countdownLabel.getText());
-                    try {
-                        // update the text on countdownLabel every second.
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
-    }
-
-    // to determine whether the sales is ended or not.
-    public boolean salesIsEnded() {
-        Date now = new Date();
-        return now.getTime() >= special.getEndDate().getTime();
-    }
-
-    // ??? is used for case 2, delete the original price.
-    class JLabelWithStrikeout extends JLabel {
-//        String message;
-
-        public JLabelWithStrikeout(String text) {
-            super(text);
+            disclaimer.setText("Disclaimer: " + special.getDisclaimer());
         }
-
-//        @Override
-//        public void paint(Graphics g) {
-//            Rectangle r;
-//            super.paint(g);
-//            r = g.getClipBounds();
-//            g.drawLine(0, (r.height - getFontMetrics(getFont()).getDescent()) / 2,
-//                    getFontMetrics(getFont()).stringWidth(getText()), (r.height
-//                            - getFontMetrics(getFont()).getDescent()) / 2);
-//        }
-
-
-        @Override
-        public void paint(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g;
-
-            Font f = new Font("Serif", Font.BOLD, 36);
-
-//            FontRenderContext context = g2.getFontRenderContext();
-//            Rectangle2D bounds = f.getStringBounds(getText(), context);
-//
-//            double x = (getWidth() - bounds.getWidth()) / 2;
-//            double y = (getHeight() - bounds.getHeight()) / 2;
-//
-            int stringHeight = getHeight();
-//            double stringWidth = getFontMetrics(getFont()).stringWidth(getText());
-
-            super.paint(g);
-            g2.drawLine(0, stringHeight/2, getFontMetrics(getFont()).stringWidth(getText()), stringHeight / 2);
-        }
+        repaint();
     }
 }

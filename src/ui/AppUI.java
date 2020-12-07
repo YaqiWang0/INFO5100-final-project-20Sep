@@ -1,7 +1,6 @@
 package ui;
 
-import service.IncentiveApi;
-import service.IncentiveApiImpl;
+import service.InventiveTimeJob;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +8,17 @@ import java.awt.event.ActionEvent;
 
 public class AppUI extends AppUIAbstract {
 
-    private IncentiveApi incentiveApi = new IncentiveApiImpl();
     private JPanel centerPanel;
-    // ??? demo
-//    private Special specialDemo = new IncentiveApiImpl().showIncentive("");
-    private IncentiveUI incentiveUI = null;
+
+    // sub panel group
+    private IncentiveUI incentiveUI;
+    private InventiveTimeJob timejob;
+
+    public AppUI() {
+        incentiveUI = new IncentiveUI();
+        timejob = new InventiveTimeJob();
+        timejob.addObserver(incentiveUI);
+    }
 
     @Override
     protected JPanel getCenterPanel() {
@@ -28,18 +33,19 @@ public class AppUI extends AppUIAbstract {
         centerPanel.add(new JLabel("Field 3:", JLabel.CENTER));
         centerPanel.add(new JLabel("xxxxxxxxx"));
         centerPanel.add(new JLabel("", JLabel.CENTER));
-        centerPanel.add(getPopupBtn());
+        centerPanel.add(getPopupBtn("xxxxxx")); // TODO specialID
 
         return centerPanel;
     }
 
-    private JButton getPopupBtn() {
-        JButton popBtn = new JButton("special_info");
+    private JButton getPopupBtn(String specialId) {
+        JButton popBtn = new JButton("Learn About Discount!!!");
 
         popBtn.addActionListener((ActionEvent e) -> {
-            Object panel = new IncentiveUI(incentiveApi.getSpecial("xxxxxx"));
-            JOptionPane.showConfirmDialog(centerPanel, panel, "Incentive details",
-                        JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+            timejob.start(specialId);
+            JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
+                    JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+            timejob.stop();
         });
 
         return popBtn;

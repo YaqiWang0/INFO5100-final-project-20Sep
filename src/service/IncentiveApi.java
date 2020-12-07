@@ -2,10 +2,11 @@ package service;
 
 import dao.Special;
 import dao.Vehicle;
+import dao.VehicleModel;
 
 public interface IncentiveApi {
 
-    Vehicle updateSpecialPrice(Vehicle vehicle);
+    VehicleModel updateSpecialPrice(Vehicle vehicle);
 
     Special getSpecial(String specialId);
 
