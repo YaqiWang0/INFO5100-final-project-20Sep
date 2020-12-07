@@ -2,14 +2,10 @@ package ui;
 
 import dao.Special;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -22,9 +18,7 @@ public class IncentiveUI extends JPanel {
         initialize(special);
     }
 
-    private void initialize(Special special) {
-//        final int DEFAULT_WIDTH = 500;
-//        final int DEFAULT_HEIGHT = 500;
+    public void initialize(Special special) {
         final int DEFAULT_FONT_SIZE = 20;
         final Color DEFAULT_COLOR = Color.black;
 
@@ -60,7 +54,7 @@ public class IncentiveUI extends JPanel {
         addSingleLabelInOneLine(new JLabel(), discountValueMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
-        // ??? there is no discount type in Special.java.
+        // ??? there is no price after discount in Special.java.
         String priceAfterDiscount = "$XXXXXX";
         addTwoLabelsInOneLine(new JLabel(), "Price after discount: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 new JLabel(), priceAfterDiscount, 28, Color.red);
@@ -68,11 +62,9 @@ public class IncentiveUI extends JPanel {
         // create a countdown label and add the label to panel.
         JLabel countdownLabel = new JLabel();
         Date endDate = special.getEndDate();
-//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(new IncentiveApiImpl().showIncentive("").getEndDate() + " 23:59:59");
-//            Date endDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(" 2020/12/04 23:35:00");
         countingDown(countdownLabel, endDate);
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                countdownLabel, "", 28, Color.red);
+                countdownLabel, countdownLabel.getText(), 28, Color.red);
 
         // create the Discount period label and add the label to panel.
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
@@ -83,6 +75,9 @@ public class IncentiveUI extends JPanel {
         // create the disclaimer label and add the label to panel.
         String disclaimerMessage = "Disclaimer: " + special.getDisclaimer();
         addSingleLabelInOneLine(new JLabel(), disclaimerMessage, 12, Color.gray);
+
+        // ??? demo, should be deleted.
+        addSingleLabelInOneLine(new JLabelWithStrikeout("" + special.getValue()), "" + special.getValue(), 24, DEFAULT_COLOR);
 
     }
 
@@ -131,6 +126,7 @@ public class IncentiveUI extends JPanel {
         return num <= 9 ? "0" + num : "" + num;
     }
 
+    // to update the text on countdownLabel.
     private void countingDown(JLabel countdownLabel, Date endDate) {
         new Thread() {
             public void run() {
@@ -152,11 +148,10 @@ public class IncentiveUI extends JPanel {
                     int minutes = (int) ((time % (60 * 60)) / 60);
                     int seconds = (int) (time % 60);
 
-
                     // update the text on countdownLabel.
                     countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
                             + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds");
-
+//                    System.out.println(countdownLabel.getText());
                     try {
                         // update the text on countdownLabel every second.
                         Thread.sleep(1000);
@@ -168,4 +163,48 @@ public class IncentiveUI extends JPanel {
         }.start();
     }
 
+    // to determine whether the sales is ended or not.
+    public boolean salesIsEnded() {
+        Date now = new Date();
+        return now.getTime() >= special.getEndDate().getTime();
+    }
+
+    // ??? is used for case 2, delete the original price.
+    class JLabelWithStrikeout extends JLabel {
+//        String message;
+
+        public JLabelWithStrikeout(String text) {
+            super(text);
+        }
+
+//        @Override
+//        public void paint(Graphics g) {
+//            Rectangle r;
+//            super.paint(g);
+//            r = g.getClipBounds();
+//            g.drawLine(0, (r.height - getFontMetrics(getFont()).getDescent()) / 2,
+//                    getFontMetrics(getFont()).stringWidth(getText()), (r.height
+//                            - getFontMetrics(getFont()).getDescent()) / 2);
+//        }
+
+
+        @Override
+        public void paint(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+
+            Font f = new Font("Serif", Font.BOLD, 36);
+
+//            FontRenderContext context = g2.getFontRenderContext();
+//            Rectangle2D bounds = f.getStringBounds(getText(), context);
+//
+//            double x = (getWidth() - bounds.getWidth()) / 2;
+//            double y = (getHeight() - bounds.getHeight()) / 2;
+//
+            int stringHeight = getHeight();
+//            double stringWidth = getFontMetrics(getFont()).stringWidth(getText());
+
+            super.paint(g);
+            g2.drawLine(0, stringHeight/2, getFontMetrics(getFont()).stringWidth(getText()), stringHeight / 2);
+        }
+    }
 }

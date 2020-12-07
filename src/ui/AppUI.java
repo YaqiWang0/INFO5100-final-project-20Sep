@@ -2,7 +2,6 @@ package ui;
 
 import service.IncentiveApi;
 import service.IncentiveApiImpl;
-import ui.IncentiveUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +11,9 @@ public class AppUI extends AppUIAbstract {
 
     private IncentiveApi incentiveApi = new IncentiveApiImpl();
     private JPanel centerPanel;
+    // ??? demo
+//    private Special specialDemo = new IncentiveApiImpl().showIncentive("");
+    private IncentiveUI incentiveUI = null;
 
     @Override
     protected JPanel getCenterPanel() {
@@ -42,5 +44,6 @@ public class AppUI extends AppUIAbstract {
 
         return popBtn;
     }
+
 }
 
