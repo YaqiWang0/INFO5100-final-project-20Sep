@@ -185,6 +185,8 @@ public class DataPersistence implements AbstractPersistent {
     public List<Vehicle> getAllVehicles() {
         List<Vehicle> result = new ArrayList<>();
         String vehicleFilePath = DATA_PATH + "vehicles.csv";
+        //String vehicleFilePath = "/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/" + "vehicles.csv";
+
         File csv = new File(vehicleFilePath);
         BufferedReader br = null;
 
@@ -194,7 +196,7 @@ public class DataPersistence implements AbstractPersistent {
             String line = br.readLine();
             while (line != null) {
                 String[] fields = line.split(",");
-                String[] features = fields[11].split("\t");
+                String[] features = fields[11].split(" ");
                 String[] imgUrls = fields[12].split("\t");
 
                 Vehicle v = new Vehicle(fields[1]);

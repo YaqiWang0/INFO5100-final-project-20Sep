@@ -59,7 +59,6 @@ public class IncentiveManager extends JFrame {
     private JTextField titleField;
     private JTextArea descriptionArea;
     private JTextArea disclaimerArea;
-    private JButton button2;
     private ButtonGroup specialScopeButtonGroup;
 
     Special spl;
