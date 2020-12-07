@@ -6,10 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
-import java.text.ParseException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -18,23 +18,28 @@ public class IncentiveUI {
 
     private JFrame frame;
     private JPanel panel;
-    private Special special; // get data from showIncentive() in IncentiveApiImpl.
+    // get data from showIncentive() in IncentiveApiImpl.
+    private Special special;
 
     public IncentiveUI(Special special) {
         this.special = special;
         initialize(special);
-        showUI();
     }
 
-    private void showUI() {
+    public void showUI() {
 //        EventQueue.invokeLater(() -> {
 //            frame.setVisible(true);
 //        });
-        frame.pack();
-        // place the JFrame on the center of the screen.
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        if (!salesIsEnded()) {
+            frame.pack();
+            // place the JFrame on the center of the screen.
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+            // if we press the closing button, just hide the frame.
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        } else {
+            frame.dispose();
+        }
     }
 
     private void initialize(Special special) {
@@ -83,7 +88,7 @@ public class IncentiveUI {
         addSingleLabelInOneLine(new JLabel(), discountValueMessage, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount type label and add the label to panel.
-        // ??? there is no discount type in Special.java.
+        // ??? there is no price after discount in Special.java.
         String priceAfterDiscount = "$XXXXXX";
         addTwoLabelsInOneLine(new JLabel(), "Price after discount: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 new JLabel(), priceAfterDiscount, 28, Color.red);
@@ -154,6 +159,7 @@ public class IncentiveUI {
         return num <= 9 ? "0" + num : "" + num;
     }
 
+    // to update the text on countdownLabel.
     private void countingDown(JLabel countdownLabel, Date endDate) {
         new Thread() {
             public void run() {
@@ -176,7 +182,6 @@ public class IncentiveUI {
                     int minutes = (int) ((time % (60 * 60)) / 60);
                     int seconds = (int) (time % 60);
 
-
                     // update the text on countdownLabel.
                     countdownLabel.setText(setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours" 
                             + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds");
@@ -192,4 +197,9 @@ public class IncentiveUI {
         }.start();
     }
 
+    // to determine whether the sales is ended or not.
+    public boolean salesIsEnded() {
+        Date now = new Date();
+        return now.getTime() >= special.getEndDate().getTime();
+    }
 }

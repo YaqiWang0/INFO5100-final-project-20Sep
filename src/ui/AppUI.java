@@ -6,10 +6,12 @@ import ui.IncentiveUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 
 public class AppUI extends AppUIAbstract {
 
     private JPanel centerPanel;
+    private IncentiveUI incentiveUI = null;
 
     @Override
     protected JPanel getCenterPanel() {
@@ -41,10 +43,39 @@ public class AppUI extends AppUIAbstract {
             panel.add(new JLabel("xxxxxxxxx"));
             JOptionPane.showConfirmDialog(null, panel, "Test",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
-            // ??? actually, this should pass the Special object from showIncentive().
-            new IncentiveUI(new IncentiveApiImpl().showIncentive(""));
+
+            // this will create only one IncentiveUI frame.
+            if (incentiveUI == null) {
+                // ??? actually, this should pass the Special object from showIncentive()
+                incentiveUI = new IncentiveUI(new IncentiveApiImpl().showIncentive(""));
+            }
+            incentiveUI.showUI();
+
+            if (incentiveUI.salesIsEnded()) {
+                popBtn.setVisible(false);
+            }
+
+//            // if the discount period is ended, the special_info should not be displayed.
+//            new Thread() {
+//                public void run() {
+//                    while (true) {
+//                        if (incentiveUI.salesIsEnded()) {
+//                            popBtn.setVisible(false);
+//                        }
+//
+//                        try {
+//                            // update per second.
+//                            Thread.sleep(1000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }.start();
+//
         });
         return popBtn;
     }
+
 }
 

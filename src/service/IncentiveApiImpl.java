@@ -48,7 +48,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
         calStart.add(Calendar.DAY_OF_MONTH, -5);
         Calendar calEnd = Calendar.getInstance();
 //        calEnd.add(Calendar.DAY_OF_MONTH, 10);
-        calEnd.add(Calendar.SECOND, 45);
+        calEnd.add(Calendar.SECOND, 15);
         obj.setStartDate(calStart.getTime());
         obj.setEndDate(calEnd.getTime());
         obj.setTitle("Incentive demo");
