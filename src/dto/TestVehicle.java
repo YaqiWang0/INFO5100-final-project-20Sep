@@ -1,5 +1,7 @@
 package dto;
 import dao.*;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,11 @@ public class TestVehicle {
 
         vehicleList.add(v1);
         vehicleList.add(v2);
+
+        // clean up previous test result
+        String vehicleFilePath = new File("").getAbsolutePath() + "/data/" + "vehicles.csv";
+        File csv = new File(vehicleFilePath);
+        if (csv.exists()) { csv.delete(); }
 
         dp.writeVehicles(vehicleList);
 

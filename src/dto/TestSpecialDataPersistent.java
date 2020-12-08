@@ -48,7 +48,10 @@ public class TestSpecialDataPersistent {
         sp.setTitle("Christmas");
         dp.writeSpecials(sp);
 
-//        List<Special> allSpecialsRead = dp.getAllSpecials();
+        List<Special> allSpecialsRead = dp.getAllSpecials();
+        for (Special s: allSpecialsRead) {
+            System.out.println(s.toString());
+        }
 //        System.out.println(allSpecialsRead.get(0).getTitle());
 //        System.out.println(allSpecialsRead.get(1).getTitle());
 //        System.out.println(allSpecialsRead.get(2).getTitle());
