@@ -62,6 +62,20 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		return model;
 	}
 
+	// ??? to be deleted later.
+	public VehicleModel updateSpecialPrice2(Vehicle vehicle) {
+		VehicleModel model = new VehicleModel(vehicle, getSpecialTest2(vehicle.getVehicleId()));
+		model.setSpecialPrice(20.1);
+		return model;
+	}
+
+	// ??? to be deleted later.
+	public VehicleModel updateSpecialPrice3(Vehicle vehicle) {
+		VehicleModel model = new VehicleModel(vehicle, getSpecialTest3(vehicle.getVehicleId()));
+		model.setSpecialPrice(9.99);
+		return model;
+	}
+
 	// read incentive types here
 	@Override
 	public String incentiveType(Special s) {
@@ -111,4 +125,41 @@ public final class IncentiveApiImpl implements IncentiveApi {
         return obj;
     }
 
+    // ??? to be deleted later.
+	private Special getSpecialTest2(String specialId) {
+
+		Calendar calStart = Calendar.getInstance();
+		calStart.add(Calendar.DAY_OF_MONTH, -5);
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.add(Calendar.DAY_OF_MONTH, 15);
+
+		Special obj = new Special();
+		obj.setStartDate(calStart.getTime());
+		obj.setEndDate(calEnd.getTime());
+		obj.setTitle("Incentive demo" + specialId);
+		obj.setDescription("Demo description  XXXXXX");
+		obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		obj.setValue("700");
+		obj.setBrand("BENZ");
+		return obj;
+	}
+
+	// ??? to be deleted later.
+	private Special getSpecialTest3(String specialId) {
+
+		Calendar calStart = Calendar.getInstance();
+		calStart.add(Calendar.DAY_OF_MONTH, -5);
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.add(Calendar.DAY_OF_MONTH, 1);
+
+		Special obj = new Special();
+		obj.setStartDate(calStart.getTime());
+		obj.setEndDate(calEnd.getTime());
+		obj.setTitle("Incentive demo" + specialId);
+		obj.setDescription("Demo description  XXXXXX");
+		obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		obj.setValue("700");
+		obj.setBrand("BMW");
+		return obj;
+	}
 }

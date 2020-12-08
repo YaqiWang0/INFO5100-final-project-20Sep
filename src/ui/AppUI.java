@@ -12,11 +12,15 @@ import service.InventiveTimeJob;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AppUI extends AppUIAbstract {
 
-    private IncentiveApi incentiveApi;
+//    private IncentiveApi incentiveApi;
+    // ??? to be deleted.
+    private IncentiveApiImpl incentiveApi;
     private JPanel centerPanel;
 
     // sub panel group
@@ -43,20 +47,43 @@ public class AppUI extends AppUIAbstract {
 
         // add Component to centerPanel
         int count = 0;
-        for (Vehicle vehicle: vehivles) {
+//        for (Vehicle vehicle: vehivles) {
+//            centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
+//            centerPanel.add(new JLabel(vehicle.getVehicleId()));
+//
+//            if(incentiveApi == null)
+//                incentiveApi = new IncentiveApiImpl();
+//            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
+//
+//            centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
+//            centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
+//            centerPanel.add(new JLabel("", JLabel.CENTER));
+//            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
+//        }
+
+        // ??? to be deleted.
+        for (int i = 0; i < vehivles.size(); ++i) {
+            Vehicle vehicle = vehivles.get(i);
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
 
             if(incentiveApi == null)
                 incentiveApi = new IncentiveApiImpl();
+
             VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
+            if (i == 1) {
+                vehicleModel = incentiveApi.updateSpecialPrice2(vehicle);
+            } else if (i == 2) {
+                vehicleModel = incentiveApi.updateSpecialPrice3(vehicle);
+            }
 
             centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
             centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
             centerPanel.add(new JLabel("", JLabel.CENTER));
-            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
+            if (vehicleModel.getSpecial().getEndDate().getTime() > new Date().getTime()) {
+                centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
+            }
         }
-
         return centerPanel;
     }
 
