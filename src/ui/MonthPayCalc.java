@@ -7,7 +7,7 @@ import java.text.*;
 
 public class MonthPayCalc extends JFrame {
 
-    private JLabel vehiclePriceLabel,extraFeesLabel, downPaymentLabel, taxRateLabel, aprLabel, loanTermLabel, monthlyPaymentLabel, monthlyPaymentOutput, errorMessageLabel, endingLine;
+    private JLabel vehiclePriceLabel,extraFeesLabel, downPaymentLabel, taxRateLabel, aprLabel, loanTermLabel, monthlyPaymentLabel, monthlyPaymentOutput, errorMessageLabel, endingLine, totalLoan, totalOutput;
     private JTextField vehiclePriceInput,extraFeesInput, downPaymentInput, taxRateInput, aprInput;
     private JComboBox loanTermInput;
     private JButton calculateButton, clearButton;
@@ -30,6 +30,8 @@ public class MonthPayCalc extends JFrame {
         monthlyPaymentOutput = new JLabel ("");
         errorMessageLabel = new JLabel ("");
         endingLine = new JLabel("**This is Estimated Monthly Payment**");
+        totalLoan = new JLabel("Total Loan is: ");
+        totalOutput = new JLabel("");
 
         vehiclePriceInput = new JTextField(10);
         extraFeesInput = new JTextField(10);
@@ -44,7 +46,7 @@ public class MonthPayCalc extends JFrame {
     }
 
     private void addComponents() {
-        GridLayout g = new GridLayout (10, 1);
+        GridLayout g = new GridLayout (12, 1);
         this.setLayout(g);
 
         JPanel temp = new JPanel();
@@ -81,6 +83,12 @@ public class MonthPayCalc extends JFrame {
         temp.add(calculateButton);
         temp.add(clearButton);
         this.add(temp);
+
+        temp = new JPanel();
+        temp.add(totalLoan);
+        temp.add(totalOutput);
+        this.add(temp);
+
 
         temp = new JPanel();
         temp.add(monthlyPaymentLabel);
@@ -167,6 +175,8 @@ public class MonthPayCalc extends JFrame {
             errorMessageLabel.setText("");
             DecimalFormat df = new DecimalFormat ("#.##");
             monthlyPaymentOutput.setText("$" + df.format(monthlyPaymentValue));
+            totalOutput.setText("$" + df.format(monthlyPaymentValue * loanTermInputDouble));
+
         }
     }
 
@@ -178,12 +188,12 @@ public class MonthPayCalc extends JFrame {
         aprInput.setText("");
         loanTermInput.setSelectedIndex(0);
         monthlyPaymentOutput.setText("");
+        totalOutput.setText("");
     }
 
     private void display() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 800);
-        pack();
+        setSize(500, 500);
         setVisible(true);
     }
 
