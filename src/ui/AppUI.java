@@ -10,6 +10,7 @@ import service.IncentiveApiImpl;
 import service.InventiveTimeJob;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Calendar;
@@ -100,6 +101,10 @@ public class AppUI extends AppUIAbstract {
             JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
             timejob.stop();
+
+            if (new Date().getTime() > special.getEndDate().getTime()) {
+                popBtn.setVisible(false);
+            }
         });
 
         return popBtn;

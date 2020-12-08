@@ -21,6 +21,11 @@ public class InventiveTimeJob extends Observable implements Runnable {
         return special;
     }
 
+    // ??? to be deleted later.
+    public boolean isDone() {
+        return isDone;
+    }
+
     public void start(Special special) {
         this.special = special;
         endDate = special.getEndDate();
