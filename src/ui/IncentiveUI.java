@@ -1,7 +1,7 @@
 package ui;
 
 import dao.Special;
-import job.InventiveTimeJob;
+import service.InventiveTimeJob;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -69,8 +69,9 @@ public class IncentiveUI extends JPanel implements Observer {
                 priceAfterDiscount, "$XXXXXX", 28, Color.red);
 
         countdownLabel = new JLabel();
+
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                countdownLabel, "", 28, Color.red);
+                countdownLabel, countdownLabel.getText(), 28, Color.red);
 
         // create the Discount period label and add the label to panel.
         discountPeriod = new JLabel();
@@ -79,7 +80,8 @@ public class IncentiveUI extends JPanel implements Observer {
 
         // create the disclaimer label and add the label to panel.
         disclaimer = new JLabel();
-        addSingleLabelInOneLine(new JLabel(), "Disclaimer: ", 12, Color.gray);
+        addSingleLabelInOneLine(disclaimer, "Disclaimer: ", 12, Color.gray);
+
     }
 
     private void addSingleLabelInOneLine(JLabel label, String message, int fontSize, Color color) {
