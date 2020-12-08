@@ -43,8 +43,7 @@ public class LeadUI extends JFrame {
         createUI();
         addComponents();
         addActions();
-        setSize(1000, 1000);
-        setResizable(false);
+        setSize(700, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);
@@ -94,7 +93,7 @@ public class LeadUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter your email address!",
                         "Reminder", JOptionPane.WARNING_MESSAGE);
             } else if (phoneDigit.getText().isEmpty() || phoneDigit.getText().length() != 10) {
-                JOptionPane.showMessageDialog(null, "Please enter 9 digit phone number!",
+                JOptionPane.showMessageDialog(null, "Please enter 10 digit phone number!",
                         "Reminder", JOptionPane.WARNING_MESSAGE);
             } else {
 
@@ -143,7 +142,7 @@ public class LeadUI extends JFrame {
         }
 
         if (ae.getSource() == cancel) {
-            int cancelValue = JOptionPane.showConfirmDialog(null, "Cancel you quote and leave?",
+            int cancelValue = JOptionPane.showConfirmDialog(null, "Cancel your quote and leave?",
                     "Reminder", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (cancelValue == JOptionPane.YES_OPTION) {
                 System.exit(0);
