@@ -200,7 +200,7 @@ public class DataPersistence implements AbstractPersistent {
             String line = br.readLine();
             while (line != null) {
                 String[] fields = line.split(",");
-                String[] features = fields[11].split(" ");
+                String[] features = fields[11].split("\t");
                 String[] imgUrls = fields[12].split("\t");
 
                 Vehicle v = new Vehicle(fields[1]);
