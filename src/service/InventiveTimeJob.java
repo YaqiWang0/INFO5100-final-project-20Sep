@@ -49,14 +49,14 @@ public class InventiveTimeJob extends Observable implements Runnable {
             long time = (endDate.getTime() - now.getTime()) / 1000;
 
             int seconds = (int) time % 60;
-            int minutes = seconds / 60;
+            int minutes = (int) time / 60;
             int hours = minutes / 60;
             int days = hours / 24;
 
             countdownText = setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
                     + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds";
 
-            if (time <= 0)
+            if (time < 0)
                 countdownText = "00Days00Hours00Minutes00Seconds";
 
             setChanged();

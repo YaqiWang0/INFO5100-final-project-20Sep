@@ -12,6 +12,7 @@ import service.InventiveTimeJob;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.List;
 
 public class AppUI extends AppUIAbstract {
@@ -38,21 +39,27 @@ public class AppUI extends AppUIAbstract {
         // init panel
         centerPanel = new JPanel(new GridLayout(0, 2));
 
+        if(incentiveApi == null)
+            incentiveApi = new IncentiveApiImpl();
+
         AbstractPersistent dao = new DataPersistence();
-        List<Vehicle> vehivles = dao.getAllVehicles();
+        List<Vehicle> vehicles = dao.getAllVehicles();
 
         // add Component to centerPanel
         int count = 0;
-        for (Vehicle vehicle: vehivles) {
+        for (Vehicle vehicle: vehicles) {
+            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
+            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* count*10));
+
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
 
-            if(incentiveApi == null)
-                incentiveApi = new IncentiveApiImpl();
-            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-
             centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
             centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
+
+            centerPanel.add(new JLabel("end date", JLabel.CENTER));
+            centerPanel.add(new JLabel(vehicleModel.getSpecial().getEndDate() + ""));
+
             centerPanel.add(new JLabel("", JLabel.CENTER));
             centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
         }
