@@ -53,6 +53,8 @@ public class InventiveTimeJob extends Observable implements Runnable {
             // if it is at the endDate, dispose the whole frame,
             // because at this time the sales promotion is ended.
             if (time < 0) {
+                setChanged();
+                notifyObservers(this);
                 break;
             }
 
