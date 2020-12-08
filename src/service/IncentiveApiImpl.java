@@ -19,12 +19,12 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		dao = new DataPersistence();
 	}
 
-	public static Date getCurrentTime() {
+	private static Date getCurrentTime() {
 		Date currentTime = new Date();
 		return currentTime;
 	}
 
-	public static boolean timeCheck(Date startDate, Date endDate, Date currentTime) {
+	private static boolean timeCheck(Date startDate, Date endDate, Date currentTime) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String sd = formatter.format(startDate);
 		String ed = formatter.format(endDate);
@@ -60,63 +60,11 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		VehicleModel model = new VehicleModel(vehicle, getSpecialTest(vehicle.getVehicleId()));
 		model.setSpecialPrice(12.56);
 		return model;
-
-
-		/*
-		List<String> idList = s.getScope();
-		List<Vehicle> vList = dao.getAllVehicles();
-
-		if (timeCheck(s.getStartDate(), s.getEndDate(), getCurrentTime())) {
-
-			for (int i = 0; i < idList.size(); i++) {
-				for (int j = 0; j < vList.size(); j++) {
-					if (idList.get(i).equals(vList.get(j).getVehicleId())) {
-						if (s.getDiscountValue() != 0) {
-							try {
-								float price = Float.parseFloat(vList.get(j).getPrice());
-								vList.get(j).setPrice(price - s.getDiscountValue() + "");
-							} catch (NumberFormatException e) {
-								e.printStackTrace();
-							}
-						} else if (s.getDiscountPercent() != 0) {
-							try {
-								float price = Float.parseFloat(vList.get(j).getPrice());
-								vList.get(j).setPrice(price * ((100 - s.getDiscountPercent()) / 100) + "");
-							} catch (NumberFormatException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
-	}
-
-	// read title, description, discount value(percentage) and dates here
-	@Override
-	public Special getSpecial(String specialId) {
-		// TODO: remove after finished
-		return getSpecialTest(specialId);
-
-/*
-		List<Special> list = dao.getAllSpecials();
-
-
-		for (int i = 0; i < list.size(); i++) {
-			if (specialId.equals(list.get(i).getSpecialId())) {
-				return list.get(i);
-			}
-		}
-		return null;
-
- */
 	}
 
 	// read incentive types here
 	@Override
-	public String incentiveType(String specialId) {
-		Special s = getSpecial(specialId);
+	public String incentiveType(Special s) {
 
 		StringBuilder sb = new StringBuilder();
 		if (s.getIsValidOnCashPayment() == true) {

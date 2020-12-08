@@ -6,7 +6,6 @@ public class VehicleModel {
     private Special special;
 
     // for case6 own attribute
-    private String specialId;
     private double specialPrice;
     // ...etc
 
