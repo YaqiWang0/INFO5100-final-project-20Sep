@@ -24,7 +24,7 @@ public class Special {
 	private String bodytype;
 	private String isNew;
 	private String scopeParameter;
-	private SpecialScope specialScope;
+	private List<String> specialScope;
 
 	public Special() {
 		//this.specialId ="";
@@ -38,7 +38,7 @@ public class Special {
 		this.bodytype = "";
 		this.isNew = "";
 		this.scopeParameter = "";
-		this.specialScope = SpecialScope.ALL;
+		this.specialScope = new ArrayList<>();
 		this.specialId=UUID.randomUUID().toString();
 		this.discountValue = 0;
 		this.discountPercent = 0;
@@ -110,7 +110,7 @@ public class Special {
 		this.isNew=isNew;
 	}
 	
-	public void setScope(SpecialScope specialScope) {
+	public void setScope(List<String> specialScope) {
 		this.specialScope = specialScope;
 	}
 	
@@ -166,7 +166,7 @@ public class Special {
 		return this.isNew;
 	}
 	
-	public SpecialScope getScope() {
+	public List<String> getScope() {
 		return this.specialScope;
 	}
 	
@@ -232,6 +232,7 @@ public class Special {
 		String csvTitle = title == null ? "\"<ti></ti>\"" : "\"<ti>" + title + "</ti>\"";
 		String csvDescription = description == null ? "\"<de></de>\"" : "\"<de>" + description + "</de>\"";
 		String csvDisclaimer = disclaimer == null ? "\"<di></di>\"" : "\"<di>" + disclaimer + "</di>\"";
+		String specialScopeStr = String.join(" ", specialScope);
 
 		// convert a Special to csv data
 		String row = specialId + ","
@@ -253,7 +254,7 @@ public class Special {
 				+ bodytype + ","
 				+ isNew + ","
 				+ scopeParameter + ","
-				+ specialScope;
+				+ specialScopeStr;
 
 		return row;
 	}
