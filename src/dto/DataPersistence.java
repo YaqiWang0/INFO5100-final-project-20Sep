@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -116,7 +117,7 @@ public class DataPersistence implements AbstractPersistent {
                 }
 
                 // converting csv data to a Special
-                String[] fields = line.split(",");
+                String[] fields = line.split("\\,", -1);
                 Special i = new Special();
                 i.setSpecialId(fields[0]); // added to Special.java
                 i.setDealerId(fields[1]);
@@ -128,7 +129,16 @@ public class DataPersistence implements AbstractPersistent {
                 i.setValidOnCheckPayment(Boolean.parseBoolean(fields[7]));
                 i.setValidOnLoan(Boolean.parseBoolean(fields[8]));
                 i.setValidOnLease(Boolean.parseBoolean(fields[9]));
+                i.setValue(fields[10]);
+                i.setYear(fields[11]);
+                i.setBrand(fields[12]);
+                i.setBodyType(fields[13]);
+                i.setIsNew(fields[14]);
+                i.setScopeParameter(fields[15]);
+                // use single word only in special scopes for parsing purposes
+                i.setScope(Arrays.asList(fields[16].split("\\s")));
 
+                i.setTitle(unescaped[0]);
                 i.setDescription(unescaped[1]);
                 i.setDisclaimer(unescaped[2]);
 
@@ -165,8 +175,8 @@ public class DataPersistence implements AbstractPersistent {
         try {
             bw = new BufferedWriter(new FileWriter(csv,true));
             // create a new specials.csv and write each special into the file
-            bw.newLine();
             bw.write(special.toCSVLine());
+            bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
