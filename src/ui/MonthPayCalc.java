@@ -7,7 +7,7 @@ import java.text.*;
 
 public class MonthPayCalc extends JFrame {
 
-    private JLabel vehiclePriceLabel,extraFeesLabel, downPaymentLabel, taxRateLabel, aprLabel, loanTermLabel, monthlyPaymentLabel, monthlyPaymentOutput, errorMessageLabel, endingLine;
+    private JLabel vehiclePriceLabel,extraFeesLabel, downPaymentLabel, taxRateLabel, aprLabel, loanTermLabel, monthlyPaymentLabel, monthlyPaymentOutput, errorMessageLabel, endingLine, totalLoan, totalOutput;
     private JTextField vehiclePriceInput,extraFeesInput, downPaymentInput, taxRateInput, aprInput;
     private JComboBox loanTermInput;
     private JButton calculateButton, clearButton;
@@ -20,16 +20,18 @@ public class MonthPayCalc extends JFrame {
     }
 
     private void create() {
-        vehiclePriceLabel = new JLabel ("Vehicle Price: ");
-        extraFeesLabel = new JLabel ("Extra Fees (Warranty, etc.): ");
-        downPaymentLabel = new JLabel ("Down Payment: ");
-        taxRateLabel = new JLabel ("Tax Rate (%): ");
-        aprLabel = new JLabel ("APR (%): ");
-        loanTermLabel = new JLabel ("Loan Term: ");
+        vehiclePriceLabel = new JLabel ("1) Vehicle Price: ");
+        extraFeesLabel = new JLabel ("2) Extra Fees (Warranty, etc.): ");
+        downPaymentLabel = new JLabel ("3) Down Payment: ");
+        taxRateLabel = new JLabel ("4) Tax Rate (%): ");
+        aprLabel = new JLabel ("5) APR (%): ");
+        loanTermLabel = new JLabel ("6) Loan Term: ");
         monthlyPaymentLabel = new JLabel ("Your Monthly Payment is: ");
         monthlyPaymentOutput = new JLabel ("");
         errorMessageLabel = new JLabel ("");
         endingLine = new JLabel("**This is Estimated Monthly Payment**");
+        totalLoan = new JLabel("Total Loan is: ");
+        totalOutput = new JLabel("");
 
         vehiclePriceInput = new JTextField(10);
         extraFeesInput = new JTextField(10);
@@ -44,7 +46,7 @@ public class MonthPayCalc extends JFrame {
     }
 
     private void addComponents() {
-        GridLayout g = new GridLayout (10, 1);
+        GridLayout g = new GridLayout (12, 1);
         this.setLayout(g);
 
         JPanel temp = new JPanel();
@@ -83,6 +85,11 @@ public class MonthPayCalc extends JFrame {
         this.add(temp);
 
         temp = new JPanel();
+        temp.add(totalLoan);
+        temp.add(totalOutput);
+        this.add(temp);
+
+        temp = new JPanel();
         temp.add(monthlyPaymentLabel);
         temp.add(monthlyPaymentOutput);
         this.add(temp);
@@ -99,6 +106,7 @@ public class MonthPayCalc extends JFrame {
     private void addActions() {
         calculateButton.addActionListener((ActionEvent ae) -> calculateMonthlyPayment(ae));
         clearButton.addActionListener((ActionEvent ae) -> clearCalculator(ae));
+        loanTermInput.addActionListener((ActionEvent ae) -> calculateMonthlyPayment(ae));
     }
 
     private void calculateMonthlyPayment (ActionEvent ae) {
@@ -167,6 +175,8 @@ public class MonthPayCalc extends JFrame {
             errorMessageLabel.setText("");
             DecimalFormat df = new DecimalFormat ("#.##");
             monthlyPaymentOutput.setText("$" + df.format(monthlyPaymentValue));
+            totalOutput.setText("$" + df.format(monthlyPaymentValue * loanTermInputDouble));
+
         }
     }
 
@@ -178,12 +188,12 @@ public class MonthPayCalc extends JFrame {
         aprInput.setText("");
         loanTermInput.setSelectedIndex(0);
         monthlyPaymentOutput.setText("");
+        totalOutput.setText("");
     }
 
     private void display() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 800);
-        pack();
+        setSize(500, 500);
         setVisible(true);
     }
 
