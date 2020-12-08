@@ -1,13 +1,22 @@
 package ui;
 
+import dao.Special;
+import dao.Vehicle;
+import dao.VehicleModel;
+import dto.AbstractPersistent;
+import dto.DataPersistence;
+import service.IncentiveApi;
+import service.IncentiveApiImpl;
 import service.InventiveTimeJob;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class AppUI extends AppUIAbstract {
 
+    private IncentiveApi incentiveApi;
     private JPanel centerPanel;
 
     // sub panel group
@@ -20,29 +29,47 @@ public class AppUI extends AppUIAbstract {
         timejob.addObserver(incentiveUI);
     }
 
+    /**
+     * Simulating Case2
+     * @return
+     */
     @Override
     protected JPanel getCenterPanel() {
         // init panel
         centerPanel = new JPanel(new GridLayout(0, 2));
 
+        AbstractPersistent dao = new DataPersistence();
+        List<Vehicle> vehivles = dao.getAllVehicles();
+
         // add Component to centerPanel
-        centerPanel.add(new JLabel("Field 1:", JLabel.CENTER));
-        centerPanel.add(new JLabel("xxxxxxxxx"));
-        centerPanel.add(new JLabel("Field 2:", JLabel.CENTER));
-        centerPanel.add(new JLabel("xxxxxxxxx"));
-        centerPanel.add(new JLabel("Field 3:", JLabel.CENTER));
-        centerPanel.add(new JLabel("xxxxxxxxx"));
-        centerPanel.add(new JLabel("", JLabel.CENTER));
-        centerPanel.add(getPopupBtn("xxxxxx")); // TODO specialID
+        int count = 0;
+        for (Vehicle vehicle: vehivles) {
+            centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
+            centerPanel.add(new JLabel(vehicle.getVehicleId()));
+
+            if(incentiveApi == null)
+                incentiveApi = new IncentiveApiImpl();
+            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
+
+            centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
+            centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
+            centerPanel.add(new JLabel("", JLabel.CENTER));
+            centerPanel.add(getPopupBtn(vehicleModel.getSpecial())); // TODO specialID
+        }
 
         return centerPanel;
     }
 
-    private JButton getPopupBtn(String specialId) {
+    /**
+     * pop-up incentive details ---Case6
+     * @param special
+     * @return
+     */
+    private JButton getPopupBtn(Special special) {
         JButton popBtn = new JButton("Learn About Discount!!!");
 
         popBtn.addActionListener((ActionEvent e) -> {
-            timejob.start(specialId);
+            timejob.start(special);
             JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
             timejob.stop();

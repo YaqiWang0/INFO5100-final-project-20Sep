@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import dao.Special;
 import dao.Vehicle;
@@ -58,7 +57,9 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 		// save all UI necessary value to VehicleModel
 
-		return new VehicleModel(vehicle, getSpecialTest(""));
+		VehicleModel model = new VehicleModel(vehicle, getSpecialTest(vehicle.getVehicleId()));
+		model.setSpecialPrice(12.56);
+		return model;
 
 
 		/*
@@ -95,8 +96,12 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	// read title, description, discount value(percentage) and dates here
 	@Override
 	public Special getSpecial(String specialId) {
+		// TODO: remove after finished
+		return getSpecialTest(specialId);
 
+/*
 		List<Special> list = dao.getAllSpecials();
+
 
 		for (int i = 0; i < list.size(); i++) {
 			if (specialId.equals(list.get(i).getSpecialId())) {
@@ -104,6 +109,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 			}
 		}
 		return null;
+
+ */
 	}
 
 	// read incentive types here
@@ -135,10 +142,10 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	/**
 	 * // TODO: remove after finished
 	 * only for test
-	 * @param specialid
+	 * @param specialId
 	 * @return
 	 */
-    public Special getSpecialTest(String specialid) {
+    private Special getSpecialTest(String specialId) {
 
         Calendar calStart = Calendar.getInstance();
         calStart.add(Calendar.DAY_OF_MONTH, -5);
@@ -148,7 +155,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		Special obj = new Special();
         obj.setStartDate(calStart.getTime());
         obj.setEndDate(calEnd.getTime());
-        obj.setTitle("Incentive demo");
+        obj.setTitle("Incentive demo" + specialId);
         obj.setDescription("Demo description  XXXXXX");
         obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         obj.setValue("500");

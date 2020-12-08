@@ -15,7 +15,7 @@ public abstract class AppUIAbstract {
 
     private void initGUI() {
         frame = new JFrame();
-        frame.setSize(400, 400);
+        frame.setSize(800, 800);
         frame.setTitle("SaleVehicle_showSpecialPrice");
 
         frame.setResizable(true);

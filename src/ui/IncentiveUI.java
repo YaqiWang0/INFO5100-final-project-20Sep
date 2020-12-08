@@ -80,7 +80,7 @@ public class IncentiveUI extends JPanel implements Observer {
 
         // create the disclaimer label and add the label to panel.
         disclaimer = new JLabel();
-        addSingleLabelInOneLine(new JLabel(), "Disclaimer: ", 12, Color.gray);
+        addSingleLabelInOneLine(disclaimer, "Disclaimer: ", 12, Color.gray);
 
     }
 

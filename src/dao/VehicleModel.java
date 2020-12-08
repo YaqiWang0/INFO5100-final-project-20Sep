@@ -15,6 +15,14 @@ public class VehicleModel {
         this.special = special;
     }
 
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public Special getSpecial() {
+        return special;
+    }
+
     public double getSpecialPrice() {
         return specialPrice;
     }

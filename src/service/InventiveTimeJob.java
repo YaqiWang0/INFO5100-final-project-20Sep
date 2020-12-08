@@ -1,8 +1,6 @@
 package service;
 
 import dao.Special;
-import service.IncentiveApi;
-import service.IncentiveApiImpl;
 
 import java.util.Date;
 import java.util.Observable;
@@ -23,9 +21,8 @@ public class InventiveTimeJob extends Observable implements Runnable {
         return special;
     }
 
-    public void start(String specialId) {
-        IncentiveApi incentiveApi = new IncentiveApiImpl();
-        special = incentiveApi.getSpecial(specialId);
+    public void start(Special special) {
+        this.special = special;
         endDate = special.getEndDate();
 
         isDone = false;
