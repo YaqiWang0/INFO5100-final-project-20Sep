@@ -1,6 +1,9 @@
 package ui;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
 
 public class InventoryUpdateJPanel {
     private JPanel UpdateJPanel;
@@ -24,7 +27,7 @@ public class InventoryUpdateJPanel {
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(UpdateJPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setSize(500, 600);
         frame.setLocationRelativeTo(null);
@@ -32,5 +35,15 @@ public class InventoryUpdateJPanel {
 
         this.idTextField.setText(id);
         this.dealerIdTextField.setText(dealerId);
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel();
+                } catch (MalformedURLException malformedURLException) {
+                    malformedURLException.printStackTrace();
+                }
+            }
+        });
     }
 }
