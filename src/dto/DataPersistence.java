@@ -21,6 +21,7 @@ public class DataPersistence implements AbstractPersistent {
     public DataPersistence() {
         this.dataPath = new File("").getAbsolutePath() + "/data/";
     }
+
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override

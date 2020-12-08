@@ -40,18 +40,18 @@ public class TestSpecialDataPersistent {
 //        allSpecials.add(i3);
 
         // dp.writeSpecials(allSpecials);
-
+/*
         Special sp = new Special();
         sp.setStartDate(new SimpleDateFormat("dd/MM/yyyy").parse("25/12/2020"));
         sp.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020"));
         sp.setDiscountValue(4500);
         sp.setTitle("Christmas");
         dp.writeSpecials(sp);
-
-//        List<Special> allSpecialsRead = dp.getAllSpecials();
-//        System.out.println(allSpecialsRead.get(0).getTitle());
-//        System.out.println(allSpecialsRead.get(1).getTitle());
-//        System.out.println(allSpecialsRead.get(2).getTitle());
+*/
+        List<Special> allSpecialsRead = dp.getAllSpecials();
+        System.out.println(allSpecialsRead.get(0).getTitle());
+        System.out.println(allSpecialsRead.get(1).getTitle());
+        System.out.println(allSpecialsRead.get(2).getTitle());
 
     }
 

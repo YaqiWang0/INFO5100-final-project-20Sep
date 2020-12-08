@@ -1,6 +1,6 @@
 package ui;
 
-import ui.IncentiveUI;
+import service.InventiveTimeJob;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +9,16 @@ import java.awt.event.ActionEvent;
 public class AppUI extends AppUIAbstract {
 
     private JPanel centerPanel;
+
+    // sub panel group
+    private IncentiveUI incentiveUI;
+    private InventiveTimeJob timejob;
+
+    public AppUI() {
+        incentiveUI = new IncentiveUI();
+        timejob = new InventiveTimeJob();
+        timejob.addObserver(incentiveUI);
+    }
 
     @Override
     protected JPanel getCenterPanel() {
@@ -29,18 +39,16 @@ public class AppUI extends AppUIAbstract {
     }
 
     private JButton getPopupBtn() {
-        JButton popBtn = new JButton("special_info");
-        popBtn.addActionListener((ActionEvent e) -> {
-            // new IncentiveUI();
+        JButton popBtn = new JButton("Learn About Discount!!!");
 
-            JPanel panel = new JPanel(new GridLayout(0, 2));
-            panel.add(new JLabel("Field 1:", JLabel.CENTER));
-            panel.add(new JLabel("xxxxxxxxx"));
-            panel.add(new JLabel("Field 2:", JLabel.CENTER));
-            panel.add(new JLabel("xxxxxxxxx"));
-            JOptionPane.showConfirmDialog(null, panel, "Test",
+        popBtn.addActionListener((ActionEvent e) -> {
+            timejob.start("xxxxxx"); // TODO specialID
+            JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+            timejob.stop();
         });
+
         return popBtn;
     }
 }
+
