@@ -1,4 +1,4 @@
-package ui
+package ui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
