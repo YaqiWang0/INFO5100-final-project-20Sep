@@ -27,10 +27,7 @@ public class Special {
 	private List<String> specialScope;
 
 	public Special() {
-		//this.specialId ="";
-		this.dealerId = "";
-		//this.startDate = "";
-		//this.endDate = "";
+		this.specialId=UUID.randomUUID().toString();
 		this.title = "";
 		this.value = "";
 		this.year = "";
@@ -237,12 +234,45 @@ public class Special {
 		// convert a Special to csv data
 		String row = specialId + ","
 				+ dealerId + ","
+				+ startDate.getTime() + ","
+				+ endDate.getTime() + ","
+				+ csvTitle + ","
+				+ csvDescription + ","
+				+ discountValue + ","
+				+ discountPercent + ","
+				+ isValidOnCashPayment + ","
+				+ isValidOnCheckPayment + ","
+				+ isValidOnLoan + ","
+				+ isValidOnLease + ","
+				+ csvDisclaimer + ","
+				+ value + ","
+				+ year + ","
+				+ brand + ","
+				+ bodytype + ","
+				+ isNew + ","
+				+ scopeParameter + ","
+				+ specialScopeStr;
+
+		return row;
+	}
+
+	public String toString(){
+		// escape comma and double quotes in title, description and disclaimer
+		// other variables of Special should not contain any comma or double quotes
+		String csvTitle = title == null ? "\"<ti></ti>\"" : "\"<ti>" + title + "</ti>\"";
+		String csvDescription = description == null ? "\"<de></de>\"" : "\"<de>" + description + "</de>\"";
+		String csvDisclaimer = disclaimer == null ? "\"<di></di>\"" : "\"<di>" + disclaimer + "</di>\"";
+		String specialScopeStr = String.join(" ", specialScope);
+
+		// convert a Special to csv data
+		String row = specialId + ","
+				+ dealerId + ","
 				+ startDate + ","
 				+ endDate + ","
 				+ csvTitle + ","
 				+ csvDescription + ","
 				+ discountValue + ","
-				+ discountPercent + "%" + ","
+				+ discountPercent + ","
 				+ isValidOnCashPayment + ","
 				+ isValidOnCheckPayment + ","
 				+ isValidOnLoan + ","
