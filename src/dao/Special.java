@@ -24,7 +24,7 @@ public class Special {
 	private String bodytype;
 	private String isNew;
 	private String scopeParameter;
-	private List<String> specialScope;
+	private List<String> specialScope; // use single word only for parsing purposes in data persistence
 
 	public Special() {
 		this.specialId=UUID.randomUUID().toString();
