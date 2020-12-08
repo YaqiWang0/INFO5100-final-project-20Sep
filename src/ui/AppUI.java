@@ -54,7 +54,7 @@ public class AppUI extends AppUIAbstract {
             centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
             centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
             centerPanel.add(new JLabel("", JLabel.CENTER));
-            centerPanel.add(getPopupBtn(vehicleModel.getSpecial())); // TODO specialID
+            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
         }
 
         return centerPanel;
