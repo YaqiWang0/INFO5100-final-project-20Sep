@@ -13,4 +13,6 @@ public interface AbstractPersistent {
     void writeSpecials(Special special);
     List<Vehicle> getAllVehicles();
     void writeVehicles(List<Vehicle> vehicles);
+    List<Lead> getAllLeads();
+    void writeLead(Lead lead);
 }
