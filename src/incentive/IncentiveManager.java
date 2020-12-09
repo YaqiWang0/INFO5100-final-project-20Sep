@@ -159,14 +159,18 @@ public class IncentiveManager extends JFrame {
                 if (brand == null || brand.equals("All Makes")) {
                     clearModelItems();
                 } else {
+                    Set<String> models = new HashSet<>();
                     vehicleList.stream().filter(vehicle -> vehicle.getBrand()
                             .equals(brand))
                             .map(Vehicle::getModel)
                             .sorted()
                             .forEach(model -> {
-                                modelComboBox.addItem(model);
-                                //TODO do not add duplicate values
+                                models.add(model);
+                                //modelComboBox.addItem(model);
                             });
+                    for(String s : models){
+                        modelComboBox.addItem(s);
+                    }
                 }
             }
         });
