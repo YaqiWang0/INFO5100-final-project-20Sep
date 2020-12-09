@@ -60,6 +60,7 @@ public class IncentiveManager extends JFrame {
     private JTextArea descriptionArea;
     private JTextArea disclaimerArea;
     private ButtonGroup specialScopeButtonGroup;
+    private ButtonGroup discountValueButtonGroup;
 
     Special spl;
     Vehicle veh;
@@ -72,6 +73,7 @@ public class IncentiveManager extends JFrame {
         spl = new Special();
         dataPersistence = new DataPersistence();
         initComponents();
+
     }
 
     private void initComponents() {
@@ -82,6 +84,14 @@ public class IncentiveManager extends JFrame {
         searchResult();
         selectMake();
         specialScopeButtonGroup();
+        discountButtonGroup();
+    }
+
+    public void discountButtonGroup(){
+        discountValueButtonGroup = new ButtonGroup();
+        discountValueButtonGroup.add(flatValue);
+        discountValueButtonGroup.add(percentValue);
+        flatValue.setSelected(true);
     }
 
     public void specialScopeButtonGroup() {
@@ -120,11 +130,11 @@ public class IncentiveManager extends JFrame {
 
     private void createTable() {
         filteredVehicleList = getFilteredVehicleList();
-        Object[][] data = new Object[filteredVehicleList.size()][7];
+        Object[][] data = new Object[filteredVehicleList.size()][7]; //filters : string, int
         for (int i = 0; i < filteredVehicleList.size(); i++) {
             Vehicle vehicle = filteredVehicleList.get(i);
             String status = vehicle.getStatus() ? "New" : "Used";
-            data[i] = new Object[]{vehicle.getVehicleId(),  //TODO review Object
+            data[i] = new Object[]{vehicle.getVehicleId(),
                     status,
                     vehicle.getYear(),
                     vehicle.getBrand(),
@@ -149,14 +159,18 @@ public class IncentiveManager extends JFrame {
                 if (brand == null || brand.equals("All Makes")) {
                     clearModelItems();
                 } else {
+                    Set<String> models = new HashSet<>();
                     vehicleList.stream().filter(vehicle -> vehicle.getBrand()
                             .equals(brand))
                             .map(Vehicle::getModel)
                             .sorted()
                             .forEach(model -> {
-                                modelComboBox.addItem(model);
-                                //TODO do not add duplicate values
+                                models.add(model);
+                                //modelComboBox.addItem(model);
                             });
+                    for(String s : models){
+                        modelComboBox.addItem(s);
+                    }
                 }
             }
         });
@@ -170,6 +184,7 @@ public class IncentiveManager extends JFrame {
         }
     }
 
+    //all or select manually
     public void setSpecialScope() {
         if (applyRadioButton.isSelected()) {
             spl.setScope(filteredVehicleList.stream()
@@ -225,23 +240,33 @@ public class IncentiveManager extends JFrame {
         String endDate = eDay + "/" + eMonth + "/" + eYear;
         Date eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
 
-        //System.out.println(date.toString());
-        spl.setStartDate(sDate);
-        spl.setEndDate(eDate);
-
-        //TODO write logic to validate end date i.e endDate > startDate
+        if(!eDate.after(sDate)){
+            JOptionPane.showMessageDialog(null, "Invalid end date!");
+        }
+        else {
+            //System.out.println(sDate.toString());
+            spl.setStartDate(sDate);
+            spl.setEndDate(eDate);
+        }
     }
 
     public void setDiscountValue() {
-        //TODO one of the two values have to be selected
         if (flatValue.isSelected()) {
             System.out.println("#1");
-            //TODO if the value entered is not int, throw exception, give pop up
+            checkValues(inputValue.getText());
             int value = Integer.parseInt(inputValue.getText());
             spl.setDiscountValue(value);
         } else if (percentValue.isSelected()) {
+            checkValues(inputPercent.getText());
             int percent = Integer.parseInt(inputPercent.getText());
             spl.setDiscountPercent(percent);
+        }
+    }
+
+    public void checkValues(String val){
+        if(!val.matches("[0-9]+") || val.length() <= 0){
+            //pop up
+            JOptionPane.showMessageDialog(null, "Please enter valid discount value");
         }
     }
 
@@ -267,6 +292,8 @@ public class IncentiveManager extends JFrame {
     }
 
     //TODO get & set dealerID
+
+
 
     public Special publish() {
         button1.addActionListener(new ActionListener() {
@@ -332,7 +359,7 @@ public class IncentiveManager extends JFrame {
             if (selectedMake == null || selectedMake.equals("All Makes")) {
                 return true;
             }
-            boolean makeCondition = vehicle.getBrand().equals(selectedMake); //TODO makeCondition review
+            boolean makeCondition = vehicle.getBrand().equals(selectedMake);
             if (selectedModel == null || selectedModel.equals("All Models")) {
                 return makeCondition;
             }

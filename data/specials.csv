@@ -1,15 +1,13 @@
-283db289-b032-45f2-9735-1f4742609848,2,01-01-2020,01-01-2022,"<ti>Special: 2</ti>","<de>This, is, "description". Special 2 description.</de>","<di>This, is "disclaimer", blah. Special 2 disclaimer.</di>",200,2020,Toyota,null,null,null,null
-33e4dfe0-2550-4147-a057-45871e96ae4d,3,01-01-2020,01-01-2022,"<ti>Special: 3</ti>","<de></de>","<di></di>",300,null,null,SUV,New,scope parameter,ALL
-b93854a8-fd0c-473d-9536-edb1d6f72219,1,01-01-2020,01-01-2022,"<ti>Special: 1</ti>","<de>This, is, description. Special 1 description.</de>","<di>This, is "disclaimer", blah. Special 1 disclaimer.</di>",100,2020,Toyota,SUV,New,scope parameter,ALL
-b8a4d523-897b-464f-b780-e93b11c55335,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALLf86bb275-22fe-41e7-a128-a2453d3e222c,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL0fc1289e-10cd-460d-8f50-269a061ccda5,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALLe06eaaaf-287e-4fb3-9eb3-b57900f10396,,Fri Dec 25 00:00:00 PST 2020,Thu Dec 31 00:00:00 PST 2020,"<ti>Christmas</ti>","<de></de>",4500,0%,"<di></di>",,,,,,,ALL
-0a90affa-0f13-49d9-9bd8-bf4a1edd1ed0,,Fri Dec 25 00:00:00 PST 2020,Thu Dec 31 00:00:00 PST 2020,"<ti>Christmas</ti>","<de></de>",4500,0%,"<di></di>",,,,,,,ALL
-80f4ff4b-4f37-41ad-b4cd-52d35c788f1f,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL
-7549eaf7-173c-4409-807b-35eefc168d50,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL
-e243289d-22b6-4597-be2c-170cfc2be46a,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL
-d07a5c92-91ce-475d-879d-6a8ebdf1b3d9,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL
-8875a117-18ce-472d-9d24-62f40a644782,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL
-b2934cfd-c55a-4d31-b54f-4dad448f454f,,Wed Jan 01 00:00:00 PST 2020,Wed Jan 01 00:00:00 PST 2020,"<ti></ti>","<de></de>",123,0%,"<di></di>",,,,,,,ALL
-c71bae98-1c2b-4785-81fa-91c324f49c16,,Wed Feb 03 00:00:00 PST 2021,Wed Feb 02 00:00:00 PST 2022,"<ti></ti>","<de></de>",9000,0%,true,false,true,false,"<di></di>",,,,,,,ALL
-95ede440-ed1f-4c0c-a65b-cf785435592e,,Wed Jan 01 00:00:00 PST 2020,Wed Jan 01 00:00:00 PST 2020,"<ti></ti>","<de></de>",5600,0%,false,false,false,false,"<di></di>",,,,,,,ALL
-eb1a7834-c0f7-413a-a30a-ab14d3a6c2f6,,Wed Mar 03 00:00:00 PST 2021,Tue Feb 01 00:00:00 PST 2022,"<ti></ti>","<de></de>",7300,0%,true,true,false,true,"<di></di>",,,,,,,ALL
-84fb67e1-af17-48f5-9430-89d37db581b4,,Thu Feb 03 00:00:00 PST 2022,Wed Feb 01 00:00:00 PST 2023,"<ti>Flash</ti>","<de>This discount is valid on ** and ##.</de>",7000,0%,true,false,false,false,"<di></di>",,,,,,,ALL
+85379bae-2c95-4d5e-9c1b-ec6c851130b6,null,1607414400000,1609401600000,"<ti>Christmas 2</ti>","<de>desc, 2</de>",4500,0,false,false,false,false,"<di>disclaimer 2</di>",,,,,,someKindOfScope,b9ed33fe-536d-491e-8839-750eb5760a56 78e58fc1-ce9b-410d-8efa-a944fe07743e
+8481357a-22fe-400e-97a9-0f8bee145a09,null,1607414400000,1609401600000,"<ti>Christmas 3</ti>","<de>desc, "3"</de>",4500,0,false,false,false,false,"<di>disclaimer 3</di>",,,,,someKindOfScope 3,someKindOfScope,b9ed33fe-536d-491e-8839-750eb5760a56 78e58fc1-ce9b-410d-8efa-a944fe07743e
+7f79d304-4d2c-4fa0-97a2-569bffe83cce,null,1607414400000,1609401600000,"<ti>Christmas 4</ti>","<de></de>",4500,0,false,false,false,false,"<di></di>",,,,,,someKindOfScope 4,b9ed33fe-536d-491e-8839-750eb5760a56 78e58fc1-ce9b-410d-8efa-a944fe07743e
+f23a22d4-51f4-47ad-8524-e9b595a570d6,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de>desc 1</de>",4500,0,false,true,false,true,"<di></di>",value400,year2002,brandToyota,bodyTypeRav4,Used,,
+068354fa-2bb6-4b26-8f05-2e8b06d9ded1,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de>desc, 2</de>",4500,0,false,false,false,false,"<di></di>",,,,,,,
+d0a2c968-c0c0-41d5-ada1-12dde60f7038,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de>desc, "3"</de>",4500,0,false,false,false,false,"<di></di>",,,,,,,
+2c538573-f353-46de-9ce0-8d040047048f,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de></de>",4500,0,false,false,false,false,"<di></di>",,,,,,,
+7f96d012-dabf-40f3-9835-418f6d85b1b8,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de></de>",4500,0,false,false,false,false,"<di></di>",,,,,,someKindOfScope,bodyType isNew
+5de767e0-bc52-4226-ae02-0fb330187929,null,1577865600000,1577865600000,"<ti>new year</ti>","<de></de>",780,0,true,false,false,false,"<di></di>",,,,,,,b9ed33fe-536d-491e-8839-750eb5760a56
+5de767e0-bc52-4226-ae02-0fb330187929,null,1580716800000,1614585600000,"<ti>sale</ti>","<de></de>",980,0,true,false,false,false,"<di></di>",,,,,,,b9ed33fe-536d-491e-8839-750eb5760a56
+2e5c50a9-27fe-402d-942c-cfb3e7170d50,null,1577952000000,1578038400000,"<ti>flash sale</ti>","<de></de>",1000,0,false,false,false,false,"<di></di>",,,,,,,78e58fc1-ce9b-410d-8efa-a944fe07743e
+1b369a43-86e9-493b-a01b-144e438df054,null,1577865600000,1577865600000,"<ti>sale 2</ti>","<de></de>",123,0,true,true,false,false,"<di></di>",,,,,,,78e58fc1-ce9b-410d-8efa-a944fe07743e
+7bd57986-2230-40dc-a613-4abb6ad2f9ca,null,1577865600000,1577865600000,"<ti>fg</ti>","<de></de>",1,0,true,false,false,false,"<di></di>",,,,,,,b9ed33fe-536d-491e-8839-750eb5760a56efa5f48a-7c00-43a7-9fea-faa9874de932,null,1609488000000,1577865600000,"<ti>as</ti>","<de></de>",56,0,true,false,false,false,"<di></di>",,,,,,,b9ed33fe-536d-491e-8839-750eb5760a56
