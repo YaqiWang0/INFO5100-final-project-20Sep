@@ -5,6 +5,7 @@ import dao.Special;
 import java.util.Date;
 import java.util.Observable;
 
+// the main task of InventiveTimeJob class is to update the text on countdownLabel.
 public class InventiveTimeJob extends Observable implements Runnable {
 
     private Thread thread;

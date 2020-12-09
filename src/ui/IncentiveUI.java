@@ -34,11 +34,10 @@ public class IncentiveUI extends JPanel implements Observer {
         this.setLayout(new GridLayout(9, 1));
 
         // create the great label and add the label to panel.
-        String greatMessage = "Great incentive for you!";
-        JLabel greatLabel = new JLabel(greatMessage);
-        greatLabel.setForeground(Color.red);
-        greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
-
+//        String greatMessage = "Great incentive for you!";
+        JLabel greatLabel = new JLabel("<html><font color=orange>&#128663;</font><font color=red>" +
+                "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
+        greatLabel.setFont(new Font("Serif", Font.BOLD, 48));
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.add(greatLabel);
@@ -57,8 +56,9 @@ public class IncentiveUI extends JPanel implements Observer {
         addSingleLabelInOneLine(discountType, "Discount type: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
         // create the Discount value label and add the label to panel.
-        // the value attribute in Special.java represents:
-        // how much discount the dealer want to give , CANNOT be null
+        /* the value attribute in Special.java represents: how much
+        discount the dealer want to give , CANNOT be null
+         */
         discountValue = new JLabel();
         addSingleLabelInOneLine(discountValue, "Discount value: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
@@ -92,8 +92,9 @@ public class IncentiveUI extends JPanel implements Observer {
         // set the label's fore ground color.
         label.setForeground(color);
 
-        // the reason I create a panel is to make the label become
-        // left-justified with the two labels in one line.
+        /* the reason I create a panel is to make the label become
+        left-justified with the two labels in one line.
+         */
         JPanel smallPanel = new JPanel();
         smallPanel.add(label);
         smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -126,6 +127,7 @@ public class IncentiveUI extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof InventiveTimeJob) {
             InventiveTimeJob job = (InventiveTimeJob) arg;
+
             countdownLabel.setText(job.getCountdownText());
 
             Special special = job.getSpecial();
@@ -143,4 +145,6 @@ public class IncentiveUI extends JPanel implements Observer {
         }
         repaint();
     }
+
+
 }
