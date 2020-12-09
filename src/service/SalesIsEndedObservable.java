@@ -1,5 +1,7 @@
 package service;
 
+import dao.Special;
+
 import java.util.Date;
 import java.util.Observable;
 
@@ -13,6 +15,12 @@ public class SalesIsEndedObservable extends Observable implements Runnable{
 
     public SalesIsEndedObservable(int index, Date endDate) {
         this.index = index;
+        this.endDate = endDate;
+        thread = new Thread(this::run);
+        thread.start();
+    }
+
+    public SalesIsEndedObservable(Date endDate) {
         this.endDate = endDate;
         thread = new Thread(this::run);
         thread.start();

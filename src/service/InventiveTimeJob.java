@@ -1,6 +1,7 @@
 package service;
 
 import dao.Special;
+import dao.VehicleModel;
 
 import java.util.Date;
 import java.util.Observable;
@@ -14,6 +15,7 @@ public class InventiveTimeJob extends Observable implements Runnable {
     private Date endDate;
     private String countdownText;
     private Special special;
+    private VehicleModel vehicleModel;
 
     @Override
     public void notifyObservers() {
@@ -27,10 +29,22 @@ public class InventiveTimeJob extends Observable implements Runnable {
         return special;
     }
 
+    public VehicleModel getVehicleModel() {
+        return vehicleModel;
+    }
+
     public void start(Special special) {
         this.special = special;
         endDate = special.getEndDate();
 
+        isDone = false;
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public void start(VehicleModel vehicleModel) {
+        this.vehicleModel = vehicleModel;
+        endDate = vehicleModel.getSpecial().getEndDate();
         isDone = false;
         thread = new Thread(this);
         thread.start();

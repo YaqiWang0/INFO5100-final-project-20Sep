@@ -13,6 +13,7 @@ import service.SalesIsEndedObservable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
@@ -28,15 +29,20 @@ public class AppUI extends AppUIAbstract implements Observer {
     private InventiveTimeJob timejob;
 
     /* I allocated every vehicle a pop button, so that disabling one
-    button will not influence other buttons.
+    button will not influence other buttons. ??? but maybe exist bugs.
      */
     private JButton popButtons[];
+    private JButton popButton;
     private SalesIsEndedObservable salesIsEnded;
 
     public AppUI() {
         incentiveUI = new IncentiveUI();
         timejob = new InventiveTimeJob();
         timejob.addObserver(incentiveUI);
+
+//        // ??? to be deleted.
+        popButton = new JButton();
+
     }
 
     /**
@@ -61,7 +67,7 @@ public class AppUI extends AppUIAbstract implements Observer {
 
         for (Vehicle vehicle: vehicles) {
             VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* count*10));
+            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000 * count * 10 + 5000));
 
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
@@ -74,28 +80,28 @@ public class AppUI extends AppUIAbstract implements Observer {
 
             centerPanel.add(new JLabel("", JLabel.CENTER));
 //            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
-            addIncentiveButton(count - 1, vehicleModel.getSpecial());
+            addIncentiveButton(count - 1, vehicleModel);
         }
 
         return centerPanel;
     }
 
-    private void addIncentiveButton(int index, Special special) {
-        salesIsEnded = new SalesIsEndedObservable(index, special.getEndDate());
+
+    private void addIncentiveButton(int index, VehicleModel vehicleModel) {
+        salesIsEnded = new SalesIsEndedObservable(index, vehicleModel.getSpecial().getEndDate());
         salesIsEnded.addObserver(this);
 
         popButtons[index] = new JButton("Learn About Discount!!!");
         popButtons[index].addActionListener((ActionEvent e) -> {
-            timejob.start(special);
+            timejob.start(vehicleModel);
             JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
             timejob.stop();
-
 //            if (new Date().getTime() > special.getEndDate().getTime()) {
 //                popBtn.setText("discount expired");
 //                popBtn.setEnabled(false);
 //            }
-         });
+        });
         centerPanel.add(popButtons[index]);
     }
 
@@ -125,7 +131,7 @@ public class AppUI extends AppUIAbstract implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         // if sales is ended, change the test of pop-up button and the disable the button.
-        if ((boolean) arg) {
+       if ((boolean) arg) {
             popButtons[((SalesIsEndedObservable) o).getIndex()].setText("Discount expired");
             popButtons[((SalesIsEndedObservable) o).getIndex()].setEnabled(false);
         }
