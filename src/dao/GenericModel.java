@@ -1,6 +1,6 @@
 package dao;
 
-public class GenericModel<GenericModel> {
+public class GenericModel {
     public String modelType;
 
     public GenericModel(){}

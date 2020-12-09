@@ -244,35 +244,39 @@ public class DataPersistence implements AbstractPersistent {
 
     @Override
     public void writeVehicles(List<Vehicle> vehicles) {
-        String vehicleFilePath = this.dataPath + "vehicles.csv";
-        File csv = new File(vehicleFilePath);
-        BufferedWriter bw = null;
-        if (!csv.exists()) {
-            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        String modelType = "vehicles";
+        List<GenericModel> models = new ArrayList<>();
+        for (Vehicle vehicle: vehicles) {
+            models.add(vehicle);
         }
-        try {
-            bw = new BufferedWriter(new FileWriter(csv, true));
-            for (Vehicle vehicle: vehicles) {
-                bw.write(vehicle.toCSVLine());
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (bw != null) {
-                try {
-                    bw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        writeModel(models, modelType);
+//        String vehicleFilePath = this.dataPath + "vehicles.csv";
+//        File csv = new File(vehicleFilePath);
+//        BufferedWriter bw = null;
+//        if (!csv.exists()) {
+//            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+//        }
+//        try {
+//            bw = new BufferedWriter(new FileWriter(csv, true));
+//            for (Vehicle vehicle: vehicles) {
+//                bw.write(vehicle.toCSVLine());
+//                bw.newLine();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (bw != null) {
+//                try {
+//                    bw.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
     }
 
-    @Override
-    public void writeModel(List<GenericModel> model){
-
-        String filePath = this.dataPath + model.getModelType() + ".csv";
+    private void writeModel(List<GenericModel> model, String modelType){
+        String filePath = this.dataPath + modelType + ".csv";
         File csv = new File(filePath);
         BufferedWriter bw = null;
         if (!csv.exists()) {
@@ -299,6 +303,5 @@ public class DataPersistence implements AbstractPersistent {
                 }
             }
         }
-
     }
 }

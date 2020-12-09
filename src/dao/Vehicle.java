@@ -19,13 +19,14 @@ public class Vehicle extends GenericModel{
 	private ArrayList<String> features;
 	private ArrayList<String> imgUrls;
 
-	public Vehicle() {}
+	public Vehicle() { this.modelType = "vehicles"; }
 	
 	public Vehicle(String dealerId) {
 		this.dealerId=Objects.requireNonNull(dealerId,"Dealer's Id cannot be null");
 		this.vehicleId=UUID.randomUUID().toString();
 		this.features=new ArrayList<>();
 		this.imgUrls=new ArrayList<>();
+		this.modelType="vehicles";
 	}
 	
 	public Vehicle(String dealerId, String year, 
@@ -46,6 +47,7 @@ public class Vehicle extends GenericModel{
 		this.miles=miles;
 		this.features=new ArrayList<>();
 		this.imgUrls=new ArrayList<>();
+		this.modelType="vehicles";
 	}
 	
 	public void setVehicleId(String vehicleId) {
