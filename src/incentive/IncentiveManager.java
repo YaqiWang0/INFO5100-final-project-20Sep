@@ -240,11 +240,14 @@ public class IncentiveManager extends JFrame {
         String endDate = eDay + "/" + eMonth + "/" + eYear;
         Date eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
 
-        System.out.println(sDate.toString());
-        spl.setStartDate(sDate);
-        spl.setEndDate(eDate);
-
-        //TODO write logic to validate end date i.e endDate > startDate
+        if(!eDate.after(sDate)){
+            JOptionPane.showMessageDialog(null, "Invalid end date!");
+        }
+        else {
+            //System.out.println(sDate.toString());
+            spl.setStartDate(sDate);
+            spl.setEndDate(eDate);
+        }
     }
 
     public void setDiscountValue() {
