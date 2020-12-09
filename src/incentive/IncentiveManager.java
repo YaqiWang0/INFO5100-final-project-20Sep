@@ -293,7 +293,20 @@ public class IncentiveManager extends JFrame {
 
     //TODO get & set dealerID
 
-
+    public void setVehicleFilters(){
+        String year = String.valueOf(yearComboBox.getSelectedItem());
+        spl.setYear(year);
+        String valueOfVehicle = priceTextField.getText();
+        spl.setValueOfVehicle(valueOfVehicle);
+        if(categoryComboBox.getSelectedItem()=="New"){
+            spl.setIsNew(String.valueOf(true));
+        } else {
+            spl.setIsNew(String.valueOf(false));
+        }
+        spl.setBrand((String) makeComboBox.getSelectedItem());
+        spl.setBodyType((String) modelComboBox.getSelectedItem());
+        spl.setScopeMiles(mileageTextField.getText());
+    }
 
     public Special publish() {
         button1.addActionListener(new ActionListener() {
@@ -310,6 +323,7 @@ public class IncentiveManager extends JFrame {
                 setPaymentValidity();
                 setTitleAndDescription();
                 setSpecialScope();
+                setVehicleFilters();
 
                 DataPersistence dp = new DataPersistence();
                 //add this special to database
@@ -413,8 +427,6 @@ public class IncentiveManager extends JFrame {
             return vehicleMileage >= mileage;
         }).collect(Collectors.toList());
     }
-
-
 
     public static void main(String[] args) throws ParseException {
         IncentiveManager frame = new IncentiveManager();
