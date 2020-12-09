@@ -102,30 +102,22 @@ public class IncentiveManager extends JFrame {
     }
 
     public void clearCriteria() {
-        clearCriteriaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                categoryComboBox.setSelectedIndex(0);
-                vinTextField.setText("");
-                yearComboBox.setSelectedIndex(0);
-                makeComboBox.setSelectedIndex(0);
-                modelComboBox.setSelectedIndex(0);
-                clearModelItems();
-                priceOperatorComboBox.setSelectedIndex(0);
-                priceTextField.setText("");
-                mileageOperatorComboBox.setSelectedIndex(0);
-                mileageTextField.setText("");
-            }
+        clearCriteriaButton.addActionListener(e -> {
+            categoryComboBox.setSelectedIndex(0);
+            vinTextField.setText("");
+            yearComboBox.setSelectedIndex(0);
+            makeComboBox.setSelectedIndex(0);
+            modelComboBox.setSelectedIndex(0);
+            clearModelItems();
+            priceOperatorComboBox.setSelectedIndex(0);
+            priceTextField.setText("");
+            mileageOperatorComboBox.setSelectedIndex(0);
+            mileageTextField.setText("");
         });
     }
 
     public void searchResult() {
-        searchTheResultButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createTable();
-            }
-        });
+        searchTheResultButton.addActionListener(e -> createTable());
     }
 
     private void createTable() {
@@ -309,31 +301,28 @@ public class IncentiveManager extends JFrame {
     }
 
     public Special publish() {
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button1.addActionListener(e -> {
 
-                //call the setters here
-                try {
-                    setDates();
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
-                setDiscountValue();
-                setPaymentValidity();
-                setTitleAndDescription();
-                setSpecialScope();
-                setVehicleFilters();
-
-                DataPersistence dp = new DataPersistence();
-                //add this special to database
-                System.out.println("#2 " + spl.getDiscountValue());
-                ;
-                dp.writeSpecials(spl);
-
-                JOptionPane.showMessageDialog(null, "Incentive Created!");
-
+            //call the setters here
+            try {
+                setDates();
+            } catch (ParseException parseException) {
+                parseException.printStackTrace();
             }
+            setDiscountValue();
+            setPaymentValidity();
+            setTitleAndDescription();
+            setSpecialScope();
+            setVehicleFilters();
+
+            DataPersistence dp = new DataPersistence();
+            //add this special to database
+            System.out.println("#2 " + spl.getDiscountValue());
+            ;
+            dp.writeSpecials(spl);
+
+            JOptionPane.showMessageDialog(null, "Incentive Created!");
+
         });
 
         return spl;
