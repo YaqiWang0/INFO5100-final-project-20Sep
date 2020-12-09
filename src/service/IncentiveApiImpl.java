@@ -1,9 +1,10 @@
 package service;
 
 import java.text.SimpleDateFormat;
-
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
 
 import dao.Special;
 import dao.Vehicle;
@@ -37,78 +38,50 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 
 	// read price after discount here
-	// Can an incentive be both percent and value discount?
-	// Vehicle: price 的 string 是只是有数字还是有别的? integer or float?
+	// Can an incentive be both percent and value discount? No
 
 	/*
 	 * Assumption: 1. An incentive can not be percentage discount and direct
 	 * discount at the same time 2. Vehicle: Price string only contains float
 	 * numbers
 	 */
-	@Override
-	public VehicleModel updateSpecialPrice(Vehicle vehicle) {
-		// get vehicle id from
+		@Override
+		public VehicleModel updateSpecialPrice(Vehicle vehicle) {
 
-		// read all incentive from dao
+			String id = vehicle.getVehicleId();
+			List<Special> sList = dao.getAllSpecials();
+			VehicleModel model = new VehicleModel(vehicle);
+			float price = Float.parseFloat(vehicle.getPrice());
+			
+			List<Special> allSpecials = new ArrayList<>();
+			
+			TreeMap<Float, Special> pairs = new TreeMap<>();
 
-		// find a certain incentive rule
+			for (int i = 0; i < sList.size(); i++) {
+				if (sList.get(i).getScope().contains(id)) {
+					allSpecials.add(sList.get(i));
+					if (timeCheck(sList.get(i).getStartDate(), sList.get(i).getEndDate(), getCurrentTime())) {
+						if(sList.get(i).getDiscountValue() != 0) {
+							pairs.put(price - sList.get(i).getDiscountValue(), sList.get(i));
+						
+						}else if(sList.get(i).getDiscountPercent() != 0) {
+							pairs.put((price - price*((float)sList.get(i).getDiscountPercent()/100)), sList.get(i));
+						}		
+					}
+				}
+			}
 
-		// calc special price
+			model.setSpecialPrice(pairs.firstKey());
+			model.setSpecial(pairs.get(pairs.firstKey()));
+			model.setAllSpecials(allSpecials);
+			
+			if(model.getSpecial().getDiscountValue() != 0) {
+				model.setIncentiveType("Value discount");
+			}else if(model.getSpecial().getDiscountPercent() != 0) {
+				model.setIncentiveType("Percentage discount");
+			}
+			return model;
 
-		// save all UI necessary value to VehicleModel
-
-		VehicleModel model = new VehicleModel(vehicle, getSpecialTest(vehicle.getVehicleId()));
-		model.setSpecialPrice(12.56);
-		return model;
-	}
-
-	// read incentive types here
-	@Override
-	public String incentiveType(Special s) {
-
-		StringBuilder sb = new StringBuilder();
-		if (s.getIsValidOnCashPayment() == true) {
-			sb.append(" Cash payment discount ");
 		}
-		if (s.getIsValidOnCheckPayment() == true) {
-			sb.append(" Check payment discount ");
-		}
-		if (s.getIsValidOnLease() == true) {
-			sb.append(" Lease discount ");
-		}
-		if (s.getIsValidOnLoan() == true) {
-			sb.append(" Loan discount ");
-		}
-		if (sb.length() == 0) {
-			return " No special price for this vehicle at this moment ";
-
-		}
-		return sb.toString().replace("  ", " & ");
-	}
-
-
-	/**
-	 * // TODO: remove after finished
-	 * only for test
-	 * @param specialId
-	 * @return
-	 */
-    private Special getSpecialTest(String specialId) {
-
-        Calendar calStart = Calendar.getInstance();
-        calStart.add(Calendar.DAY_OF_MONTH, -5);
-        Calendar calEnd = Calendar.getInstance();
-        calEnd.add(Calendar.SECOND, 15);
-
-		Special obj = new Special();
-        obj.setStartDate(calStart.getTime());
-        obj.setEndDate(calEnd.getTime());
-        obj.setTitle("Incentive demo" + specialId);
-        obj.setDescription("Demo description  XXXXXX");
-        obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        obj.setValue("500");
-        obj.setBrand("Honda");
-        return obj;
-    }
 
 }
