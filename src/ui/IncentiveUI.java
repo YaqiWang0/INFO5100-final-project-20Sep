@@ -7,6 +7,7 @@ import service.InventiveTimeJob;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -36,8 +37,6 @@ public class IncentiveUI extends JPanel implements Observer {
         this.setLayout(new GridLayout(9, 1));
 
         // create the great label and add the label to panel.
-//        String greatMessage = "Great incentive for you!";
-
         /* ??? I tried to add a picture to the label, but failed because
         the size of the image could not change with the whole panel.
         Any solutions?
@@ -45,14 +44,11 @@ public class IncentiveUI extends JPanel implements Observer {
 //        String path = new File("").getAbsolutePath() + "/src/ui/pictures/car.png";
 //        ImageIcon img = new ImageIcon(path);
 //        URL carImgURL = getClass().getResource("/car.png");
-//        JLabel greatLabel = new JLabel("<html><font color=orange><img src='" + carImgURL + "' withd="10"></font><font color=red>" +
+//        JLabel greatLabel = new JLabel("<html><font color=orange><img src='" + carImgURL + "'></font><font color=red>" +
 //                "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
-
-
-        // create the great label.
         JLabel greatLabel = new JLabel("<html><font color=orange>&#128663;</font><font color=red>" +
                 "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
-        // set the font of great label.
+//        // set the font of great label.
         greatLabel.setFont(new Font("Serif", Font.BOLD, 48));
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
