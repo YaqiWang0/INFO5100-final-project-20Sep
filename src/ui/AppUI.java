@@ -13,15 +13,12 @@ import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class AppUI extends AppUIAbstract {
 
-//    private IncentiveApi incentiveApi;
-    // ??? to be deleted.
-    private IncentiveApiImpl incentiveApi;
+    private IncentiveApi incentiveApi;
     private JPanel centerPanel;
 
     // sub panel group
@@ -34,6 +31,7 @@ public class AppUI extends AppUIAbstract {
         timejob.addObserver(incentiveUI);
     }
 
+
     /**
      * Simulating Case2
      * @return
@@ -43,48 +41,32 @@ public class AppUI extends AppUIAbstract {
         // init panel
         centerPanel = new JPanel(new GridLayout(0, 2));
 
+        if(incentiveApi == null)
+            incentiveApi = new IncentiveApiImpl();
+
         AbstractPersistent dao = new DataPersistence();
-        List<Vehicle> vehivles = dao.getAllVehicles();
+        List<Vehicle> vehicles = dao.getAllVehicles();
 
         // add Component to centerPanel
         int count = 0;
-//        for (Vehicle vehicle: vehivles) {
-//            centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
-//            centerPanel.add(new JLabel(vehicle.getVehicleId()));
-//
-//            if(incentiveApi == null)
-//                incentiveApi = new IncentiveApiImpl();
-//            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-//
-//            centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
-//            centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
-//            centerPanel.add(new JLabel("", JLabel.CENTER));
-//            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
-//        }
 
-        // ??? to be deleted.
-        for (int i = 0; i < vehivles.size(); ++i) {
-            Vehicle vehicle = vehivles.get(i);
+        for (Vehicle vehicle: vehicles) {
+            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
+            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* count*10));
+
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
 
-            if(incentiveApi == null)
-                incentiveApi = new IncentiveApiImpl();
-
-            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-            if (i == 1) {
-                vehicleModel = incentiveApi.updateSpecialPrice2(vehicle);
-            } else if (i == 2) {
-                vehicleModel = incentiveApi.updateSpecialPrice3(vehicle);
-            }
-
             centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
             centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
+
+            centerPanel.add(new JLabel("end date", JLabel.CENTER));
+            centerPanel.add(new JLabel(vehicleModel.getSpecial().getEndDate() + ""));
+
             centerPanel.add(new JLabel("", JLabel.CENTER));
-            if (vehicleModel.getSpecial().getEndDate().getTime() > new Date().getTime()) {
-                centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
-            }
+            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
         }
+
         return centerPanel;
     }
 
@@ -103,7 +85,8 @@ public class AppUI extends AppUIAbstract {
             timejob.stop();
 
             if (new Date().getTime() > special.getEndDate().getTime()) {
-                popBtn.setVisible(false);
+                popBtn.setText("discount expired");
+                popBtn.setEnabled(false);
             }
         });
 

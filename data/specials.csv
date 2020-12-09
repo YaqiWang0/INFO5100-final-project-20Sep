@@ -1,6 +1,6 @@
 283db289-b032-45f2-9735-1f4742609848,2,01-01-2020,01-01-2022,"<ti>Special: 2</ti>","<de>This, is, "description". Special 2 description.</de>","<di>This, is "disclaimer", blah. Special 2 disclaimer.</di>",200,2020,Toyota,null,null,null,null
-33e4dfe0-2550-4147-a057-45871e96ae4d,3,01-01-2020,02-01-2022,"<ti>Special: 3</ti>","<de></de>","<di></di>",300,null,null,SUV,New,scope parameter,ALL
-b93854a8-fd0c-473d-9536-edb1d6f72219,1,01-01-2020,03-01-2022,"<ti>Special: 1</ti>","<de>This, is, description. Special 1 description.</de>","<di>This, is "disclaimer", blah. Special 1 disclaimer.</di>",100,2020,Toyota,SUV,New,scope parameter,ALL
+33e4dfe0-2550-4147-a057-45871e96ae4d,3,01-01-2020,01-01-2022,"<ti>Special: 3</ti>","<de></de>","<di></di>",300,null,null,SUV,New,scope parameter,ALL
+b93854a8-fd0c-473d-9536-edb1d6f72219,1,01-01-2020,01-01-2022,"<ti>Special: 1</ti>","<de>This, is, description. Special 1 description.</de>","<di>This, is "disclaimer", blah. Special 1 disclaimer.</di>",100,2020,Toyota,SUV,New,scope parameter,ALL
 b8a4d523-897b-464f-b780-e93b11c55335,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALLf86bb275-22fe-41e7-a128-a2453d3e222c,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL0fc1289e-10cd-460d-8f50-269a061ccda5,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALLe06eaaaf-287e-4fb3-9eb3-b57900f10396,,Fri Dec 25 00:00:00 PST 2020,Thu Dec 31 00:00:00 PST 2020,"<ti>Christmas</ti>","<de></de>",4500,0%,"<di></di>",,,,,,,ALL
 0a90affa-0f13-49d9-9bd8-bf4a1edd1ed0,,Fri Dec 25 00:00:00 PST 2020,Thu Dec 31 00:00:00 PST 2020,"<ti>Christmas</ti>","<de></de>",4500,0%,"<di></di>",,,,,,,ALL
 80f4ff4b-4f37-41ad-b4cd-52d35c788f1f,,null,null,"<ti></ti>","<de></de>",0,0%,"<di></di>",,,,,,,ALL

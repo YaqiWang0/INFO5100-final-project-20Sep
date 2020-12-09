@@ -139,6 +139,7 @@ public class IncentiveUI extends JPanel implements Observer {
             discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
 
             disclaimer.setText("Disclaimer: " + special.getDisclaimer());
+
         }
         repaint();
     }
