@@ -3,7 +3,7 @@ package dao;
 import java.util.*;
 import java.util.UUID;
 
-public class Vehicle {
+public class Vehicle extends GenericModel{
 	
 	private String vehicleId;
 	private String dealerId;

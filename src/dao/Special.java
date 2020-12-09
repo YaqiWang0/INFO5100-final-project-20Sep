@@ -2,7 +2,7 @@ package dao;
 
 import java.util.*;
 
-public class Special {
+public class Special extends GenericModel{
 	
 	private String specialId;
 	private Date startDate;

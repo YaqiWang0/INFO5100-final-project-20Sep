@@ -268,4 +268,37 @@ public class DataPersistence implements AbstractPersistent {
             }
         }
     }
+
+    @Override
+    public void writeModel(List<GenericModel> model){
+
+        String filePath = this.dataPath + model.getModelType() + ".csv";
+        File csv = new File(filePath);
+        BufferedWriter bw = null;
+        if (!csv.exists()) {
+            try {
+                csv.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            bw = new BufferedWriter(new FileWriter(csv, true));
+            for (GenericModel m : model) {
+                bw.write(m.toCSVLine());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 }
