@@ -129,5 +129,9 @@ public class Lead {
     public String getMessage() {
         return message;
     }
+    public String toCSVLine() {
+        return leadId + "," + vehicleId + "," + dealerId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
+                zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
+    }
 
 }

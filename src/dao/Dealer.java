@@ -10,12 +10,13 @@ public class Dealer extends GenericModel{
 	private Address dealerAddress;
 	private double distanceInMiles;
 
-	public Dealer() {}
+	public Dealer() {this.modelType = "dealers"; }
 
 	public Dealer(String dealerId, String dealerName, Address dealerAddress) {
 		this.dealerId=dealerId==null ? UUID.randomUUID().toString(): dealerId;
 		this.dealerName=Objects.requireNonNull(dealerName,"Dealer's name cannot be null");
 		this.dealerAddress=dealerAddress;
+		this.modelType="dealers";
 	}
 
 	public void setDealerId(String dealerId) {
@@ -57,6 +58,7 @@ public class Dealer extends GenericModel{
 				+"\n" +this.distanceInMiles;
 	}
 
+	@Override
 	public String toCSVLine() {
 		return this.dealerId + "," + this.dealerName + "," + this.dealerAddress.toCSVLine();
 	}
