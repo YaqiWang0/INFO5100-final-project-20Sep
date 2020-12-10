@@ -112,5 +112,9 @@ public class Lead {
     public String getMessage() {
         return message;
     }
+    public String toCSVLine() {
+        return leadId + "," + vehicleId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
+                usePurpose + "," + contactPreference + "," + contactTime + "," + message;
+    }
 
 }

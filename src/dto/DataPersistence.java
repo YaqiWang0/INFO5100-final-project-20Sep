@@ -304,4 +304,73 @@ public class DataPersistence implements AbstractPersistent {
             }
         }
     }
+
+    @Override
+    public List<Lead> getAllLeads() {
+        List<Lead> result = new ArrayList<>();
+        String leadFilePath = this.dataPath + "leads.csv";
+
+        File csv = new File(leadFilePath);
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new FileReader(csv));
+
+            String line = br.readLine();
+            while (line != null) {
+                String[] fields = line.split(",");
+
+                Lead lead = new Lead(fields[1]);
+                lead.setLeadId(fields[0]);
+                lead.setFirstName(fields[2]);
+                lead.setLastName(fields[3]);
+                lead.setEmailAddress(fields[4]);
+                lead.setPhoneNumber(fields[5]);
+                lead.setZipCode(fields[6]);
+                lead.setUsePurpose(fields[7]);
+                lead.setContactPreference(fields[8]);
+                lead.setContactTime(fields[9]);
+                lead.setMessage(fields[10]);
+
+                result.add(lead);
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void writeLead(Lead lead) {
+        String leadFilePath = this.dataPath + "leads.csv";
+        File csv = new File(leadFilePath);
+        BufferedWriter bw = null;
+        if (!csv.exists()) {
+            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        }
+        try {
+            bw = new BufferedWriter(new FileWriter(csv, true));
+            bw.write(lead.toCSVLine());
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
