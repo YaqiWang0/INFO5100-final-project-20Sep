@@ -6,6 +6,7 @@ public class Lead {
 
     private String leadId;
     private String vehicleId;
+    private String dealerId;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -19,16 +20,28 @@ public class Lead {
     public Lead() {
     }
 
+    // this constructor is for merging without conflict,
+    // it will be replaced with the below one and be removed after testing.
     public Lead(String vehicleId) {
         this.vehicleId = vehicleId;
     }
 
-    public void setLeadId(String leadId) {
+    public Lead(String vehicleId, String dealerId) {
+        this.vehicleId = vehicleId;
+        this.dealerId = dealerId;
         this.leadId = UUID.randomUUID().toString();
+    }
+
+    public void setLeadId(String leadId) {
+        this.leadId = leadId;
     }
 
     public void setVehicleId(String vehicleId) {
         this.vehicleId = vehicleId;
+    }
+
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
     }
 
     public void setFirstName(String firstName) {
@@ -73,6 +86,10 @@ public class Lead {
 
     public String getVehicleId() {
         return vehicleId;
+    }
+
+    public String getDealerId() {
+        return dealerId;
     }
 
     public String getFirstName() {

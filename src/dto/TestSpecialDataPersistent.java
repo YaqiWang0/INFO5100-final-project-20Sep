@@ -15,7 +15,7 @@ public class TestSpecialDataPersistent {
         sp.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020"));
         sp.setDiscountValue(4500);
         sp.setTitle("Christmas");
-        sp.setScopeParameter("someKindOfScope");
+        sp.setScopeMiles("someKindOfScope");
         List<Vehicle> allVehicles = dp.getAllVehicles();
         List<String> scopes = new ArrayList<>();
         for (Vehicle v : allVehicles) {
@@ -27,7 +27,7 @@ public class TestSpecialDataPersistent {
 
         List<Special> allSpecialsRead = dp.getAllSpecials();
         for (Special s: allSpecialsRead) {
-            System.out.println(s.getScope());
+            System.out.println(s.getStartDate());
         }
 //        System.out.println(allSpecialsRead.get(0).getTitle());
 //        System.out.println(allSpecialsRead.get(1).getTitle());
