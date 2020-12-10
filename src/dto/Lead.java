@@ -130,8 +130,8 @@ public class Lead {
         return message;
     }
     public String toCSVLine() {
-        return leadId + "," + vehicleId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
-                usePurpose + "," + contactPreference + "," + contactTime + "," + message;
+        return leadId + "," + vehicleId + "," + dealerId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
+                zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
     }
 
 }

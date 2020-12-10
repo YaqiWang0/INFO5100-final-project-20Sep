@@ -281,17 +281,17 @@ public class DataPersistence implements AbstractPersistent {
             while (line != null) {
                 String[] fields = line.split(",");
 
-                Lead lead = new Lead(fields[1]);
+                Lead lead = new Lead(fields[1], fields[2]);
                 lead.setLeadId(fields[0]);
-                lead.setFirstName(fields[2]);
-                lead.setLastName(fields[3]);
-                lead.setEmailAddress(fields[4]);
-                lead.setPhoneNumber(fields[5]);
-                lead.setZipCode(fields[6]);
-                lead.setUsePurpose(fields[7]);
-                lead.setContactPreference(fields[8]);
-                lead.setContactTime(fields[9]);
-                lead.setMessage(fields[10]);
+                lead.setFirstName(fields[3]);
+                lead.setLastName(fields[4]);
+                lead.setEmailAddress(fields[5]);
+                lead.setPhoneNumber(fields[6]);
+                lead.setZipCode(fields[7]);
+                lead.setUsePurpose(fields[8]);
+                lead.setContactPreference(fields[9]);
+                lead.setContactTime(fields[10]);
+                lead.setMessage(fields[11]);
 
                 result.add(lead);
                 line = br.readLine();
