@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class SqlConnection {
-
+/*
     public SqlConnection() throws IOException {
         SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
         SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
@@ -24,5 +24,11 @@ public class SqlConnection {
         customerInfo.forEach(o->{
         System.out.println(o.getId());
         });
+    }*/
+    public List<Dealer> SearchDealer() throws IOException {
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
+        SqlSession ss = factory.openSession(true);
+        return ss.selectList("dealerSearch");
     }
 }
