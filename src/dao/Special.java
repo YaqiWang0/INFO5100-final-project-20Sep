@@ -2,7 +2,7 @@ package dao;
 
 import java.util.*;
 
-public class Special {
+public class Special extends GenericModel{
 	
 	private String specialId;
 	private Date startDate;
@@ -28,7 +28,6 @@ public class Special {
 	//stores the list of id's of qualifying vehicles
 	private List<String> specialScope; // use single word only for parsing purposes in data persistence
 
-
 	public Special() {
 		this.specialId=UUID.randomUUID().toString();
 		this.title = "";
@@ -46,6 +45,7 @@ public class Special {
 		this.isValidOnCheckPayment = false;
 		this.isValidOnLoan = false;
 		this.isValidOnLease = false;
+		this.modelType = "specials";
 	}
 
 	public Special(String dealerId, Date startDate, Date endDate, String title, String valueOfVehicle) {
@@ -56,6 +56,7 @@ public class Special {
 		this.endDate=Objects.requireNonNull(endDate,"EndDate should not be null");
 		this.title=Objects.requireNonNull(title,"Title should not be null.");
 		this.valueOfVehicle =Objects.requireNonNull(valueOfVehicle,"Value should not be null");
+		this.modelType = "specials";
 	}
 
 	public void setSpecialId(String specialId) {
@@ -226,6 +227,7 @@ public class Special {
 	 * Convert this Special to the csv format.
 	 * by Tianyu Bai
 	 */
+	@Override
 	public String toCSVLine(){
 		// escape comma and double quotes in title, description and disclaimer
 		// other variables of Special should not contain any comma or double quotes
