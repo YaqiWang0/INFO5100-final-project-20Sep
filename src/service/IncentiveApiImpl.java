@@ -106,7 +106,6 @@ public final class IncentiveApiImpl implements IncentiveApi {
         obj.setTitle("Incentive demo" + specialId);
         obj.setDescription("Demo description  XXXXXX");
         obj.setDisclaimer("Demo disclaimer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        obj.setValue("500");
         obj.setBrand("Honda");
         return obj;
     }

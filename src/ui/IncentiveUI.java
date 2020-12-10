@@ -132,7 +132,6 @@ public class IncentiveUI extends JPanel implements Observer {
             title.setText("Title: "+ special.getTitle());
             description.setText("Description: " + special.getDescription());
             discountType.setText("Discount type: " + "XXXXXX");
-            discountValue.setText("Discount value: " + special.getValue());
             priceAfterDiscount.setText("$XXXXXX");
 
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
