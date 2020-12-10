@@ -73,24 +73,6 @@ public class DataPersistence implements AbstractPersistent {
             models.add(dealer);
         }
         writeModel(models, modelType);
-//        File csv = new File(dealerFilePath);
-//        BufferedWriter bw = null;
-//        if (!csv.exists()) {
-//            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
-//        }
-//        try {
-//            bw = new BufferedWriter(new FileWriter(csv, true));
-//            for (Dealer d: dealers) {
-//                bw.write(d.toCSVLine());
-//                bw.newLine();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (bw != null) {
-//                try {bw.close(); } catch (IOException e) {e.printStackTrace();}
-//            }
-//        }
     }
 
 
@@ -255,29 +237,6 @@ public class DataPersistence implements AbstractPersistent {
             models.add(vehicle);
         }
         writeModel(models, modelType);
-//        String vehicleFilePath = this.dataPath + "vehicles.csv";
-//        File csv = new File(vehicleFilePath);
-//        BufferedWriter bw = null;
-//        if (!csv.exists()) {
-//            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
-//        }
-//        try {
-//            bw = new BufferedWriter(new FileWriter(csv, true));
-//            for (Vehicle vehicle: vehicles) {
-//                bw.write(vehicle.toCSVLine());
-//                bw.newLine();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (bw != null) {
-//                try {
-//                    bw.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
     }
 
     private void writeModel(List<GenericModel> model, String modelType){
