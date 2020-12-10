@@ -1,5 +1,4 @@
-f23a22d4-51f4-47ad-8524-e9b595a570d6,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de>desc 1</de>",4500,0,false,true,false,true,"<di></di>",value400,year2002,brandToyota,bodyTypeRav4,Used,,
-068354fa-2bb6-4b26-8f05-2e8b06d9ded1,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de>desc, 2</de>",4500,0,false,false,false,false,"<di></di>",,,,,,,
-d0a2c968-c0c0-41d5-ada1-12dde60f7038,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de>desc, "3"</de>",4500,0,false,false,false,false,"<di></di>",,,,,,,
-2c538573-f353-46de-9ce0-8d040047048f,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de></de>",4500,0,false,false,false,false,"<di></di>",,,,,,,
-7f96d012-dabf-40f3-9835-418f6d85b1b8,null,1608883200000,1609401600000,"<ti>Christmas</ti>","<de></de>",4500,0,false,false,false,false,"<di></di>",,,,,,someKindOfScope,bodyType isNew
+b8b6fdcb-f90a-4f60-902d-e204afc3ef34,null,1607414400000,1609401600000,"<ti>Christmas 1</ti>","<de>desc 1</de>",4500,0,false,false,false,false,"<di>disclaimer 1</di>",value400,year2002,brandToyota,bodyTypeRav4,Used,,
+85379bae-2c95-4d5e-9c1b-ec6c851130b6,null,1607414400000,1609401600000,"<ti>Christmas 2</ti>","<de>desc, 2</de>",4500,0,false,false,false,false,"<di>disclaimer 2</di>",,,,,,someKindOfScope,b9ed33fe-536d-491e-8839-750eb5760a56 78e58fc1-ce9b-410d-8efa-a944fe07743e
+8481357a-22fe-400e-97a9-0f8bee145a09,null,1607414400000,1609401600000,"<ti>Christmas 3</ti>","<de>desc, "3"</de>",4500,0,false,false,false,false,"<di>disclaimer 3</di>",,,,,someKindOfScope 3,someKindOfScope,b9ed33fe-536d-491e-8839-750eb5760a56 78e58fc1-ce9b-410d-8efa-a944fe07743e
+7f79d304-4d2c-4fa0-97a2-569bffe83cce,null,1607414400000,1609401600000,"<ti>Christmas 4</ti>","<de></de>",4500,0,false,false,false,false,"<di></di>",,,,,,someKindOfScope 4,b9ed33fe-536d-491e-8839-750eb5760a56 78e58fc1-ce9b-410d-8efa-a944fe07743e

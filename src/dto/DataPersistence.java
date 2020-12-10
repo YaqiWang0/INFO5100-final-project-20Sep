@@ -67,25 +67,12 @@ public class DataPersistence implements AbstractPersistent {
 
     @Override
     public void writeDealers(List<Dealer> dealers) {
-        String dealerFilePath = this.dataPath + "dealers.csv";
-        File csv = new File(dealerFilePath);
-        BufferedWriter bw = null;
-        if (!csv.exists()) {
-            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+        String modelType = "dealers";
+        List<GenericModel> models = new ArrayList<>();
+        for (Dealer dealer: dealers) {
+            models.add(dealer);
         }
-        try {
-            bw = new BufferedWriter(new FileWriter(csv, true));
-            for (Dealer d: dealers) {
-                bw.write(d.toCSVLine());
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (bw != null) {
-                try {bw.close(); } catch (IOException e) {e.printStackTrace();}
-            }
-        }
+        writeModel(models, modelType);
     }
 
 
@@ -244,16 +231,29 @@ public class DataPersistence implements AbstractPersistent {
 
     @Override
     public void writeVehicles(List<Vehicle> vehicles) {
-        String vehicleFilePath = this.dataPath + "vehicles.csv";
-        File csv = new File(vehicleFilePath);
+        String modelType = "vehicles";
+        List<GenericModel> models = new ArrayList<>();
+        for (Vehicle vehicle: vehicles) {
+            models.add(vehicle);
+        }
+        writeModel(models, modelType);
+    }
+
+    private void writeModel(List<GenericModel> model, String modelType){
+        String filePath = this.dataPath + modelType + ".csv";
+        File csv = new File(filePath);
         BufferedWriter bw = null;
         if (!csv.exists()) {
-            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
+            try {
+                csv.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
             bw = new BufferedWriter(new FileWriter(csv, true));
-            for (Vehicle vehicle: vehicles) {
-                bw.write(vehicle.toCSVLine());
+            for (GenericModel m : model) {
+                bw.write(m.toCSVLine());
                 bw.newLine();
             }
         } catch (IOException e) {
