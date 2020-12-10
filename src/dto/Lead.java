@@ -19,13 +19,7 @@ public class Lead {
 
     public Lead() {
     }
-
-    // this constructor is for merging without conflict,
-    // it will be replaced with the below one and be removed after testing.
-    public Lead(String vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-
+    
     public Lead(String vehicleId, String dealerId) {
         this.vehicleId = vehicleId;
         this.dealerId = dealerId;
@@ -129,6 +123,7 @@ public class Lead {
     public String getMessage() {
         return message;
     }
+
     public String toCSVLine() {
         return leadId + "," + vehicleId + "," + dealerId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
                 zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
