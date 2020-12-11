@@ -100,8 +100,11 @@ public class DataPersistence implements AbstractPersistent {
                     int escEnd = unescaped[i].indexOf("</" + escSymbols[i] + ">\",");
                     unescaped[i] = unescaped[i].substring(0, escEnd); // substring in between first double quotes
                     // remove first occurrence of substring with double quotes
-                    line = line.replaceFirst(",\"<" + escSymbols[i] + ">" + unescaped[i] + "</" + escSymbols[i] + ">\"", "");
+                    line = line.replaceFirst("\"<" + escSymbols[i] + ">" + unescaped[i] + "</" + escSymbols[i] + ">\",", "");
+                    unescaped[i] = unescaped[i].replace("<dollar>", "\\$");
                 }
+
+
 
                 // converting csv data to a Special
                 String[] fields = line.split("\\,", -1);

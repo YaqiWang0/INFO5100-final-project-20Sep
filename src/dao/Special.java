@@ -232,8 +232,11 @@ public class Special extends GenericModel{
 		// escape comma and double quotes in title, description and disclaimer
 		// other variables of Special should not contain any comma or double quotes
 		String csvTitle = title == null ? "\"<ti></ti>\"" : "\"<ti>" + title + "</ti>\"";
+		csvTitle = csvTitle.replace("$","<dollar>");
 		String csvDescription = description == null ? "\"<de></de>\"" : "\"<de>" + description + "</de>\"";
+		csvDescription = csvDescription.replace("$","<dollar>");
 		String csvDisclaimer = disclaimer == null ? "\"<di></di>\"" : "\"<di>" + disclaimer + "</di>\"";
+		csvDisclaimer = csvDisclaimer.replace("$","<dollar>");
 		String specialScopeStr = String.join(" ", specialScope);
 
 		// convert a Special to csv data
