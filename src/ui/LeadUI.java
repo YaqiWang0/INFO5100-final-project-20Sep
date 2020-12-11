@@ -2,6 +2,8 @@ package ui;
 
 import dao.Dealer;
 import dao.Vehicle;
+import dto.DataPersistence;
+import dto.Lead;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -12,10 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class LeadUI extends JFrame {
@@ -32,12 +31,14 @@ public class LeadUI extends JFrame {
     private JButton submit, cancel;
 
     private String vehicleId;
+    private String dealerId;
     private String dealerNAME;
     private String dealerADDRESS;
 
 
     public LeadUI(Vehicle v, Dealer d) {
         vehicleId = v.getVehicleId();
+        dealerId = d.getDealerId();
         dealerNAME = d.getDealerName();
         dealerADDRESS = d.getDealerAddress().toCSVLine();
         createUI();
@@ -97,47 +98,33 @@ public class LeadUI extends JFrame {
                         "Reminder", JOptionPane.WARNING_MESSAGE);
             } else {
 
-                //TBC: initialize Lead object to save lead data to file system, eg. call .saveLead(lead);
-
-                ArrayList<String> leadInput = new ArrayList<>();
-                leadInput.add(firstNameText.getText());
-                leadInput.add(lastNameText.getText());
-                leadInput.add(emailText.getText());
-                leadInput.add(phoneDigit.getText());
-                leadInput.add(zipcodeDigit.getText());
+                Lead lead = new Lead(vehicleId, dealerId);
+                lead.setFirstName(firstNameText.getText());
+                lead.setLastName(lastNameText.getText());
+                lead.setEmailAddress(emailText.getText());
+                lead.setPhoneNumber(phoneDigit.getText());
+                lead.setZipCode(zipcodeDigit.getText());
                 if (usePurpose.getSelectedItem() == usePurpose.getItemAt(0)) {
-                    leadInput.add("use purpose not provided");
+                    lead.setUsePurpose("use purpose not provided");
                 } else {
-                    leadInput.add((String) usePurpose.getSelectedItem());
+                    lead.setUsePurpose((String) usePurpose.getSelectedItem());
                 }
                 if (contactTime.getSelectedItem() == contactTime.getItemAt(0)) {
-                    leadInput.add("contact time not provided");
+                    lead.setContactTime("contact time not provided");
                 } else {
-                    leadInput.add((String) contactTime.getSelectedItem());
+                    lead.setContactTime((String) contactTime.getSelectedItem());
                 }
                 if (selectEmail.isSelected() || selectPhone.isSelected()) {
-                    leadInput.add(contactMethods.getSelection().getActionCommand());
+                    lead.setContactPreference(contactMethods.getSelection().getActionCommand());
                 } else {
-                    leadInput.add("contact method not selected");
+                    lead.setContactPreference("contact method not provided");
                 }
-                leadInput.add(msgArea.getText().replaceAll("\n", " "));
+                lead.setMessage(msgArea.getText().replaceAll("\n", " "));
 
-                String leadFile = "leadOutput.csv";
-                File leadOutput = new File(leadFile);
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(leadOutput, true);
-                    fw.append(String.join(",", leadInput));
-                    fw.append("\n");
+                DataPersistence dp = new DataPersistence();
+                dp.writeLead(lead);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                } finally {
-                    fw.close();
-                }
-
-                System.exit(0);
+                dispose();
             }
         }
 
@@ -145,7 +132,7 @@ public class LeadUI extends JFrame {
             int cancelValue = JOptionPane.showConfirmDialog(null, "Cancel your quote and leave?",
                     "Reminder", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (cancelValue == JOptionPane.YES_OPTION) {
-                System.exit(0);
+                dispose();
             }
 
         }

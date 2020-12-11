@@ -169,4 +169,14 @@ public class Vehicle extends GenericModel{
 		return vehicleId+","+dealerId+","+year+","+brand+","+model+","+ isNew +","+price+","+exteriorColor
 				+","+interiorColor+","+bodyType+","+miles+","+featuresString+","+imgUrlsString;
 	}
+	
+	@Override
+	public String toString() {
+	    return String.format("<Vehicle> id: %s", vehicleId);
+	}
+	
+	@Override
+	public String getId() {
+	    return this.getVehicleId();
+	}
 }

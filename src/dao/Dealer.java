@@ -63,5 +63,9 @@ public class Dealer extends GenericModel{
 		return this.dealerId + "," + this.dealerName + "," + this.dealerAddress.toCSVLine();
 	}
 	
+	@Override
+	public String getId() {
+	    return this.getDealerId();
+	}
 	
 }
