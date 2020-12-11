@@ -1,6 +1,7 @@
 package ui;
 
 import dao.Special;
+import dao.VehicleModel;
 import service.InventiveTimeJob;
 
 import javax.swing.JPanel;
@@ -128,12 +129,14 @@ public class IncentiveUI extends JPanel implements Observer {
             InventiveTimeJob job = (InventiveTimeJob) arg;
             countdownLabel.setText(job.getCountdownText());
 
-            Special special = job.getSpecial();
+            VehicleModel VehicleModel = job.getVehicleModel();
+            Special special = VehicleModel.getSpecial();
+
             title.setText("Title: "+ special.getTitle());
             description.setText("Description: " + special.getDescription());
-            discountType.setText("Discount type: " + "XXXXXX");
-            discountValue.setText("Discount value: " + special.getValue());
-            priceAfterDiscount.setText("$XXXXXX");
+            discountType.setText("Discount type: " + VehicleModel.getIncentiveType());
+            discountValue.setText("Discount value: " + special.getDiscountValue());
+            priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
 
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));

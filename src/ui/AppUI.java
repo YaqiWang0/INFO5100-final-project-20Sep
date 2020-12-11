@@ -49,9 +49,9 @@ public class AppUI extends AppUIAbstract {
         int count = 0;
         for (Vehicle vehicle: vehicles) {
             VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* count*10));
+            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* (++count)*10));
 
-            centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
+            centerPanel.add(new JLabel("Car " + (count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
 
             centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
@@ -61,7 +61,7 @@ public class AppUI extends AppUIAbstract {
             centerPanel.add(new JLabel(vehicleModel.getSpecial().getEndDate() + ""));
 
             centerPanel.add(new JLabel("", JLabel.CENTER));
-            centerPanel.add(getPopupBtn(vehicleModel.getSpecial()));
+            centerPanel.add(getPopupBtn(vehicleModel));
         }
 
         return centerPanel;
@@ -69,16 +69,21 @@ public class AppUI extends AppUIAbstract {
 
     /**
      * pop-up incentive details ---Case6
-     * @param special
+     * @param VehicleModel
      * @return
      */
-    private JButton getPopupBtn(Special special) {
+    private JButton getPopupBtn(VehicleModel VehicleModel) {
         JButton popBtn = new JButton("Learn About Discount!!!");
 
         popBtn.addActionListener((ActionEvent e) -> {
-            timejob.start(special);
+            timejob.start(VehicleModel);
             JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (((VehicleModel.getSpecial().getEndDate().getTime() - new Date().getTime()) / 1000) < 0) {
+                popBtn.setEnabled(false);
+                popBtn.setText("Discount Expired");
+            }
             timejob.stop();
         });
 
