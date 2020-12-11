@@ -25,7 +25,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		return currentTime;
 	}
 
-	private static boolean timeCheck(Date startDate, Date endDate, Date currentTime) {
+	public static boolean timeCheck(Date startDate, Date endDate, Date currentTime) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String sd = formatter.format(startDate);
 		String ed = formatter.format(endDate);

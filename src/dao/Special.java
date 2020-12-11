@@ -9,6 +9,7 @@ public class Special {
 	private Date endDate;
 	private String title;
 	private String description;
+	private String disclaimer;
 	private int discountValue;
 	private int discountPercent;
 	private boolean isValidOnCashPayment;
@@ -17,24 +18,26 @@ public class Special {
 	private boolean isValidOnCheckPayment;
 
 	private String dealerId;
-	private String disclaimer;
-	private String value;
+
+	private String valueOfVehicle;
 	private String year;
-	private String brand;
-	private String bodytype;
 	private String isNew;
-	private String scopeParameter;
+	private String brand;
+	private String model;
+	private String scopeMiles;
+	//stores the list of id's of qualifying vehicles
 	private List<String> specialScope; // use single word only for parsing purposes in data persistence
+
 
 	public Special() {
 		this.specialId=UUID.randomUUID().toString();
 		this.title = "";
-		this.value = "";
+		this.valueOfVehicle = "";
 		this.year = "";
 		this.brand = "";
-		this.bodytype = "";
+		this.model = "";
 		this.isNew = "";
-		this.scopeParameter = "";
+		this.scopeMiles = "";
 		this.specialScope = new ArrayList<>();
 		this.specialId=UUID.randomUUID().toString();
 		this.discountValue = 0;
@@ -45,14 +48,14 @@ public class Special {
 		this.isValidOnLease = false;
 	}
 
-	public Special(String dealerId, Date startDate, Date endDate, String title, String value) {
+	public Special(String dealerId, Date startDate, Date endDate, String title, String valueOfVehicle) {
 		this.specialId=UUID.randomUUID().toString();
 		
 		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
 		this.startDate=startDate;
 		this.endDate=Objects.requireNonNull(endDate,"EndDate should not be null");
 		this.title=Objects.requireNonNull(title,"Title should not be null.");
-		this.value=Objects.requireNonNull(value,"Value should not be null");
+		this.valueOfVehicle =Objects.requireNonNull(valueOfVehicle,"Value should not be null");
 	}
 
 	public void setSpecialId(String specialId) {
@@ -87,8 +90,8 @@ public class Special {
 		this.disclaimer=disclaimer;
 	}
 	
-	public void setValue(String value) {
-		this.value=Objects.requireNonNull(value,"Value should not be null");
+	public void setValueOfVehicle(String valueOfVehicle) {
+		this.valueOfVehicle =Objects.requireNonNull(valueOfVehicle,"Value should not be null");
 	}
 	
 	public void setYear(String year) {
@@ -100,7 +103,7 @@ public class Special {
 	}
 	
 	public void setBodyType(String bodyType){
-		this.bodytype = bodyType;
+		this.model = bodyType;
 	}
 	
 	public void setIsNew(String isNew) {
@@ -111,8 +114,8 @@ public class Special {
 		this.specialScope = specialScope;
 	}
 	
-	public void setScopeParameter(String parameter) {
-		this.scopeParameter=parameter;
+	public void setScopeMiles(String parameter) {
+		this.scopeMiles =parameter;
 	}
 	
 	public String getSpecialId() {
@@ -143,8 +146,8 @@ public class Special {
 		return this.disclaimer;
 	}
 	
-	public String getValue() {
-		return this.value;
+	public String getValueOfVehicle() {
+		return this.valueOfVehicle;
 	}
 	
 	public String getYear() {
@@ -156,7 +159,7 @@ public class Special {
 	}
 	
 	public String getBodyType() {
-		return this.bodytype;
+		return this.model;
 	}
 	
 	public String isNew() {
@@ -167,8 +170,8 @@ public class Special {
 		return this.specialScope;
 	}
 	
-	public String getScopeParameter() {
-		return this.scopeParameter;
+	public String getScopeMiles() {
+		return this.scopeMiles;
 	}
 
 	public void setDiscountValue(int discountValue) {
@@ -245,12 +248,12 @@ public class Special {
 				+ isValidOnLoan + ","
 				+ isValidOnLease + ","
 				+ csvDisclaimer + ","
-				+ value + ","
+				+ valueOfVehicle + ","
 				+ year + ","
 				+ brand + ","
-				+ bodytype + ","
+				+ model + ","
 				+ isNew + ","
-				+ scopeParameter + ","
+				+ scopeMiles + ","
 				+ specialScopeStr;
 
 		return row;
@@ -278,12 +281,12 @@ public class Special {
 				+ isValidOnLoan + ","
 				+ isValidOnLease + ","
 				+ csvDisclaimer + ","
-				+ value + ","
+				+ valueOfVehicle + ","
 				+ year + ","
 				+ brand + ","
-				+ bodytype + ","
+				+ model + ","
 				+ isNew + ","
-				+ scopeParameter + ","
+				+ scopeMiles + ","
 				+ specialScopeStr;
 
 		return row;

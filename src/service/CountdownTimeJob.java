@@ -1,50 +1,30 @@
 package service;
 
-import dao.Special;
 import dao.VehicleModel;
 
 import java.util.Date;
 import java.util.Observable;
 
-// the main task of InventiveTimeJob class is to update the text on countdownLabel.
-public class InventiveTimeJob extends Observable implements Runnable {
+public class CountdownTimeJob extends Observable implements Runnable {
 
     private Thread thread;
     private boolean isDone;
 
     private Date endDate;
     private String countdownText;
-    private Special special;
-    private VehicleModel vehicleModel;
-
-    @Override
-    public void notifyObservers() {
-        super.notifyObservers();
-    }
+    private VehicleModel VehicleModel;
 
     public String getCountdownText() {
         return countdownText;
     }
-    public Special getSpecial() {
-        return special;
-    }
-
     public VehicleModel getVehicleModel() {
-        return vehicleModel;
+        return VehicleModel;
     }
 
-    public void start(Special special) {
-        this.special = special;
-        endDate = special.getEndDate();
+    public void start(VehicleModel VehicleModel) {
+        this.VehicleModel = VehicleModel;
+        endDate = VehicleModel.getSpecial().getEndDate();
 
-        isDone = false;
-        thread = new Thread(this);
-        thread.start();
-    }
-
-    public void start(VehicleModel vehicleModel) {
-        this.vehicleModel = vehicleModel;
-        endDate = vehicleModel.getSpecial().getEndDate();
         isDone = false;
         thread = new Thread(this);
         thread.start();
@@ -76,15 +56,14 @@ public class InventiveTimeJob extends Observable implements Runnable {
             countdownText = setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
                     + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds";
 
-            if (time < 0)
-                countdownText = "00Days00Hours00Minutes00Seconds";
+            if (time <= 0)
+                countdownText = "Expired";
 
             setChanged();
             notifyObservers(this);
 
-            if (time < 0) {
+            if (time < 0)
                 break;
-            }
 
             try {
                 Thread.sleep(1000);

@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,6 +22,7 @@ public class DataPersistence implements AbstractPersistent {
     public DataPersistence() {
         this.dataPath = new File("").getAbsolutePath() + "/data/";
     }
+
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override
@@ -129,12 +128,12 @@ public class DataPersistence implements AbstractPersistent {
                 i.setValidOnCheckPayment(Boolean.parseBoolean(fields[7]));
                 i.setValidOnLoan(Boolean.parseBoolean(fields[8]));
                 i.setValidOnLease(Boolean.parseBoolean(fields[9]));
-                i.setValue(fields[10]);
+                i.setValueOfVehicle(fields[10]);
                 i.setYear(fields[11]);
                 i.setBrand(fields[12]);
                 i.setBodyType(fields[13]);
                 i.setIsNew(fields[14]);
-                i.setScopeParameter(fields[15]);
+                i.setScopeMiles(fields[15]);
                 // use single word only in special scopes for parsing purposes
                 i.setScope(Arrays.asList(fields[16].split("\\s")));
 
@@ -159,7 +158,6 @@ public class DataPersistence implements AbstractPersistent {
 
         return allSpecials;
     }
-
 
     /**
      * Overwrite specials.csv with the given specials.

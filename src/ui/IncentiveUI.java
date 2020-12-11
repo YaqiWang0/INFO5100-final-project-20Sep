@@ -2,13 +2,12 @@ package ui;
 
 import dao.Special;
 import dao.VehicleModel;
-import service.InventiveTimeJob;
+import service.CountdownTimeJob;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import java.awt.*;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Observable;
@@ -33,71 +32,53 @@ public class IncentiveUI extends JPanel implements Observer {
         final int DEFAULT_FONT_SIZE = 20;
         final Color DEFAULT_COLOR = Color.black;
 
-        // ??? need to count how many rows.
         this.setLayout(new GridLayout(9, 1));
 
         // create the great label and add the label to panel.
-        /* ??? I tried to add a picture to the label, but failed because
-        the size of the image could not change with the whole panel.
-        Any solutions?
-         */
-//        String path = new File("").getAbsolutePath() + "/src/ui/pictures/car.png";
-//        ImageIcon img = new ImageIcon(path);
-//        URL carImgURL = getClass().getResource("/car.png");
-//        JLabel greatLabel = new JLabel("<html><font color=orange><img src='" + carImgURL + "'></font><font color=red>" +
-//                "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
         JLabel greatLabel = new JLabel("<html><font color=orange>&#128663;</font><font color=red>" +
                 "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
-//        // set the font of great label.
-        greatLabel.setFont(new Font("Serif", Font.BOLD, 48));
+        greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // the great label to panel.
         this.add(greatLabel);
-
 
         // create the title label and add the label to panel.
         title = new JLabel();
         addSingleLabelInOneLine(title, "Title: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
-
         // create the Description label and add the label to panel.
         description = new JLabel();
         addSingleLabelInOneLine(description, "Description: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
-
 
         // create the Discount type label and add the label to panel.
         discountType = new JLabel();
         addSingleLabelInOneLine(discountType, "Discount type: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
-
         // create the Discount value label and add the label to panel.
+        /* the value attribute in Special.java represents: how much
+        discount the dealer want to give , CANNOT be null
+         */
         discountValue = new JLabel();
         addSingleLabelInOneLine(discountValue, "Discount value: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
-
 
         // create the price after discount label and add the label to panel.
         priceAfterDiscount = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Price after discount: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                priceAfterDiscount, "$", 28, Color.red);
-
+                priceAfterDiscount, "$", DEFAULT_FONT_SIZE, Color.red);
 
         // create the countdown label and add the label to panel.
         countdownLabel = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Ends in: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                countdownLabel, countdownLabel.getText(), 28, Color.red);
+                countdownLabel, countdownLabel.getText(), DEFAULT_FONT_SIZE, Color.red);
 
-
-        // create the discount period label and add the label to panel.
+        // create the Discount period label and add the label to panel.
         discountPeriod = new JLabel();
         addTwoLabelsInOneLine(new JLabel(), "Discount period: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
-                discountPeriod, "", 28, Color.orange);
-
+                discountPeriod, "", DEFAULT_FONT_SIZE, Color.orange);
 
         // create the disclaimer label and add the label to panel.
         disclaimer = new JLabel();
         addSingleLabelInOneLine(disclaimer, "Disclaimer: ", 12, Color.gray);
-
 
     }
 
@@ -109,9 +90,8 @@ public class IncentiveUI extends JPanel implements Observer {
         // set the label's fore ground color.
         label.setForeground(color);
 
-        /* the reason I create a panel is to make the label become
-        left-justified with the two labels in one line.
-         */
+        // the reason I create a panel is to make the label become
+        // left-justified with the two labels in one line.
         JPanel smallPanel = new JPanel();
         smallPanel.add(label);
         smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -142,33 +122,27 @@ public class IncentiveUI extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof InventiveTimeJob) {
-            InventiveTimeJob job = (InventiveTimeJob) arg;
-
-            VehicleModel vehicleModel = job.getVehicleModel();
-            Special special = vehicleModel.getSpecial();
-
-            // set the text of countdownLabel.
+        if (arg instanceof CountdownTimeJob) {
+            CountdownTimeJob job = (CountdownTimeJob) arg;
             countdownLabel.setText(job.getCountdownText());
 
-            // set the text of title.
+            VehicleModel VehicleModel = job.getVehicleModel();
+            Special special = VehicleModel.getSpecial();
+
             title.setText("Title: "+ special.getTitle());
-            // set the text of description. ??? failed to read the data.
             description.setText("Description: " + special.getDescription());
-            // set the text of discountType.
-            discountType.setText("Discount type: " + vehicleModel.getIncentiveType());
-            // set the text of discountValue.
-            discountValue.setText("Discount value: " + special.getDiscountValue() );
-            // set the text of priceAfterDiscount.
-            priceAfterDiscount.setText("$" + vehicleModel.getSpecialPrice());
-            // set the text of discountPeriod.
+            discountType.setText("Discount type: " + VehicleModel.getIncentiveType());
+            // this could be discount value or discount percentage.
+            if (special.getDiscountValue() != 0) {
+                discountValue.setText("Discount value: " + special.getDiscountValue());
+            } else if (special.getDiscountPercent() != 0) {
+                discountValue.setText("Discount percentage: " + special.getDiscountPercent());
+            }
+            priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
-            // set the text of disclaimer. ??? failed to read the data.
             disclaimer.setText("Disclaimer: " + special.getDisclaimer());
         }
         repaint();
     }
-
-
 }
