@@ -20,6 +20,7 @@ public class Lead extends GenericModel {
     private String message;
     private String replyNotes;
     private boolean read;
+    private boolean contacted;
 
     public Lead() {
     }
@@ -29,6 +30,8 @@ public class Lead extends GenericModel {
         this.dealerId = dealerId;
         this.leadId = UUID.randomUUID().toString();
         this.replyNotes = "";
+        this.read = false;
+        this.contacted = false;
     }
 
     public void setLeadId(String leadId) {
@@ -87,6 +90,10 @@ public class Lead extends GenericModel {
         this.read = read;
     }
 
+    public void setContacted(boolean contacted) {
+        this.contacted = contacted;
+    }
+
     public String getLeadId() {
         return leadId;
     }
@@ -143,6 +150,10 @@ public class Lead extends GenericModel {
 
     public boolean getRead() {
         return read;
+    }
+
+    public boolean getContacted() {
+        return contacted;
     }
 
     public String toCSVLine() {
