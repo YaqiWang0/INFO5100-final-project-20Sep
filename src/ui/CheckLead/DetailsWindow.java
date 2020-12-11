@@ -1,21 +1,23 @@
-package ui.CheckLead;
-
+package ui.checklead;
 
 import dao.*;
+import dto.*;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 import java.util.concurrent.ThreadFactory;
 
 
 public class DetailsWindow {
-    private Customer customer;
+    private Lead lead;
     private Vehicle vehicles[];
     private int vehicleIndex;
-    private String userNotes;
-    private String[] tabNames = {"Customer Info", "Vehicle Info", "User Notes"};
-    JTextArea vehicleInfoTextArea;
+    private static String CUSTOMER_INFO = "Customer info";
+    private static String VEHICLE_INFO = "Vehicle Info";
+    private static String USER_NOTES = "User Notes";
+    private String[] tabNames = {CUSTOMER_INFO, VEHICLE_INFO, USER_NOTES};
     JTextArea userNotesTextArea;
     JTextArea userNotesReplyTextArea;
     JButton replyButton, saveButton;
@@ -24,30 +26,27 @@ public class DetailsWindow {
     private JFrame theFrame;
 
 
-    public DetailsWindow (Customer customer, Vehicle[] vehicles, String userNotes) {
-	    this.customer = customer;
+    public DetailsWindow (Lead lead, Vehicle[] vehicles) {
+	    this.lead = lead;
 	    this.vehicles = vehicles;
-	    this.userNotes = userNotes;
 	    vehicleIndex = 0;
     }
     public static void main (String[] args) {
-        Vehicle[] vehicles = {new Vehicle("1", "2015", "Honda", null, true,
-                    "35000", "black", "black", BodyType.SUV, "0"),
-                new Vehicle("2", "2020", "Toyota", null, false,
-                        "25000", "black", "black", BodyType.CAR, "40000")};
-        Address address = new Address("401 Terry Ave N #103", "","Seattle", "WA", "98109");
-        Customer customer = new Customer("Xingfu", "Du", address, "(206) 467-5480", "Xingfu@gmail.com");
-        String userNotes = "user notes here";
-	    new DetailsWindow(customer, vehicles, userNotes).buildGUI();
+        LeadDataHelper helper = LeadDataHelper.instance();
+        List<Lead> forms =  helper.getLeads();
+        Vehicle[] vehicles={helper.getVehicle(forms.get(0).getVehicleId()),
+                helper.getVehicle(forms.get(1).getVehicleId())};
+	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
     }
 
     public void buildGUI () {
-	    theFrame = new JFrame("DetailsWindow");
-	    theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    theFrame = new JFrame("Details Window");
+	    theFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    mainPanel = new JTabbedPane();
 	    layoutComponents();
 	    theFrame.getContentPane().add(mainPanel);
 	    theFrame.setPreferredSize(new Dimension(800, 600));
+        theFrame.setAlwaysOnTop(true);
         theFrame.pack();
 	    theFrame.setLocationRelativeTo(null);
         theFrame.setVisible(true);
@@ -57,12 +56,13 @@ public class DetailsWindow {
 	    int i = 0;
 
 
+
 	    /**
          * customer info panel
 	    */
-        JPanel customerInfoPanel = new JPanel();
-        fillCustomerPanel(customerInfoPanel);
-        mainPanel.addTab(tabNames[i++], null, customerInfoPanel, "first");
+        JPanel leadInfoPanel = new JPanel();
+        fillLeadPanel(leadInfoPanel);
+        mainPanel.addTab(tabNames[i++], null, leadInfoPanel, "first");
 
 
 
@@ -74,7 +74,7 @@ public class DetailsWindow {
 
         JToolBar vehicleToolBar = new JToolBar();
         JPanel vehicleInfoSubPanel = new JPanel();
-        
+
         UpdateVehiclePanel(vehicleInfoSubPanel);
 	    vehicleInfoAddButtons(vehicleToolBar, vehicleInfoSubPanel);
 	
@@ -82,7 +82,6 @@ public class DetailsWindow {
         vehicleInfoPanel.add(vehicleInfoSubPanel,BorderLayout.CENTER);
 
 	    mainPanel.addTab(tabNames[i++], null, vehicleInfoPanel, "second");
-
 
 
 
@@ -96,80 +95,84 @@ public class DetailsWindow {
 
     }
 
-    private void fillCustomerPanel(JPanel customerInfoPanel) {
-        GridLayout customerGrid = new GridLayout(1,2);
-        customerGrid.setHgap(10);
-        customerInfoPanel.setLayout(customerGrid);
-        customerInfoPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
-        JLabel userImageLabel = new JLabel();
-        ImageIcon userImage = createImageIcon("./user_default_image.jpg");
-        userImageLabel.setIcon(userImage);
-        userImageLabel.setBounds(new Rectangle(10, 10));
-        userImageLabel.setHorizontalAlignment(JLabel.CENTER);
-        customerInfoPanel.add(userImageLabel);
-
+    private void fillLeadPanel(JPanel leadInfoPanel) {
+        leadInfoPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         GridLayout grid = new GridLayout(0,2);
         grid.setHgap(1);
         grid.setVgap(1);
         /**
          * fill first name
          */
-        JPanel customerInfoSubPanel = new JPanel(grid);
+        leadInfoPanel.setLayout(grid); ;
         JLabel firstNameLabel = new JLabel();
         firstNameLabel.setText("First Name: ");
-        customerInfoSubPanel.add(firstNameLabel);
+        leadInfoPanel.add(firstNameLabel);
         JLabel firstName = new JLabel();
-        firstName.setText(customer.firstName);
-        customerInfoSubPanel.add(firstName);
+        firstName.setText(lead.getFirstName());
+        leadInfoPanel.add(firstName);
         /**
          * fill last name
          */
         JLabel lastNameLabel = new JLabel();
         lastNameLabel.setText("Last Name: ");
-        customerInfoSubPanel.add(lastNameLabel);
+        leadInfoPanel.add(lastNameLabel);
         JLabel lastName = new JLabel();
-        lastName.setText(customer.lastName);
-        customerInfoSubPanel.add(lastName);
-        /**
-         * fill address
-         */
-        JLabel addressLabel = new JLabel();
-        addressLabel.setText("Address: ");
-        customerInfoSubPanel.add(addressLabel);
-        JLabel address = new JLabel();
-        address.setText("<html>" + customer.customerAddress.getAddressInfo() + "<br><br>"
-            + customer.customerAddress.getCity() + ","
-                + customer.customerAddress.getState() + ",<br><br>"
-                + customer.customerAddress.getZipCode() );
-        customerInfoSubPanel.add(address);
+        lastName.setText(lead.getLastName());
+        leadInfoPanel.add(lastName);
         /**
          * fill phone number
          */
         JLabel phoneLabel = new JLabel();
         phoneLabel.setText("Phone Number: ");
-        customerInfoSubPanel.add(phoneLabel);
+        leadInfoPanel.add(phoneLabel);
         JLabel phone = new JLabel();
-        phone.setText(customer.phoneNumber);
-        customerInfoSubPanel.add(phone);
+        phone.setText(lead.getPhoneNumber());
+        leadInfoPanel.add(phone);
         /**
          * fill email
          */
         JLabel emailLabel = new JLabel();
-        emailLabel.setText("Phone Number: ");
-        customerInfoSubPanel.add(emailLabel);
+        emailLabel.setText("Email: ");
+        leadInfoPanel.add(emailLabel);
         JLabel email= new JLabel();
-        email.setText(customer.email);
-        customerInfoSubPanel.add(email);
-
-        customerInfoPanel.add(customerInfoSubPanel);
+        email.setText(lead.getEmailAddress());
+        leadInfoPanel.add(email);
+        /**
+         * fill zip code
+         */
+        JLabel zipCodeLabel = new JLabel();
+        zipCodeLabel.setText("Zip Code: ");
+        leadInfoPanel.add(zipCodeLabel);
+        JLabel zipCode= new JLabel();
+        zipCode.setText(lead.getZipCode());
+        leadInfoPanel.add(zipCode);
+        /**
+         * fill contact preference
+         */
+        JLabel contactPreferenceLabel = new JLabel();
+        contactPreferenceLabel.setText("Contact Preference: ");
+        leadInfoPanel.add(contactPreferenceLabel);
+        JLabel contactPreference= new JLabel();
+        contactPreference.setText(lead.getContactPreference());
+        leadInfoPanel.add(contactPreference);
+        /**
+         * fill contact time
+         */
+        JLabel contactTimeLabel = new JLabel();
+        contactTimeLabel.setText("Contact Time: ");
+        leadInfoPanel.add(contactTimeLabel);
+        JLabel contactTime= new JLabel();
+        contactTime.setText(lead.getContactTime());
+        leadInfoPanel.add(contactTime);
 
     }
 
     private void UpdateVehiclePanel(JPanel vehicleInfoSubPanel) {
+
         GridLayout vehicleGrid = new GridLayout(1,2);
         vehicleGrid.setHgap(10);
         vehicleInfoSubPanel.setLayout(vehicleGrid);
-        vehicleInfoSubPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));           
+        vehicleInfoSubPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
         JLabel vehicleImageLabel = new JLabel();
         vehicleImageLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource(
                 "./vehicle_image_" + (vehicleIndex + 1) + ".jpg")).getImage().getScaledInstance(360, 280, Image.SCALE_SMOOTH)));
@@ -189,7 +192,6 @@ public class DetailsWindow {
         vehicleDataPanel.add(brandLabel);
         JLabel brand = new JLabel();
         brand.setText(vehicles[vehicleIndex].getBrand());
-        System.out.println(vehicleIndex);
         vehicleDataPanel.add(brand);
         /**
          * fill body type
@@ -237,12 +239,12 @@ public class DetailsWindow {
         miles.setText(vehicles[vehicleIndex].getMiles());
         vehicleDataPanel.add(miles);
 
-
         vehicleInfoSubPanel.add(vehicleDataPanel);
 
     }
 
     public void fillUserNotesPanel(JPanel userNotesPanel) {
+
         userNotesPanel.setLayout(new BorderLayout());
 
         GridLayout userNotesgrid = new GridLayout(2,1);
@@ -255,7 +257,7 @@ public class DetailsWindow {
         userNotesTextArea = new JTextArea(12,40);
         userNotesTextArea.setEditable(false);
         userNotesTextArea.setLineWrap(true);
-        userNotesTextArea.setText(userNotes);
+        userNotesTextArea.setText(lead.getMessage());
 
         JScrollPane userNotesTextScroller = new JScrollPane(userNotesTextArea);
         userNotesTextScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -266,8 +268,8 @@ public class DetailsWindow {
          */
         userNotesReplyTextArea = new JTextArea();
         userNotesReplyTextArea.setLineWrap(true);
-        if (!customer.replyNotes.isEmpty()) {
-            userNotesReplyTextArea.setText(customer.replyNotes);
+        if (!lead.getReplyNotes().isEmpty()) {
+            userNotesReplyTextArea.setText(lead.getReplyNotes());
         }
 
         JScrollPane userNotesReplyTextScroller = new JScrollPane(userNotesReplyTextArea);
@@ -294,11 +296,13 @@ public class DetailsWindow {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                     if(result == JOptionPane.YES_OPTION){
-                        customer.replyNotes = userNotesReplyTextArea.getText();
+                        lead.setReplyNotes(userNotesReplyTextArea.getText());
                         replyButton.setText("message sent");
-                        sendMessage(customer, userNotesReplyTextArea.getText());
+                        sendMessage(lead, userNotesReplyTextArea.getText());
+                        lead.setRead(true);
                         replyButton.setEnabled(false);
                         userNotesReplyTextArea.setText(null);
+                        lead.setReplyNotes("");
                         Timer timer = new Timer(1000, new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
@@ -324,7 +328,7 @@ public class DetailsWindow {
                         JOptionPane.showConfirmDialog(null, "The message is empty!",
                                 "Warning",JOptionPane.WARNING_MESSAGE);
                     } else {
-                        customer.replyNotes = userNotesReplyTextArea.getText();
+                        lead.setReplyNotes(userNotesReplyTextArea.getText());
                         saveLabel.setText("saved");
                         Timer timer = new Timer(1000, new ActionListener() {
                             @Override
@@ -337,6 +341,7 @@ public class DetailsWindow {
                 }
 
         });
+
         /**
          * save reply notes after losing focus
          */
@@ -347,7 +352,7 @@ public class DetailsWindow {
 
             @Override
             public void focusLost(FocusEvent e) {
-                customer.replyNotes = userNotesReplyTextArea.getText();
+                lead.setReplyNotes(userNotesReplyTextArea.getText());
                 saveLabel.setText("saved");
                 Timer timer = new Timer(1000, new ActionListener() {
                     @Override
@@ -366,20 +371,12 @@ public class DetailsWindow {
         t.schedule(new java.util.TimerTask() {
             @Override
             public void run() {
-                customer.replyNotes = userNotesReplyTextArea.getText();
+                lead.setReplyNotes(userNotesReplyTextArea.getText());
                 saveLabel.setText("saved");
-                /*Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        saveLabel.setText("");
-                    }
-                });
-                timer.start();*/
                 try {
                     Thread.sleep(1000);
                     saveLabel.setText("");
                 } catch(Exception exp) {
-
                 }
             }
         }, 0, 1000 * 60);
@@ -473,7 +470,7 @@ public class DetailsWindow {
 	    return button;
     }
 
-    private void sendMessage (Customer cust, String message) {
+    private void sendMessage (Lead lead, String message) {
 	
     }
 
@@ -481,25 +478,5 @@ public class DetailsWindow {
 
 
 
-class Customer {
-    public String firstName;
-    public String lastName;
-    public Address customerAddress;
-    public String phoneNumber;
-    public String email;
-    public String replyNotes;
-
-    Customer (String firstName, String lastName, Address customerAddress, String phoneNumber, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.customerAddress = customerAddress;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.replyNotes = "";
-    }
-    public String toString () {
-	    return "";
-    }
-}
 
 
