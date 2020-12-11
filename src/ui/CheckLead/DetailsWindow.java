@@ -31,13 +31,13 @@ public class DetailsWindow {
 	    this.vehicles = vehicles;
 	    vehicleIndex = 0;
     }
-    /*public static void main (String[] args) {
+    public static void main (String[] args) {
         LeadDataHelper helper = LeadDataHelper.instance();
         List<Lead> forms =  helper.getLeads();
         Vehicle[] vehicles={helper.getVehicle(forms.get(0).getVehicleId()),
                 helper.getVehicle(forms.get(1).getVehicleId())};
 	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }*/
+    }
 
     public void buildGUI () {
 	    theFrame = new JFrame("Details Window");
@@ -395,7 +395,7 @@ public class DetailsWindow {
         userNotesPanel.add(BorderLayout.PAGE_END, buttonPane);
     }
 
-    private ImageIcon createImageIcon(String path) {
+    /*private ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = DetailsWindow.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
@@ -403,7 +403,7 @@ public class DetailsWindow {
             System.err.println("Can not find image: " + path);
             return null;
         }
-    }
+    }*/
 
     private void vehicleInfoAddButtons (JToolBar toolBar, JPanel vehicleInfoSubPanel) {
 	    /**
