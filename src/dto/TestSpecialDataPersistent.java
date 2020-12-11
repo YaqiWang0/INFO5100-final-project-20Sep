@@ -11,7 +11,7 @@ public class TestSpecialDataPersistent {
         DataPersistence dp = new DataPersistence();
 
         Special sp = new Special();
-        sp.setDealerId("test dealer 1");
+        sp.setDealerId("testDealer1");
         sp.setStartDate(new SimpleDateFormat("dd/MM/yyyy").parse("08/12/2020"));
         sp.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020"));
         sp.setDiscountValue(4500);
@@ -26,7 +26,7 @@ public class TestSpecialDataPersistent {
 
         //dp.writeSpecial(sp, sp.getDealerId());
 
-        List<Special> allSpecialsRead = dp.getAllSpecials("test dealer 1");
+        List<Special> allSpecialsRead = dp.getAllSpecials("testDealer1");
         for (Special s: allSpecialsRead) {
             System.out.println(s.getSpecialId());
         }
