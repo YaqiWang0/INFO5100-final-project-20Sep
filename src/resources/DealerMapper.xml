@@ -43,4 +43,11 @@
   FROM dealer
 </select>
 
+  <select id="findById" resultMap="BaseResultMap">
+  SELECT
+  webId, Id, password
+  FROM dealer
+  WHERE Id=#{id}
+</select>
+
 </mapper>
