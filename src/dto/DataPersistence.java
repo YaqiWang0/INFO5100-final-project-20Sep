@@ -79,10 +79,12 @@ public class DataPersistence implements AbstractPersistent {
      * @return a map of all specials saved in the specials.csv (key: specialId, value: special)
      */
     @Override
-    public List<Special> getAllSpecials() {
-        File csv = new File(this.dataPath + "specials.csv");
+    public List<Special> getAllSpecials(String dealerID) {
+        File csv = new File(this.dataPath + "specials/" + dealerID + ".csv");
         BufferedReader br = null;
         List<Special> allSpecials = new ArrayList<>();
+
+        if (!csv.exists()) return allSpecials;
 
         try {
             br = new BufferedReader(new FileReader(csv));
@@ -104,7 +106,7 @@ public class DataPersistence implements AbstractPersistent {
                 // converting csv data to a Special
                 String[] fields = line.split("\\,", -1);
                 Special i = new Special();
-                i.setSpecialId(fields[0]); // added to Special.java
+                i.setSpecialId(fields[0]);
                 i.setDealerId(fields[1]);
                 i.setStartDate(new Date(Long.parseLong(fields[2])));
                 i.setEndDate(new Date(Long.parseLong(fields[3])));
@@ -120,7 +122,6 @@ public class DataPersistence implements AbstractPersistent {
                 i.setBodyType(fields[13]);
                 i.setIsNew(fields[14]);
                 i.setScopeMiles(fields[15]);
-                // use single word only in special scopes for parsing purposes
                 i.setScope(Arrays.asList(fields[16].split("\\s")));
 
                 i.setTitle(unescaped[0]);
@@ -150,28 +151,11 @@ public class DataPersistence implements AbstractPersistent {
      * @param special are the specials to be saved in the specials.csv
      */
     @Override
-    public void writeSpecials(Special special) {
-        File csv = new File(this.dataPath + "specials.csv");
-        if (!csv.exists()) {
-            try {csv.createNewFile(); } catch (IOException e) {e.printStackTrace();}
-        }
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new FileWriter(csv,true));
-            // create a new specials.csv and write each special into the file
-            bw.write(special.toCSVLine());
-            bw.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (bw != null) {
-                try {
-                    bw.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public void writeSpecial(Special special, String dealerID) {
+        String modelType = "specials/" + dealerID;
+        List<GenericModel> models = new ArrayList<>();
+        models.add(special);
+        writeModel(models, modelType);
     }
 
     @Override
