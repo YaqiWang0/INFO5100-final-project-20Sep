@@ -1,4 +1,4 @@
-package ui.checklead;
+package ui.CheckLead;
 
 import dao.*;
 import dto.*;
