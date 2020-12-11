@@ -31,13 +31,13 @@ public class DetailsWindow {
 	    this.vehicles = vehicles;
 	    vehicleIndex = 0;
     }
-    public static void main (String[] args) {
+    /*public static void main (String[] args) {
         LeadDataHelper helper = LeadDataHelper.instance();
         List<Lead> forms =  helper.getLeads();
         Vehicle[] vehicles={helper.getVehicle(forms.get(0).getVehicleId()),
                 helper.getVehicle(forms.get(1).getVehicleId())};
 	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }
+    }*/
 
     public void buildGUI () {
 	    theFrame = new JFrame("Details Window");
