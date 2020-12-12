@@ -24,7 +24,6 @@ public class CountdownTimeJob extends Observable implements Runnable {
     public void start(VehicleModel VehicleModel) {
         this.VehicleModel = VehicleModel;
         endDate = VehicleModel.getSpecial().getEndDate();
-
         isDone = false;
         thread = new Thread(this);
         thread.start();
@@ -48,10 +47,10 @@ public class CountdownTimeJob extends Observable implements Runnable {
             Date now = new Date();
             long time = (endDate.getTime() - now.getTime()) / 1000;
 
-            int seconds = (int) time % 60;
-            int minutes = (int) time / 60;
-            int hours = minutes / 60;
-            int days = hours / 24;
+            int days = (int) (time / (60 * 60 * 24));
+            int hours = (int) ((time % (60 * 60 * 24)) / (60 * 60));
+            int minutes = (int) ((time % (60 * 60)) / 60);
+            int seconds = (int) (time % 60);
 
             countdownText = setTimeStyle(days) + "Days" + setTimeStyle(hours) + "Hours"
                     + setTimeStyle(minutes) + "Minutes" + setTimeStyle(seconds) + "Seconds";
