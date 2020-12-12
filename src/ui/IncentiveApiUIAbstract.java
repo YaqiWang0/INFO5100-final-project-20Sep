@@ -3,11 +3,11 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AppUIAbstract {
+public abstract class IncentiveApiUIAbstract {
 
     protected JFrame frame;
 
-    public AppUIAbstract() {
+    public IncentiveApiUIAbstract() {
         System.out.println("App constructor starting...");
         initGUI();
         showUI();

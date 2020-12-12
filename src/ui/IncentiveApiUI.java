@@ -14,8 +14,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class AppUI extends AppUIAbstract {
+public class IncentiveApiUI extends IncentiveApiUIAbstract {
 
     private IncentiveApi incentiveApi;
     private JPanel centerPanel;
@@ -24,7 +25,7 @@ public class AppUI extends AppUIAbstract {
     private IncentiveUI incentiveUI;
     private CountdownTimeJob timeJob;
 
-    public AppUI() {
+    public IncentiveApiUI() {
         incentiveUI = new IncentiveUI();
         timeJob = new CountdownTimeJob();
         timeJob.addObserver(incentiveUI);
@@ -105,6 +106,15 @@ public class AppUI extends AppUIAbstract {
         });
 
         return popBtn;
+    }
+
+    public static void main(String[] args) {
+        /* set the Locale of JVM US, so the default language
+        would be English. Others could delete the code.
+         */
+        Locale.setDefault(Locale.US);
+        new IncentiveApiUI();
+        System.out.println("AppUI main starting...");
     }
 
 }
