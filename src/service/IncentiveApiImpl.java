@@ -98,6 +98,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 			model.setHaveSpecial(true);
 		} else {
 			model.setHaveSpecial(false);
+			model.setSpecialPrice(price);
 		}
 
 		return model;
