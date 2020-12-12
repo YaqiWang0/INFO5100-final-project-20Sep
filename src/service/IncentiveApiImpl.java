@@ -130,7 +130,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 	}
 
-	public String incentiveAppliedOn(Special s) {
+	public static String incentiveAppliedOn(Special s) {
 		StringBuilder sb = new StringBuilder();
 		if (s.getIsValidOnCashPayment()) {
 			sb.append(" Cash payment discount ");
