@@ -18,6 +18,9 @@ public class Lead extends GenericModel {
     private String contactPreference;
     private String contactTime;
     private String message;
+    private String replyNotes;
+    private boolean read;
+    private boolean contacted;
 
     public Lead() {
     }
@@ -26,6 +29,9 @@ public class Lead extends GenericModel {
         this.vehicleId = vehicleId;
         this.dealerId = dealerId;
         this.leadId = UUID.randomUUID().toString();
+        this.replyNotes = "";
+        this.read = false;
+        this.contacted = false;
     }
 
     public void setLeadId(String leadId) {
@@ -76,6 +82,18 @@ public class Lead extends GenericModel {
         this.message = message;
     }
 
+    public void setReplyNotes(String replyNotes) {
+        this.replyNotes = replyNotes;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public void setContacted(boolean contacted) {
+        this.contacted = contacted;
+    }
+
     public String getLeadId() {
         return leadId;
     }
@@ -124,6 +142,18 @@ public class Lead extends GenericModel {
     // this getMessage method may return a String including multiple lines with comma and period.
     public String getMessage() {
         return message;
+    }
+
+    public String getReplyNotes() {
+        return replyNotes;
+    }
+
+    public boolean getRead() {
+        return read;
+    }
+
+    public boolean getContacted() {
+        return contacted;
     }
 
     public String toCSVLine() {

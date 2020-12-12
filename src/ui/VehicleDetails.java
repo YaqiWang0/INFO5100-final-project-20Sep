@@ -60,7 +60,7 @@ public class VehicleDetails {
 	}
 /*------------------------------------------------------------------------*/
 	public static void main(String[] args) throws Exception {
-		//Scanner sc = new Scanner(new File("C:\\Users\\Pratt\\Downloads\\CarInventoryInformationTables.xlsx"));  
+		
 		//sc.useDelimiter(","); 
 		readData();
 		System.out.println(list.get(0).getVehicleId());
