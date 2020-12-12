@@ -1,5 +1,6 @@
 package ui;
 
+import dao.Special;
 import dao.Vehicle;
 import dao.VehicleModel;
 import dto.AbstractPersistent;
@@ -48,26 +49,36 @@ public class AppUI extends AppUIAbstract {
         int count = 0;
         for (Vehicle vehicle: vehicles) {
             VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-            vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* (++count)*10));
-//            // demo, if the now the vehicle is not on sales
-//            if (count == 2) {
-//                vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() - 1000 * 100));
-//            }
-            centerPanel.add(new JLabel("Car " + (count), JLabel.CENTER));
+            Special special = vehicleModel.getSpecial();
+
+            centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
 
-            centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
-            centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
+            centerPanel.add(new JLabel("Price " + (count), JLabel.CENTER));
+            centerPanel.add(new JLabel(vehicle.getPrice()));
 
-            centerPanel.add(new JLabel("end date", JLabel.CENTER));
-            centerPanel.add(new JLabel(vehicleModel.getSpecial().getEndDate() + ""));
+            if (special != null) {
+                centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
+                centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
 
-            centerPanel.add(new JLabel("", JLabel.CENTER));
-            // only vehicles with valid incentives will have the button.
-            if ((new Date().getTime() >= vehicleModel.getSpecial().getStartDate().getTime())
-                    && (new Date().getTime() <= vehicleModel.getSpecial().getEndDate().getTime())) {
-                centerPanel.add(getPopupBtn(vehicleModel));
+                Date startDate = special.getStartDate();
+                Date endDate = special.getEndDate();
+                Date now = new Date();
+
+                centerPanel.add(new JLabel("end date", JLabel.CENTER));
+                centerPanel.add(new JLabel(endDate + ""));
+
+                centerPanel.add(new JLabel("", JLabel.CENTER));
+
+                if ((now.after(startDate) && now.before(endDate))
+                    || now.equals(startDate) || now.equals(startDate)) {
+                    centerPanel.add(getPopupBtn(vehicleModel));
+                }
             }
+
+            /// just for easy to look, removable.
+            centerPanel.add(new JLabel(""));
+            centerPanel.add(new JLabel(""));
         }
         return centerPanel;
     }
