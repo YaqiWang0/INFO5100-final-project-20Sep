@@ -14,8 +14,8 @@ public class VehicleModel {
     private String incentiveType;
     private boolean haveSpecial;
 
-	//All active specials
-    private List<Special> allSpecials;
+	//All specials
+    private List<VehicleModel> allSpecials;
 
 
 	public VehicleModel(Vehicle vehicle) {
@@ -51,7 +51,7 @@ public class VehicleModel {
 		return haveSpecial;
 	}    
     
-    public List<Special> getAllSpecials() {
+    public List<VehicleModel> getAllSpecials() {
  		return allSpecials;
  	}
 
@@ -79,12 +79,12 @@ public class VehicleModel {
 		this.haveSpecial = haveSpecial;
 	}
 	
-	public void setAllSpecials(List<Special> allSpecials) {
+	public void setAllSpecials(List<VehicleModel> allSpecials) {
 		this.allSpecials = allSpecials;
 	}
 	
 	
-	public void addToAllSpecials(Special special) {
+	public void addToAllSpecials(VehicleModel special) {
 		allSpecials.add(special);
 	}
 }
