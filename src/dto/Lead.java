@@ -2,7 +2,9 @@ package dto;
 
 import java.util.UUID;
 
-public class Lead {
+import dao.GenericModel;
+
+public class Lead extends GenericModel {
 
     private String leadId;
     private String vehicleId;
@@ -19,13 +21,7 @@ public class Lead {
 
     public Lead() {
     }
-
-    // this constructor is for merging without conflict,
-    // it will be replaced with the below one and be removed after testing.
-    public Lead(String vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-
+    
     public Lead(String vehicleId, String dealerId) {
         this.vehicleId = vehicleId;
         this.dealerId = dealerId;
@@ -128,6 +124,21 @@ public class Lead {
     // this getMessage method may return a String including multiple lines with comma and period.
     public String getMessage() {
         return message;
+    }
+
+    public String toCSVLine() {
+        return leadId + "," + vehicleId + "," + dealerId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
+                zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
+    }
+    
+    @Override
+    public String toString() {
+        return "<Lead> id: " + this.getVehicleId();
+    }
+    
+    @Override
+    public String getId() {
+        return this.getLeadId();
     }
 
 }
