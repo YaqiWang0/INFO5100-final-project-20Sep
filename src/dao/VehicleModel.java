@@ -49,8 +49,7 @@ public class VehicleModel {
     
     public boolean isHaveSpecial() {
 		return haveSpecial;
-	}
-    
+	}    
     
     public List<Special> getAllSpecials() {
  		return allSpecials;
