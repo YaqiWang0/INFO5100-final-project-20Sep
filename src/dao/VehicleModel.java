@@ -10,10 +10,11 @@ public class VehicleModel {
 
     // for case6 own attribute
     private String specialId;
-    //according to case 5, price is integer; better float? 
     private float specialPrice;
     private String incentiveType;
-    //All Specials
+    private boolean haveSpecial;
+
+	//All active specials
     private List<Special> allSpecials;
 
 
@@ -24,7 +25,7 @@ public class VehicleModel {
 	public VehicleModel(Vehicle vehicle, Special special) {
         this.vehicle = vehicle;
         this.special = special;
-	}
+    }
 
     public Vehicle getVehicle() {
         return vehicle;
@@ -45,6 +46,11 @@ public class VehicleModel {
     public String getIncentiveType() {
 		return incentiveType;
 	}
+    
+    public boolean isHaveSpecial() {
+		return haveSpecial;
+	}
+    
     
     public List<Special> getAllSpecials() {
  		return allSpecials;
@@ -70,9 +76,14 @@ public class VehicleModel {
 		this.incentiveType = incentiveType;
 	}
 	
+	public void setHaveSpecial(boolean haveSpecial) {
+		this.haveSpecial = haveSpecial;
+	}
+	
 	public void setAllSpecials(List<Special> allSpecials) {
 		this.allSpecials = allSpecials;
 	}
+	
 	
 	public void addToAllSpecials(Special special) {
 		allSpecials.add(special);
