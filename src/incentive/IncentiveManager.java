@@ -319,7 +319,7 @@ public class IncentiveManager extends JFrame {
             //add this special to database
             System.out.println("#2 " + spl.getDiscountValue());
             ;
-            dp.writeSpecial(spl, spl.getDealerId());
+            dp.writeSpecial(spl, spl.getDealerName());
 
             JOptionPane.showMessageDialog(null, "Incentive Created!");
 

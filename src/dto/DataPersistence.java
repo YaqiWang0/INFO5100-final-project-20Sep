@@ -79,8 +79,8 @@ public class DataPersistence implements AbstractPersistent {
      * @return a map of all specials saved in the specials.csv (key: specialId, value: special)
      */
     @Override
-    public List<Special> getAllSpecials(String dealerID) {
-        File csv = new File(this.dataPath + "specials/" + dealerID + ".csv");
+    public List<Special> getAllSpecials(String dealerName) {
+        File csv = new File(this.dataPath + "specials/" + dealerName + ".csv");
         BufferedReader br = null;
         List<Special> allSpecials = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class DataPersistence implements AbstractPersistent {
                 String[] fields = line.split("\\,", -1);
                 Special i = new Special();
                 i.setSpecialId(fields[0]);
-                i.setDealerId(fields[1]);
+                i.setDealerName(fields[1]);
                 i.setStartDate(new Date(Long.parseLong(fields[2])));
                 i.setEndDate(new Date(Long.parseLong(fields[3])));
                 i.setDiscountValue(Integer.parseInt(fields[4]));
@@ -154,8 +154,8 @@ public class DataPersistence implements AbstractPersistent {
      * @param special are the specials to be saved in the specials.csv
      */
     @Override
-    public void writeSpecial(Special special, String dealerID) {
-        String modelType = "specials/" + dealerID;
+    public void writeSpecial(Special special, String dealerName) {
+        String modelType = "specials/" + dealerName;
         List<GenericModel> models = new ArrayList<>();
         models.add(special);
         writeModel(models, modelType);

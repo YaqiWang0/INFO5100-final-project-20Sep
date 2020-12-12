@@ -33,7 +33,7 @@ public class TestSpecialDataPersistent {
                 "for details. Vehicles may be in transit or currently in production.");
 
         List<Dealer> allDealers = dp.getAllDealers();
-        i.setDealerId(allDealers.get(new Random().nextInt(allDealers.size())).getDealerId());
+        i.setDealerName("gmps-aj-dohmann");
 
         List<Vehicle> allVehicles = dp.getAllVehicles();
         List<String> scopes = new ArrayList<>();
@@ -42,11 +42,12 @@ public class TestSpecialDataPersistent {
         }
         //i.setScope(scopes);
 
-        //dp.writeSpecial(i, i.getDealerId());
+        //dp.writeSpecial(i, i.getDealerName());
 
-        List<Special> allSpecialsRead = dp.getAllSpecials("a199e835-4514-43c3-9ba9-c028e61bb81a");
+        List<Special> allSpecialsRead = dp.getAllSpecials("gmps-ernievon");
         for (Special s: allSpecialsRead) {
             System.out.println(s.getSpecialId());
+            System.out.println(s.getScope());
         }
 //        System.out.println(allSpecialsRead.get(0).getTitle());
 //        System.out.println(allSpecialsRead.get(1).getTitle());
