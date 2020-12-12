@@ -4,9 +4,7 @@ import dao.Special;
 import dao.VehicleModel;
 import service.CountdownTimeJob;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -23,6 +21,7 @@ public class IncentiveUI extends JPanel implements Observer {
     private JLabel countdownLabel;
     private JLabel discountPeriod;
     private JLabel disclaimer;
+//    private JTextArea disclaimer;
 
     public IncentiveUI() {
         initialize();
@@ -76,10 +75,11 @@ public class IncentiveUI extends JPanel implements Observer {
         addTwoLabelsInOneLine(new JLabel(), "Discount period: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR,
                 discountPeriod, "", DEFAULT_FONT_SIZE, Color.orange);
 
-        // create the disclaimer label and add the label to panel.
+//        // create the disclaimer label and add the label to panel.
         disclaimer = new JLabel();
         addSingleLabelInOneLine(disclaimer, "Disclaimer: ", 12, Color.gray);
-
+//        disclaimer = new JTextArea();
+//        addSingleTextAreaInOneLine(disclaimer, "Disclaimer: ", 12, Color.gray);
     }
 
     private void addSingleLabelInOneLine(JLabel label, String message, int fontSize, Color color) {
@@ -120,6 +120,25 @@ public class IncentiveUI extends JPanel implements Observer {
         this.add(smallPanel);
     }
 
+    private void addSingleTextAreaInOneLine(JTextArea textArea, String message, int fontSize, Color color) {
+        // set the text.
+        textArea.setText(message);
+        // set the font.
+        textArea.setFont(new Font("Serif", Font.BOLD, fontSize));
+        // set the fore ground color.
+        textArea.setForeground(color);
+        // ???
+        textArea.setLineWrap(true);
+
+        // the reason I create a panel is to make the label become
+        // left-justified with the two labels in one line.
+        JPanel smallPanel = new JPanel();
+        smallPanel.add(textArea);
+        smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        this.add(smallPanel);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof CountdownTimeJob) {
@@ -141,6 +160,11 @@ public class IncentiveUI extends JPanel implements Observer {
             priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
+            // ??? to be deleted.
+            String disMess = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam corrupti sed iste! Ea deleniti perspiciatis minima dolorem laborum ut voluptatibus rem minus, quibusdam architecto voluptatum, quos omnis vel, incidunt aliquid!\n" +
+                    "    Amet, repudiandae. Voluptas, architecto pariatur nihil quasi reprehenderit modi fuga unde quaerat beatae, qui fugit amet assumenda sed sequi magnam eaque porro hic dolores earum quisquam inventore libero. Voluptates, optio!\n" +
+                    "    Libero tempora voluptas dicta, dolorem tenetur voluptates qui maxime aliquam totam sit beatae quas, nostrum velit expedita? Iusto rem officia, mollitia veritatis omnis id repudiandae quisquam quod distinctio veniam necessitatibus.";
+//            disclaimer.setText("Disclaimer: " + disMess);
             disclaimer.setText("Disclaimer: " + special.getDisclaimer());
         }
         repaint();
