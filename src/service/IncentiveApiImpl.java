@@ -30,7 +30,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		String sd = formatter.format(startDate);
 		String ed = formatter.format(endDate);
 		String ct = formatter.format(currentTime);
-		if (sd.equals(ed) || ed.equals(ct)) {
+		if (sd.equals(ct) || ed.equals(ct)) {
 			return true;
 		}
 		return startDate.before(currentTime) && endDate.after(currentTime);
