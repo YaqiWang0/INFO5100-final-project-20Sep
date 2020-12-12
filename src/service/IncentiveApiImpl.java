@@ -51,48 +51,53 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		VehicleModel model = new VehicleModel(vehicle);
 		float price = Float.parseFloat(vehicle.getPrice());
 
-		List<Special> allSpecials = new ArrayList<>();
+		List<VehicleModel> allSpecials = new ArrayList<>();
 		List<Boolean> allHaveSpecial = new ArrayList<>();
 
 		TreeMap<Float, Special> pairs = new TreeMap<>();
 
 		for (int i = 0; i < sList.size(); i++) {
-			if (sList.get(i).getScope().contains(id)) {
-				if (timeCheck(sList.get(i).getStartDate(), sList.get(i).getEndDate(), getCurrentTime())) {
-					if (sList.get(i).getDiscountValue() != 0) {
+			Special s = sList.get(i);
+			if (s.getScope().contains(id)) {
+				if (timeCheck(s.getStartDate(), s.getEndDate(), getCurrentTime())) {
+					if (s.getDiscountValue() > 0) {
 
-						allSpecials.add(sList.get(i));
-						pairs.put((price - sList.get(i).getDiscountValue()), sList.get(i));
-
-						allHaveSpecial.add(true);
+						pairs.put((price - s.getDiscountValue()), s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
-						model.setAllSpecials(allSpecials);
-						model.setIncentiveType("Value discount");
-
-					} else if (sList.get(i).getDiscountPercent() != 0) {
-
-						allSpecials.add(sList.get(i));
-						pairs.put((price - price * ((float) sList.get(i).getDiscountPercent() / 100)), sList.get(i));
+						
 
 						allHaveSpecial.add(true);
+
+					} else if (s.getDiscountPercent() > 0) {
+
+						pairs.put((price - price * ((float) s.getDiscountPercent() / 100)), s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
-						model.setAllSpecials(allSpecials);
-						model.setIncentiveType("Percentage discount");
 
-					} else if (sList.get(i).getDiscountValue() == 0 && sList.get(i).getDiscountPercent() == 0) {
+						allHaveSpecial.add(true);
+
+					} else if (s.getDiscountValue() <= 0 && s.getDiscountPercent() <= 0) {
 						allHaveSpecial.add(false);
-						allSpecials.add(sList.get(i));
 					}
 				} else {
 					allHaveSpecial.add(false);
-					allSpecials.add(sList.get(i));
 				}
 			} else {
 				allHaveSpecial.add(false);
+			}
+		}
+
+
+		if(model.getSpecial()!= null) {
+			if (model.getSpecial().getDiscountValue() > 0) {
+				model.setIncentiveType("Value discount");
+			} else if (model.getSpecial().getDiscountPercent() > 0) {
+				model.setIncentiveType("Percentage discount");
+			}else {
+				model.setIncentiveType("No discount");
 			}
 		}
 
@@ -102,27 +107,44 @@ public final class IncentiveApiImpl implements IncentiveApi {
 			model.setHaveSpecial(false);
 		}
 		
-		model.setAllSpecials(allSpecials);
+		//generate allSpecials
+		for (int j = 0; j < sList.size(); j++) {
+			Special s = sList.get(j);
+			VehicleModel vm = new VehicleModel(vehicle, s);
+			if (s.getScope().contains(id)) {
+				if (s.getDiscountValue() > 0) {
+					vm.setSpecialPrice((price - s.getDiscountValue()));
+					vm.setIncentiveType("Value discount");
+					allSpecials.add(vm);
+				}else if(s.getDiscountPercent() > 0) {
+					vm.setSpecialPrice(price - price * ((float) s.getDiscountPercent() / 100));
+					vm.setIncentiveType("Percentage discount");
+					allSpecials.add(vm);
+				} 
+			}
+		}
 		
+		model.setAllSpecials(allSpecials);
+
 		return model;
+
 	}
 
-	
 	public String incentiveAppliedOn(Special s) {
 		StringBuilder sb = new StringBuilder();
-		if(s.getIsValidOnCashPayment()) {
+		if (s.getIsValidOnCashPayment()) {
 			sb.append(" Cash payment discount ");
 		}
-		if(s.getIsValidOnCheckPayment()) {
+		if (s.getIsValidOnCheckPayment()) {
 			sb.append(" Check payment discount ");
 		}
-		if(s.getIsValidOnLease()) {
+		if (s.getIsValidOnLease()) {
 			sb.append(" Lease discount ");
 		}
-		if(s.getIsValidOnLoan()) {
+		if (s.getIsValidOnLoan()) {
 			sb.append(" Loan discount ");
 		}
-		if(sb.length() == 0) {
+		if (sb.length() == 0) {
 			return " Please contact dealer for details ";
 		}
 		return sb.toString().replace("  ", " & ");
