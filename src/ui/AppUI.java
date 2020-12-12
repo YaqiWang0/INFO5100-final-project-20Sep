@@ -1,13 +1,12 @@
 package ui;
 
-import dao.Special;
 import dao.Vehicle;
 import dao.VehicleModel;
 import dto.AbstractPersistent;
 import dto.DataPersistence;
 import service.IncentiveApi;
 import service.IncentiveApiImpl;
-import service.InventiveTimeJob;
+import service.CountdownTimeJob;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,12 +21,12 @@ public class AppUI extends AppUIAbstract {
 
     // sub panel group
     private IncentiveUI incentiveUI;
-    private InventiveTimeJob timejob;
+    private CountdownTimeJob timeJob;
 
     public AppUI() {
         incentiveUI = new IncentiveUI();
-        timejob = new InventiveTimeJob();
-        timejob.addObserver(incentiveUI);
+        timeJob = new CountdownTimeJob();
+        timeJob.addObserver(incentiveUI);
     }
 
     /**
@@ -50,7 +49,10 @@ public class AppUI extends AppUIAbstract {
         for (Vehicle vehicle: vehicles) {
             VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
             vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() + 1000* (++count)*10));
-
+//            // demo, if the now the vehicle is not on sales
+//            if (count == 2) {
+//                vehicleModel.getSpecial().setEndDate(new Date(new Date().getTime() - 1000 * 100));
+//            }
             centerPanel.add(new JLabel("Car " + (count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
 
@@ -61,34 +63,37 @@ public class AppUI extends AppUIAbstract {
             centerPanel.add(new JLabel(vehicleModel.getSpecial().getEndDate() + ""));
 
             centerPanel.add(new JLabel("", JLabel.CENTER));
-            centerPanel.add(getPopupBtn(vehicleModel));
+            // only vehicles with valid incentives will have the button.
+            if ((new Date().getTime() >= vehicleModel.getSpecial().getStartDate().getTime())
+                    && (new Date().getTime() <= vehicleModel.getSpecial().getEndDate().getTime())) {
+                centerPanel.add(getPopupBtn(vehicleModel));
+            }
         }
-
         return centerPanel;
     }
 
     /**
      * pop-up incentive details ---Case6
-     * @param VehicleModel
+     * @param vehicleModel
      * @return
      */
-    private JButton getPopupBtn(VehicleModel VehicleModel) {
+    private JButton getPopupBtn(VehicleModel vehicleModel) {
         JButton popBtn = new JButton("Learn About Discount!!!");
 
         popBtn.addActionListener((ActionEvent e) -> {
-            timejob.start(VehicleModel);
+            timeJob.start(vehicleModel);
             JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-            if (((VehicleModel.getSpecial().getEndDate().getTime() - new Date().getTime()) / 1000) < 0) {
+            // if sales promotion is ended, the button could not be clicked on.
+            if (vehicleModel.getSpecial().getEndDate().getTime() < new Date().getTime()) {
                 popBtn.setEnabled(false);
                 popBtn.setText("Discount Expired");
             }
-            timejob.stop();
+            timeJob.stop();
         });
 
         return popBtn;
     }
 
 }
-

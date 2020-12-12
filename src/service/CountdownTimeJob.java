@@ -1,12 +1,11 @@
 package service;
 
-import dao.Special;
 import dao.VehicleModel;
 
 import java.util.Date;
 import java.util.Observable;
 
-public class InventiveTimeJob extends Observable implements Runnable {
+public class CountdownTimeJob extends Observable implements Runnable {
 
     private Thread thread;
     private boolean isDone;

@@ -20,7 +20,8 @@ public abstract class AppUIAbstract {
 
         frame.setResizable(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+        // put the frame on the center of the screen.
+        frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
         frame.add(getCenterPanel(), BorderLayout.CENTER);
     }

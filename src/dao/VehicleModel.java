@@ -24,7 +24,7 @@ public class VehicleModel {
 	public VehicleModel(Vehicle vehicle, Special special) {
         this.vehicle = vehicle;
         this.special = special;
-    }
+	}
 
     public Vehicle getVehicle() {
         return vehicle;

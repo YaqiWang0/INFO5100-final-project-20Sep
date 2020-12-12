@@ -25,7 +25,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		return currentTime;
 	}
 
-	private static boolean timeCheck(Date startDate, Date endDate, Date currentTime) {
+	public static boolean timeCheck(Date startDate, Date endDate, Date currentTime) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String sd = formatter.format(startDate);
 		String ed = formatter.format(endDate);
@@ -45,43 +45,43 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	 * discount at the same time 2. Vehicle: Price string only contains float
 	 * numbers
 	 */
-		@Override
-		public VehicleModel updateSpecialPrice(Vehicle vehicle) {
+	@Override
+	public VehicleModel updateSpecialPrice(Vehicle vehicle) {
 
-			String id = vehicle.getVehicleId();
-			List<Special> sList = dao.getAllSpecials();
-			VehicleModel model = new VehicleModel(vehicle);
-			float price = Float.parseFloat(vehicle.getPrice());
-			
-			List<Special> allSpecials = new ArrayList<>();
-			
-			TreeMap<Float, Special> pairs = new TreeMap<>();
+		String id = vehicle.getVehicleId();
+		List<Special> sList = dao.getAllSpecials();
+		VehicleModel model = new VehicleModel(vehicle);
+		float price = Float.parseFloat(vehicle.getPrice());
 
-			for (int i = 0; i < sList.size(); i++) {
-				if (sList.get(i).getScope().contains(id)) {
-					allSpecials.add(sList.get(i));
-					if (timeCheck(sList.get(i).getStartDate(), sList.get(i).getEndDate(), getCurrentTime())) {
-						if(sList.get(i).getDiscountValue() != 0) {
-							pairs.put(price - sList.get(i).getDiscountValue(), sList.get(i));
-						
-						}else if(sList.get(i).getDiscountPercent() != 0) {
-							pairs.put((price - price*((float)sList.get(i).getDiscountPercent()/100)), sList.get(i));
-						}		
+		List<Special> allSpecials = new ArrayList<>();
+
+		TreeMap<Float, Special> pairs = new TreeMap<>();
+
+		for (int i = 0; i < sList.size(); i++) {
+			if (sList.get(i).getScope().contains(id)) {
+				allSpecials.add(sList.get(i));
+				if (timeCheck(sList.get(i).getStartDate(), sList.get(i).getEndDate(), getCurrentTime())) {
+					if(sList.get(i).getDiscountValue() != 0) {
+						pairs.put(price - sList.get(i).getDiscountValue(), sList.get(i));
+
+					}else if(sList.get(i).getDiscountPercent() != 0) {
+						pairs.put((price - price*((float)sList.get(i).getDiscountPercent()/100)), sList.get(i));
 					}
 				}
 			}
-
-			model.setSpecialPrice(pairs.firstKey());
-			model.setSpecial(pairs.get(pairs.firstKey()));
-			model.setAllSpecials(allSpecials);
-			
-			if(model.getSpecial().getDiscountValue() != 0) {
-				model.setIncentiveType("Value discount");
-			}else if(model.getSpecial().getDiscountPercent() != 0) {
-				model.setIncentiveType("Percentage discount");
-			}
-			return model;
-
 		}
+
+		model.setSpecialPrice(pairs.firstKey());
+		model.setSpecial(pairs.get(pairs.firstKey()));
+		model.setAllSpecials(allSpecials);
+
+		if(model.getSpecial().getDiscountValue() != 0) {
+			model.setIncentiveType("Value discount");
+		}else if(model.getSpecial().getDiscountPercent() != 0) {
+			model.setIncentiveType("Percentage discount");
+		}
+		return model;
+
+	}
 
 }
