@@ -17,7 +17,7 @@ public class Special extends GenericModel{
 	private boolean isValidOnLease;
 	private boolean isValidOnCheckPayment;
 
-	private String dealerName;
+	private String dealerId;
 
 	private String valueOfVehicle;
 	private String year;
@@ -48,10 +48,10 @@ public class Special extends GenericModel{
 		this.modelType = "specials";
 	}
 
-	public Special(String dealerName, Date startDate, Date endDate, String title, String valueOfVehicle) {
+	public Special(String dealerId, Date startDate, Date endDate, String title, String valueOfVehicle) {
 		this.specialId=UUID.randomUUID().toString();
 		
-		this.dealerName=Objects.requireNonNull(dealerName,"DearId should not be null");
+		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
 		this.startDate=startDate;
 		this.endDate=Objects.requireNonNull(endDate,"EndDate should not be null");
 		this.title=Objects.requireNonNull(title,"Title should not be null.");
@@ -63,12 +63,12 @@ public class Special extends GenericModel{
 		this.specialId = specialId;
 	}
 
-	public void setDealerName(String dealerName) {
-		this.dealerName=Objects.requireNonNull(dealerName,"DearId should not be null");
+	public void setDealerId(String dealerId) {
+		this.dealerId=Objects.requireNonNull(dealerId,"DearId should not be null");
 	}
 	
-	public void setDealerNameFromExistingDealer(Dealer dealer) {
-		this.dealerName=Objects.requireNonNull(dealer.getDealerName(),"The input dealer should not be null");
+	public void setDealerIdromExistingDealer(Dealer dealer) {
+		this.dealerId=Objects.requireNonNull(dealer.getDealerId(),"The input dealer should not be null");
 	}
 	
 	public void setStartDate(Date startDate) {
@@ -123,8 +123,8 @@ public class Special extends GenericModel{
 		return this.specialId;
 	}
 	
-	public String getDealerName() {
-		return this.dealerName;
+	public String getDealerId() {
+		return this.dealerId;
 	}
 	
 	public Date getStartDate() {
@@ -241,7 +241,7 @@ public class Special extends GenericModel{
 
 		// convert a Special to csv data
 		String row = specialId + ","
-				+ dealerName + ","
+				+ dealerId + ","
 				+ startDate.getTime() + ","
 				+ endDate.getTime() + ","
 				+ csvTitle + ","
@@ -274,7 +274,7 @@ public class Special extends GenericModel{
 
 		// convert a Special to csv data
 		String row = specialId + ","
-				+ dealerName + ","
+				+ dealerId + ","
 				+ startDate + ","
 				+ endDate + ","
 				+ csvTitle + ","

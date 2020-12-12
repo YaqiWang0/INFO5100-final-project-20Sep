@@ -104,13 +104,11 @@ public class DataPersistence implements AbstractPersistent {
                     unescaped[i] = unescaped[i].replace("<dollar>", "\\$");
                 }
 
-
-
                 // converting csv data to a Special
                 String[] fields = line.split("\\,", -1);
                 Special i = new Special();
                 i.setSpecialId(fields[0]);
-                i.setDealerName(fields[1]);
+                i.setDealerId(fields[1]);
                 i.setStartDate(new Date(Long.parseLong(fields[2])));
                 i.setEndDate(new Date(Long.parseLong(fields[3])));
                 i.setDiscountValue(Integer.parseInt(fields[4]));
