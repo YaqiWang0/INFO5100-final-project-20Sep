@@ -15,7 +15,7 @@ public abstract class IncentiveApiUIAbstract {
 
     private void initGUI() {
         frame = new JFrame();
-        frame.setSize(800, 1200);
+        frame.setSize(800, 1000);
         frame.setTitle("SaleVehicle_showSpecialPrice");
 
         frame.setResizable(true);
