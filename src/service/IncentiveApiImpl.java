@@ -85,9 +85,11 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 					} else if (sList.get(i).getDiscountValue() == 0 && sList.get(i).getDiscountPercent() == 0) {
 						allHaveSpecial.add(false);
+						allSpecials.add(sList.get(i));
 					}
 				} else {
 					allHaveSpecial.add(false);
+					allSpecials.add(sList.get(i));
 				}
 			} else {
 				allHaveSpecial.add(false);
@@ -99,10 +101,12 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		} else {
 			model.setHaveSpecial(false);
 		}
-
+		
+		model.setAllSpecials(allSpecials);
+		
 		return model;
-
 	}
+
 	
 	public String incentiveAppliedOn(Special s) {
 		StringBuilder sb = new StringBuilder();
