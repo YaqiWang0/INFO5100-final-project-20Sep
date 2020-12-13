@@ -2,7 +2,9 @@ package service;
 
 import io.Dealer;
 
+import java.io.IOException;
+
 public interface DealerLoginService {
 
-    public boolean dealerVerifyLogin(Dealer id, Dealer password);
+    public boolean dealerVerifyLogin(String id, String password) throws IOException;
 }

@@ -1,5 +1,6 @@
 package ui;
 
+import controller.DealerController;
 import dao.SqlConnection;
 import dto.Customer;
 import dto.Dealer;
@@ -94,16 +95,13 @@ public class DealerLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					SqlConnection sql = new SqlConnection();
-					List<Dealer> dealers = sql.SearchDealer();
-					Dealer dealer=new Dealer();
-					dealer.setId(userNameTextField.getText());
-					dealer.setPassword(new String(passwordTextField.getPassword()));
-					dealers.forEach(o->{
-						if(dealer.getId().equals(o.getId()) && dealer.getPassword().equals(o.getPassword())) {
-							dispose();
-						}
-					});
+					boolean response = new DealerController().login(userNameTextField.getText(), passwordTextField.getText());
+					if(response) {
+						dispose();
+						new DealerHome();
+					}else{
+						new mistake();
+					}
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}

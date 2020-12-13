@@ -1,6 +1,10 @@
 package controller;
 import dao.SqlConnection;
+import dto.Customer;
 import dto.Dealer;
+import service.DealerLoginService;
+import service.impl.DealerLoginServiceImpl;
+import ui.CustomerLogin;
 import ui.DealerLogin;
 
 import javax.swing.*;
@@ -8,50 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class DealerController {
-    public DealerLogin getDialog() { return dialog; }
-    private DealerLogin dialog;
 
-    public DealerController(JFrame frame)
-    {
-        dialog = new DealerLogin();
-        dialog.loginButton.addActionListener(e -> {
-            try {
-                login();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-        dialog.passwordTextField.addActionListener(e -> {
-            try {
-                login();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-    }
+    private DealerLogin dialog = new DealerLogin();
 
-    public void show()
-    {
-        dialog.dispose();
-        dialog.setUndecorated(true);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }
+    DealerLoginService dealerLoginService = new DealerLoginServiceImpl();
 
-    private void login() throws IOException {
-        String userName = dialog.userNameTextField.getText();
-        String password = new String(dialog.passwordTextField.getPassword());
-        if (dialog.isPasswordPresent() && dialog.isUserNamePresent())
-        {
-            SqlConnection sql=new SqlConnection();
-            List<Dealer> dealerList=sql.SearchDealer();
-            Dealer dealer=new Dealer();
-            dealer.setId(userName);
-            dealer.setPassword(password);
-            if(dealerList.contains(dealer)){
-                show();
-            }
-
-        }
+    public boolean login(String id, String password) throws IOException {
+        boolean response = dealerLoginService.dealerVerifyLogin(id, password);
+        return response;
     }
 }

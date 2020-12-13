@@ -1,26 +1,21 @@
-package FinalProject;
+package ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class dealerHome extends JFrame {
+public class DealerHome extends JFrame {
 	private String id;
 	private JPanel contentPane;
 	private final JLabel lblNewLabel_2 = new JLabel("");
@@ -30,14 +25,14 @@ public class dealerHome extends JFrame {
 	 */
 	public static void main(String[] args) {
 		            Locale.setDefault(new Locale("en","US"));
-					dealerHome frame = new dealerHome();
+					DealerHome frame = new DealerHome();
 					
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public dealerHome() {
+	public DealerHome() {
 //		Locale.setDefault(new Locale("en","US"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 891, 584);

@@ -1,7 +1,6 @@
 package ui;
 
-import dao.SqlConnection;
-import dto.Customer;
+import controller.CustomerController;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,7 +12,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.List;
 
 public class CustomerLogin extends JFrame {
 
@@ -103,20 +101,15 @@ public class CustomerLogin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// check
 				try {
-					SqlConnection sql = new SqlConnection();
-					List<Customer> customers = sql.SearchCustomer();
-				    Customer customer=new Customer();
-				    customer.setId(userNameTextField.getText());
-				    customer.setPassword(new String(passwordField.getPassword()));
-				    customers.forEach(o->{
-				    	if(customer.getId().equals(o.getId()) && customer.getPassword().equals(o.getPassword())) {
-							dispose();
-						}
-					});
+					boolean response = new CustomerController().login(userNameTextField.getText(), passwordField.getText());
+					if(response){
+						dispose();
+					}else{
+						new mistake();
+					}
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-				// if success login
 				
 			}
 		});
@@ -151,16 +144,5 @@ public class CustomerLogin extends JFrame {
 		setVisible(true);
 	}
 
-	public boolean isUserNamePresent()
-	{
-		String userName = userNameTextField.getText();
-		return userName != null && !userName.isEmpty();
-	}
-
-	public boolean isPasswordPresent()
-	{
-		char[] password = passwordField.getPassword();
-		return password.length > 0;
-	}
 
 }
