@@ -134,7 +134,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		if (sb.length() == 0) {
 			return " Please contact dealer for details ";
 		}
-		return sb.toString().replace("  ", " & ");
+		return sb.toString().replace("  ", " , ");
 	}
 
 }

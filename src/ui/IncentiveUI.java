@@ -40,7 +40,7 @@ public class IncentiveUI extends JPanel implements Observer {
         final int DEFAULT_FONT_SIZE = 16;
         final Color DEFAULT_COLOR = Color.black;
 
-        this.setLayout(new GridLayout(9, 1));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         // this.setPreferredSize(new Dimension(730, 300));
         // create the great label and add the label to panel.
         JLabel greatLabel = new JLabel("<html><font color=orange>&#128663;</font><font color=red>" +
@@ -48,7 +48,9 @@ public class IncentiveUI extends JPanel implements Observer {
         greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.add(greatLabel);
+        JPanel smallPanel = new JPanel();
+        smallPanel.add(greatLabel);
+        this.add(smallPanel);
 
         // create the title label and add the label to panel.
         title = new JLabel();
@@ -64,7 +66,7 @@ public class IncentiveUI extends JPanel implements Observer {
 
         // create the Discount type label and add the label to panel.
         discountType = new JLabel();
-        discountTypeTextArea=new JTextArea(1,38);
+        discountTypeTextArea=new JTextArea(1,52);
         addLabelAndTextArea(discountType, "Discount type: ", discountTypeTextArea,DEFAULT_FONT_SIZE, DEFAULT_COLOR,DEFAULT_COLOR);
         //addSingleLabelInOneLine(discountType, "Discount type: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
@@ -148,11 +150,10 @@ public class IncentiveUI extends JPanel implements Observer {
         textArea.setForeground(color);
         textArea.setOpaque(false);
 
-
         JPanel smallPanel = new JPanel();
 
         smallPanel.add(textArea);
-        // smallPanel.add(new JScrollPane(textArea));
+        smallPanel.add(new JScrollPane(textArea));
         smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         this.add(smallPanel);
