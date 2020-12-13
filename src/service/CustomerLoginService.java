@@ -1,7 +1,5 @@
 package service;
 
-import io.Customer;
-
 import java.io.IOException;
 
 public interface CustomerLoginService {

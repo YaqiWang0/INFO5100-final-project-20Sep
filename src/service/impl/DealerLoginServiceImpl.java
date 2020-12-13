@@ -1,8 +1,6 @@
 package service.impl;
 
-import dao.DealerMapper;
 import dao.SqlConnection;
-import dto.Customer;
 import dto.Dealer;
 import service.DealerLoginService;
 

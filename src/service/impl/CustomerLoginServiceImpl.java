@@ -1,11 +1,9 @@
 package service.impl;
 
-import dao.CustomerMapper;
 import dao.SqlConnection;
 import dto.Customer;
 import service.CustomerLoginService;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 

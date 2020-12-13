@@ -11,21 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class SqlConnection {
-/*
-    public SqlConnection() throws IOException {
-        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-        SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
-        SqlSession ss = factory.openSession(true);
-        List<Dealer> dealerInfo = ss.selectList("dealerSearch");
-        dealerInfo.forEach(o->{
-            System.out.println(o.getWebid());
-        });
-        List<Customer> customerInfo = ss.selectList("customerSearch");
-        customerInfo.forEach(o->{
-        System.out.println(o.getId());
-        });
-    }
-    */
+
     public List<Customer> SearchCustomer() throws IOException {
         SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
         SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
@@ -44,21 +30,4 @@ public class SqlConnection {
 
     }
 
-    /*
-    public List<Dealer> SearchDealer() throws IOException {
-        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-        SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
-        SqlSession ss = factory.openSession(true);
-        return ss.selectList("dealerSearch");
-    }
-
-
-    public List<Customer> SearchCustomer()	throws IOException{
-    	SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-    	SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
-    	SqlSession ss = factory.openSession(true);
-    	return ss.selectList("customerSearch");
-    }
-
-     */
 }
