@@ -40,8 +40,8 @@ public class IncentiveUI extends JPanel implements Observer {
         final int DEFAULT_FONT_SIZE = 16;
         final Color DEFAULT_COLOR = Color.black;
 
-        this.setLayout(new GridLayout(10, 1));
-        this.setPreferredSize(new Dimension(730, 300));
+        this.setLayout(new GridLayout(9, 1));
+        // this.setPreferredSize(new Dimension(730, 300));
         // create the great label and add the label to panel.
         JLabel greatLabel = new JLabel("<html><font color=orange>&#128663;</font><font color=red>" +
                 "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
@@ -130,7 +130,10 @@ public class IncentiveUI extends JPanel implements Observer {
         smallPanel.add(label);
         smallPanel.add(textArea);
         // smallPanel.add(new JScrollPane(textArea));
-        smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
+        flowLayout.setAlignOnBaseline(true);
+        smallPanel.setLayout(flowLayout);
 
         this.add(smallPanel);
     }
