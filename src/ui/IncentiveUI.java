@@ -236,14 +236,14 @@ public class IncentiveUI extends JPanel implements Observer {
             //discountTypeTextArea.setText(VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
             discountTypeTextArea.setText(IncentiveApiImpl.incentiveAppliedOn(special));
             // this could be discount value or discount percentage.
-            if (special.getDiscountValue() != 0) {
+            if (special.getDiscountValue() > 0) {
                 //discountValue.setText("Discount value: " + special.getDiscountValue());
                 discountValue.setText("Discount value: ");
                 discountValueTextArea.setText("$"+special.getDiscountValue());
-            } else if (special.getDiscountPercent() != 0) {
+            } else if (special.getDiscountPercent() > 0) {
                 //discountValue.setText("Discount percentage: " + special.getDiscountPercent());
                 discountValue.setText("Discount percentage: " );
-                discountValueTextArea.setText("$"+special.getDiscountPercent());
+                discountValueTextArea.setText(special.getDiscountPercent() + "%");
             }
             //priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
             priceAfterDiscountTextArea.setText("$"+VehicleModel.getSpecialPrice());
