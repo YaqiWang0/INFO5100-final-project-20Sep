@@ -5,23 +5,26 @@ import dto.*;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.event.*;
-import java.util.List;
-import java.util.concurrent.ThreadFactory;
-
+import java.util.ArrayList;
 
 public class DetailsWindow {
     private Lead lead;
     private Vehicle vehicles[];
     private int vehicleIndex;
+    ArrayList<String> vehicleImageUrl;
+    private int vehicleImageIndex;
     private static String CUSTOMER_INFO = "Customer info";
     private static String VEHICLE_INFO = "Vehicle Info";
     private static String USER_NOTES = "User Notes";
+    private static int SAVE_TIME_INTERVAL = 1000;
     private String[] tabNames = {CUSTOMER_INFO, VEHICLE_INFO, USER_NOTES};
     JTextArea userNotesTextArea;
     JTextArea userNotesReplyTextArea;
     JButton replyButton, saveButton;
     JButton vehicleInfoPreviousButton, vehicleInfoNextButton;
+    JButton vehicleImagePreviousButton, vehicleImageNextButton;
     private JTabbedPane mainPanel;
     private JFrame theFrame;
 
@@ -30,14 +33,17 @@ public class DetailsWindow {
 	    this.lead = lead;
 	    this.vehicles = vehicles;
 	    vehicleIndex = 0;
+	    vehicleImageIndex = 0;
+        vehicleImageUrl = vehicles[vehicleIndex].getImg();
     }
-    public static void main (String[] args) {
+
+    /*public static void main (String[] args) {
         LeadDataHelper helper = LeadDataHelper.instance();
         List<Lead> forms =  helper.getLeads();
         Vehicle[] vehicles={helper.getVehicle(forms.get(0).getVehicleId()),
                 helper.getVehicle(forms.get(1).getVehicleId())};
 	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }
+    }*/
 
     public void buildGUI () {
 	    theFrame = new JFrame("Details Window");
@@ -46,7 +52,7 @@ public class DetailsWindow {
 	    layoutComponents();
 	    theFrame.getContentPane().add(mainPanel);
 	    theFrame.setPreferredSize(new Dimension(800, 600));
-        theFrame.setAlwaysOnTop(true);
+        //theFrame.setAlwaysOnTop(true);
         theFrame.pack();
 	    theFrame.setLocationRelativeTo(null);
         theFrame.setVisible(true);
@@ -173,12 +179,22 @@ public class DetailsWindow {
         vehicleGrid.setHgap(10);
         vehicleInfoSubPanel.setLayout(vehicleGrid);
         vehicleInfoSubPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
+
+        /**
+         * Set up vehicle image subpanel
+         */
+        JPanel vehicleImageSubPanel = new JPanel();
+        vehicleImageSubPanel.setLayout(new BorderLayout());
         JLabel vehicleImageLabel = new JLabel();
-        vehicleImageLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "./vehicle_image_" + (vehicleIndex + 1) + ".jpg")).getImage().getScaledInstance(360, 280, Image.SCALE_SMOOTH)));
-        vehicleImageLabel.setBounds(new Rectangle(10, 10));
-        vehicleImageLabel.setHorizontalAlignment(JLabel.CENTER);
-        vehicleInfoSubPanel.add(vehicleImageLabel);
+        UpdateVehicleImage(vehicleImageLabel);
+
+        JToolBar vehicleImageToolBar = new JToolBar();
+        vehicleImageAddButtons(vehicleImageToolBar, vehicleImageLabel);
+
+        vehicleImageSubPanel.add(vehicleImageLabel,BorderLayout.CENTER);
+        vehicleImageSubPanel.add(vehicleImageToolBar,BorderLayout.PAGE_END);
+
+        vehicleInfoSubPanel.add(vehicleImageSubPanel);
 
         GridLayout grid = new GridLayout(0,2);
         grid.setHgap(1);
@@ -243,6 +259,23 @@ public class DetailsWindow {
 
     }
 
+    private void UpdateVehicleImage(JLabel vehicleImageLabel) {
+
+
+        vehicleImageUrl = vehicles[vehicleIndex].getImg();
+        vehicleImageLabel.setText(vehicleImageUrl.get(vehicleImageIndex));
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 2);
+        vehicleImageLabel.setBorder(border);
+
+        //ImageIcon vehicleImage = createImageIcon(vehicles[vehicleIndex].getImg().get(0));
+        //vehicleImageLabel.setIcon(vehicleImage);
+
+        vehicleImageLabel.setBounds(new Rectangle(10, 10));
+        vehicleImageLabel.setHorizontalAlignment(JLabel.CENTER);
+        vehicleImageLabel.setText(vehicleImageUrl.get(vehicleImageIndex));
+
+    }
+
     public void fillUserNotesPanel(JPanel userNotesPanel) {
 
         userNotesPanel.setLayout(new BorderLayout());
@@ -287,7 +320,9 @@ public class DetailsWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (userNotesReplyTextArea.getText().trim().isEmpty()) {
-                    JOptionPane.showConfirmDialog(null, "The message is empty!",
+                    JDialog dialog = new JDialog();
+                    dialog.setAlwaysOnTop(true);
+                    JOptionPane.showConfirmDialog(dialog, "The message is empty!",
                                 "Warning",JOptionPane.WARNING_MESSAGE);
                 } else {
                     int result = JOptionPane.showConfirmDialog(theFrame,
@@ -299,7 +334,7 @@ public class DetailsWindow {
                         lead.setReplyNotes(userNotesReplyTextArea.getText());
                         replyButton.setText("message sent");
                         sendMessage(lead, userNotesReplyTextArea.getText());
-                        lead.setRead(true);
+                        lead.setContacted(true);
                         replyButton.setEnabled(false);
                         userNotesReplyTextArea.setText(null);
                         lead.setReplyNotes("");
@@ -352,15 +387,17 @@ public class DetailsWindow {
 
             @Override
             public void focusLost(FocusEvent e) {
-                lead.setReplyNotes(userNotesReplyTextArea.getText());
-                saveLabel.setText("saved");
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        saveLabel.setText("");
-                    }
-                });
-                timer.start();
+                if (!userNotesReplyTextArea.getText().trim().isEmpty()) {
+                    lead.setReplyNotes(userNotesReplyTextArea.getText());
+                    saveLabel.setText("saved");
+                    Timer timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            saveLabel.setText("");
+                        }
+                    });
+                    timer.start();
+                }
             }
         });
 
@@ -371,12 +408,14 @@ public class DetailsWindow {
         t.schedule(new java.util.TimerTask() {
             @Override
             public void run() {
-                lead.setReplyNotes(userNotesReplyTextArea.getText());
-                saveLabel.setText("saved");
-                try {
-                    Thread.sleep(1000);
-                    saveLabel.setText("");
-                } catch(Exception exp) {
+                if (!userNotesReplyTextArea.getText().trim().isEmpty()) {
+                    lead.setReplyNotes(userNotesReplyTextArea.getText());
+                    saveLabel.setText("saved");
+                    try {
+                        Thread.sleep(SAVE_TIME_INTERVAL);
+                        saveLabel.setText("");
+                    } catch (Exception exp) {
+                    }
                 }
             }
         }, 0, 1000 * 60);
@@ -396,16 +435,17 @@ public class DetailsWindow {
     }
 
     /*private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = DetailsWindow.class.getResource(path);
+        URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
-            return new ImageIcon(imgURL);
+            return new ImageIcon(new ImageIcon(imgURL).getImage().
+                    getScaledInstance(360, 280, Image.SCALE_SMOOTH));
         } else {
             System.err.println("Can not find image: " + path);
             return null;
         }
     }*/
 
-    private void vehicleInfoAddButtons (JToolBar toolBar, JPanel vehicleInfoSubPanel) {
+    private void vehicleInfoAddButtons(JToolBar toolBar, JPanel vehicleInfoSubPanel) {
 	    /**
 	       previous button
 	    */
@@ -460,9 +500,56 @@ public class DetailsWindow {
         toolBar.add(vehicleInfoNextButton);
     }
 
+    private void vehicleImageAddButtons(JToolBar toolBar, JLabel vehicleImageLabel) {
+        /**
+         previous button
+         */
+        vehicleImagePreviousButton = makeNavigationButton("<html>&larr<html>",
+                                                    "go to previous image");
+        vehicleImagePreviousButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (vehicleImageIndex> 0) {
+                    vehicleImageNextButton.setEnabled(true);
+                    vehicleImageIndex--;
+                    UpdateVehicleImage(vehicleImageLabel);
+                    if (vehicleImageIndex == 0) {
+                        vehicleImagePreviousButton.setEnabled(false);
+                    }
+                }
+            }
+        });
 
+        /**
+         next button
+         */
+        vehicleImageNextButton = makeNavigationButton("<html>&rarr<html>", "go to next image");
+        vehicleImageNextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (vehicleImageIndex< vehicleImageUrl.size() - 1) {
+                    vehicleImagePreviousButton.setEnabled(true);
+                    vehicleImageIndex++;
+                    UpdateVehicleImage(vehicleImageLabel);
+                    if (vehicleImageIndex== vehicleImageUrl.size() - 1) {
+                        vehicleImageNextButton.setEnabled(false);
+                    }
+                }
+            }
+        });
 
-    private JButton makeNavigationButton (String actionCommand, String toolTipText) {
+        if (vehicleImageIndex== 0) {
+            vehicleImagePreviousButton.setEnabled(false);
+        }
+        if (vehicleImageIndex== vehicleImageUrl.size() - 1) {
+            vehicleImageNextButton.setEnabled(false);
+        }
+
+        toolBar.add(vehicleImagePreviousButton);
+        toolBar.add(vehicleImageNextButton);
+    }
+
+    private JButton makeNavigationButton(String actionCommand, String toolTipText) {
 	    JButton button = new JButton();
 	    button.setActionCommand(actionCommand);
 	    button.setToolTipText(toolTipText);
@@ -470,7 +557,7 @@ public class DetailsWindow {
 	    return button;
     }
 
-    private void sendMessage (Lead lead, String message) {
+    private void sendMessage(Lead lead, String message) {
 	
     }
 
