@@ -79,7 +79,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 						allHaveSpecial.add(true);
 
-					} else if (s.getDiscountValue() <= 0 && s.getDiscountPercent() <= 0) {
+					} else {
 						allHaveSpecial.add(false);
 					}
 				} else {
