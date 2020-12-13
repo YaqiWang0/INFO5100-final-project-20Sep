@@ -79,7 +79,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 						allHaveSpecial.add(true);
 
-					} else if (s.getDiscountValue() <= 0 && s.getDiscountPercent() <= 0) {
+					} else {
 						allHaveSpecial.add(false);
 					}
 				} else {
@@ -87,17 +87,6 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				}
 			} else {
 				allHaveSpecial.add(false);
-			}
-		}
-
-
-		if(model.getSpecial()!= null) {
-			if (model.getSpecial().getDiscountValue() > 0) {
-				model.setIncentiveType("Value discount");
-			} else if (model.getSpecial().getDiscountPercent() > 0) {
-				model.setIncentiveType("Percentage discount");
-			}else {
-				model.setIncentiveType("No discount");
 			}
 		}
 
@@ -114,11 +103,9 @@ public final class IncentiveApiImpl implements IncentiveApi {
 			if (s.getScope().contains(id)) {
 				if (s.getDiscountValue() > 0) {
 					vm.setSpecialPrice((price - s.getDiscountValue()));
-					vm.setIncentiveType("Value discount");
 					allSpecials.add(vm);
 				}else if(s.getDiscountPercent() > 0) {
 					vm.setSpecialPrice(price - price * ((float) s.getDiscountPercent() / 100));
-					vm.setIncentiveType("Percentage discount");
 					allSpecials.add(vm);
 				} 
 			}
@@ -147,7 +134,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		if (sb.length() == 0) {
 			return " Please contact dealer for details ";
 		}
-		return sb.toString().replace("  ", " & ");
+		return sb.toString().replace("  ", " , ");
 	}
 
 }

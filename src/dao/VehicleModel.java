@@ -11,7 +11,6 @@ public class VehicleModel {
     // for case6 own attribute
     private String specialId;
     private float specialPrice;
-    private String incentiveType;
     private boolean haveSpecial;
 
 	//All specials
@@ -43,10 +42,6 @@ public class VehicleModel {
 		return specialId;
 	}
     
-    public String getIncentiveType() {
-		return incentiveType;
-	}
-    
     public boolean isHaveSpecial() {
 		return haveSpecial;
 	}    
@@ -70,10 +65,6 @@ public class VehicleModel {
 	public void setSpecialPrice(float specialPrice) {
         this.specialPrice = specialPrice;
     }
-	
-	public void setIncentiveType(String incentiveType) {
-		this.incentiveType = incentiveType;
-	}
 	
 	public void setHaveSpecial(boolean haveSpecial) {
 		this.haveSpecial = haveSpecial;

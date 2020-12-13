@@ -40,15 +40,17 @@ public class IncentiveUI extends JPanel implements Observer {
         final int DEFAULT_FONT_SIZE = 16;
         final Color DEFAULT_COLOR = Color.black;
 
-        this.setLayout(new GridLayout(10, 1));
-        this.setPreferredSize(new Dimension(730, 300));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        // this.setPreferredSize(new Dimension(730, 300));
         // create the great label and add the label to panel.
         JLabel greatLabel = new JLabel("<html><font color=orange>&#128663;</font><font color=red>" +
                 "Great incentive for you!</font><font color=orange>&#128077;</font></html>");
         greatLabel.setFont(new Font("Serif", Font.BOLD, 36));
         // place the great label on the middle.
         greatLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.add(greatLabel);
+        JPanel smallPanel = new JPanel();
+        smallPanel.add(greatLabel);
+        this.add(smallPanel);
 
         // create the title label and add the label to panel.
         title = new JLabel();
@@ -64,7 +66,7 @@ public class IncentiveUI extends JPanel implements Observer {
 
         // create the Discount type label and add the label to panel.
         discountType = new JLabel();
-        discountTypeTextArea=new JTextArea(1,38);
+        discountTypeTextArea=new JTextArea(1,52);
         addLabelAndTextArea(discountType, "Discount type: ", discountTypeTextArea,DEFAULT_FONT_SIZE, DEFAULT_COLOR,DEFAULT_COLOR);
         //addSingleLabelInOneLine(discountType, "Discount type: ", DEFAULT_FONT_SIZE, DEFAULT_COLOR);
 
@@ -130,7 +132,10 @@ public class IncentiveUI extends JPanel implements Observer {
         smallPanel.add(label);
         smallPanel.add(textArea);
         // smallPanel.add(new JScrollPane(textArea));
-        smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
+        flowLayout.setAlignOnBaseline(true);
+        smallPanel.setLayout(flowLayout);
 
         this.add(smallPanel);
     }
@@ -145,11 +150,10 @@ public class IncentiveUI extends JPanel implements Observer {
         textArea.setForeground(color);
         textArea.setOpaque(false);
 
-
         JPanel smallPanel = new JPanel();
 
         smallPanel.add(textArea);
-        // smallPanel.add(new JScrollPane(textArea));
+        smallPanel.add(new JScrollPane(textArea));
         smallPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         this.add(smallPanel);
@@ -225,25 +229,20 @@ public class IncentiveUI extends JPanel implements Observer {
             Special special = VehicleModel.getSpecial();
 
             //title.setText("Title: "+ special.getTitle());
-            title.setText("Title: ");
             titleTextArea.setText(special.getTitle());
             //description.setText("Description: " + special.getDescription());
-            description.setText("Description: " );
             descriptionTextArea.setText(special.getDescription());
 
             //discountType.setText("Discount type: " + VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
-            discountType.setText("Discount type: " );
             //discountTypeTextArea.setText(VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
             discountTypeTextArea.setText(IncentiveApiImpl.incentiveAppliedOn(special));
             // this could be discount value or discount percentage.
-            if (special.getDiscountValue() != 0) {
+            if (special.getDiscountValue() > 0) {
                 //discountValue.setText("Discount value: " + special.getDiscountValue());
-                discountValue.setText("Discount value: ");
                 discountValueTextArea.setText("$"+special.getDiscountValue());
-            } else if (special.getDiscountPercent() != 0) {
+            } else if (special.getDiscountPercent() > 0) {
                 //discountValue.setText("Discount percentage: " + special.getDiscountPercent());
-                discountValue.setText("Discount percentage: " );
-                discountValueTextArea.setText("$"+special.getDiscountPercent());
+                discountValueTextArea.setText(special.getDiscountPercent() + "%");
             }
             //priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
             priceAfterDiscountTextArea.setText("$"+VehicleModel.getSpecialPrice());
