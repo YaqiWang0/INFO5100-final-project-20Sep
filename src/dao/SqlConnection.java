@@ -31,4 +31,11 @@ public class SqlConnection {
         SqlSession ss = factory.openSession(true);
         return ss.selectList("dealerSearch");
     }
+    
+    public List<Customer> SearchCustomer()	throws IOException{
+    	SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+    	SqlSessionFactory factory = builder.build(Resources.getResourceAsReader("resources/configuration.xml"));
+    	SqlSession ss = factory.openSession(true);
+    	return ss.selectList("customerSearch");
+    }
 }

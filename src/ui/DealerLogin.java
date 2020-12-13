@@ -125,7 +125,7 @@ public class DealerLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new CostumerLogin();
+				new CustomerLogin();
 			}
 		});
 		panel_1.add(transferButton);

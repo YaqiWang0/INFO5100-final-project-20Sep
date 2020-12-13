@@ -3,34 +3,28 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-
-public class CostumerLogin extends JFrame {
+public class CustomerLogin extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel userNamePanel;
 	private JPanel passwordPanel;
-	private JTextField userName;
+	public JTextField userNameTextField;
 	private JPanel northPanel;
 	private JLabel title;
-	private JLabel bottomLable;
+	private JLabel bottomLabel;
 	private JButton skipButton;
-	private JPasswordField passwordFeild;
-	private JLabel userLable;
-	private JLabel passwordLable;
+	public JPasswordField passwordField;
+	public JLabel userLabel;
+	public JLabel passwordLabel;
 	private JPanel loginJPanel;
-	private JButton loginButton;
+	public JButton loginButton;
 	/**
 	 * Launch the application.
 	 */
@@ -38,7 +32,7 @@ public class CostumerLogin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new CostumerLogin();
+					new CustomerLogin();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,7 +44,7 @@ public class CostumerLogin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CostumerLogin() {
+	public CustomerLogin() {
 		setTitle("Customer Login Page");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 430);
@@ -68,24 +62,24 @@ public class CostumerLogin extends JFrame {
 		mainPanel.add(userNamePanel);
 		userNamePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		userLable = new JLabel("User Name");
-		userNamePanel.add(userLable);
-		
-		userName = new JTextField();
-		userNamePanel.add(userName);
-		userName.setColumns(10);
+		userLabel = new JLabel("User Name");
+		userNamePanel.add(userLabel);
+
+		userNameTextField = new JTextField();
+		userNamePanel.add(userNameTextField);
+		userNameTextField.setColumns(10);
 		
 		passwordPanel = new JPanel();
 		mainPanel.add(passwordPanel);
 		
-		passwordLable = new JLabel("Password");
-		passwordPanel.add(passwordLable);
+		passwordLabel = new JLabel("Password");
+		passwordPanel.add(passwordLabel);
 		
-		passwordFeild = new JPasswordField();
-		passwordPanel.add(passwordFeild);
-		passwordFeild.setColumns(10);
+		passwordField = new JPasswordField();
+		passwordPanel.add(passwordField);
+		passwordField.setColumns(10);
 		
-		passwordFeild.addActionListener(new ActionListener() {
+		passwordField.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -94,7 +88,7 @@ public class CostumerLogin extends JFrame {
 				
 			}
 		});
-		passwordFeild.setEchoChar('*');
+		passwordField.setEchoChar('*');
 		
 		loginJPanel = new JPanel();
 		loginButton = new JButton("Login");
@@ -116,8 +110,8 @@ public class CostumerLogin extends JFrame {
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		bottomLable = new JLabel("You are a dealer? ");
-		buttonPanel.add(bottomLable);
+		bottomLabel = new JLabel("You are a dealer? ");
+		buttonPanel.add(bottomLabel);
 		
 		skipButton = new JButton("Go to dealer login page");
 		skipButton.addActionListener(new ActionListener() {
@@ -137,6 +131,18 @@ public class CostumerLogin extends JFrame {
 		title = new JLabel("Welcome customer login page");
 		northPanel.add(title);
 		setVisible(true);
+	}
+
+	public boolean isUserNamePresent()
+	{
+		String userName = userNameTextField.getText();
+		return userName != null && !userName.isEmpty();
+	}
+
+	public boolean isPasswordPresent()
+	{
+		char[] password = passwordField.getPassword();
+		return password.length > 0;
 	}
 
 }

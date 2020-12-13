@@ -43,4 +43,11 @@
   FROM customer
 </select>
 
+  <select id="findById" resultMap= "BaseResultMap"> 
+  SELECT
+  webId, Id, password
+  FROM customer
+  WHERE Id=#{id}
+</select>
+
 </mapper>
