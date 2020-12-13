@@ -1,6 +1,7 @@
 package ui;
 
 import dao.SqlConnection;
+import dto.Customer;
 import dto.Dealer;
 
 import java.awt.BorderLayout;
@@ -92,18 +93,20 @@ public class DealerLogin extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SqlConnection sql= null;
-				sql = new SqlConnection();
-				List<Dealer> dealerList= null;
 				try {
-					dealerList = sql.SearchDealer();
+					SqlConnection sql = new SqlConnection();
+					List<Dealer> dealers = sql.SearchDealer();
+					Dealer dealer=new Dealer();
+					dealer.setId(userNameTextField.getText());
+					dealer.setPassword(new String(passwordTextField.getPassword()));
+					dealers.forEach(o->{
+						if(dealer.getId().equals(o.getId()) && dealer.getPassword().equals(o.getPassword())) {
+							dispose();
+						}
+					});
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-				Dealer dealer=new Dealer();
-					dealer.setId(userNameTextField.getText());
-					dealer.setPassword(new String(passwordTextField.getPassword()));
-					dispose();
 			}
 		});
 		loginJPanel.add(loginButton);

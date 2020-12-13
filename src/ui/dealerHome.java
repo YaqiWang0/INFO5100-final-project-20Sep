@@ -1,4 +1,4 @@
-package ui;
+package FinalProject;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -77,7 +77,6 @@ public class dealerHome extends JFrame {
 		JButton case_4Button = new JButton("Manage My Inventory (case4)");
 		case_4Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// open case4 page
 			}
 		});
 		
@@ -91,15 +90,6 @@ public class dealerHome extends JFrame {
 		MainPanel.add(createIncLabel);
 		
 		JButton case_5Button = new JButton("Manage Incentives(case5)");
-		case_5Button.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// open case5 page
-				
-			}
-		});
-		
 		MainPanel.add(case_5Button);
 		
 		JLabel messageLabel = new JLabel("      Look at all the leads sent by the customers and respond :");
@@ -107,17 +97,7 @@ public class dealerHome extends JFrame {
 		MainPanel.add(messageLabel);
 		
 		JButton case_8Button = new JButton("Show Customer Message (case 8)");
-		case_8Button.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// open case8 page
-				
-			}
-		});
-		
 		MainPanel.add(case_8Button);
-
 		MainPanel.add(lblNewLabel_2);
 		setVisible(true);
 	}

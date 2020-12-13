@@ -101,19 +101,21 @@ public class CustomerLogin extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// check 
-				SqlConnection sql= null;
-				sql = new SqlConnection();
-				List<Customer> customerList= null;
+				// check
 				try {
-					customerList = sql.SearchCustomer();
+					SqlConnection sql = new SqlConnection();
+					List<Customer> customers = sql.SearchCustomer();
+				    Customer customer=new Customer();
+				    customer.setId(userNameTextField.getText());
+				    customer.setPassword(new String(passwordField.getPassword()));
+				    customers.forEach(o->{
+				    	if(customer.getId().equals(o.getId()) && customer.getPassword().equals(o.getPassword())) {
+							dispose();
+						}
+					});
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-				Customer customer=new Customer();
-				customer.setId(userNameTextField.getText());
-				customer.setPassword(new String(passwordField.getPassword()));
-				dispose();
 				// if success login
 				
 			}
