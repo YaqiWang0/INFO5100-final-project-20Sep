@@ -68,6 +68,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
 						
+
 						allHaveSpecial.add(true);
 
 					} else if (s.getDiscountPercent() > 0) {
@@ -80,7 +81,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 						allHaveSpecial.add(true);
 
-					} else if (s.getDiscountValue() <= 0 && s.getDiscountPercent() <= 0) {
+					} else {
 						allHaveSpecial.add(false);
 					}
 				} else {
@@ -90,7 +91,6 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				allHaveSpecial.add(false);
 			}
 		}
-
 
 		if (allHaveSpecial.contains(true)) {
 			model.setHaveSpecial(true);
@@ -121,7 +121,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 	}
 
-	public String incentiveAppliedOn(Special s) {
+	public static String incentiveAppliedOn(Special s) {
 		StringBuilder sb = new StringBuilder();
 		if (s.getIsValidOnCashPayment()) {
 			sb.append(" Cash payment discount ");
@@ -138,7 +138,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		if (sb.length() == 0) {
 			return " Please contact dealer for details ";
 		}
-		return sb.toString().replace("  ", " & ");
+		return sb.toString().replace("  ", " , ");
 	}
 
 }
