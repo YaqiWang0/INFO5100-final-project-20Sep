@@ -62,24 +62,25 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				if (timeCheck(s.getStartDate(), s.getEndDate(), getCurrentTime())) {
 					if (s.getDiscountValue() > 0) {
 
-						pairs.put((price - s.getDiscountValue()), s);
+						float newPrice = (price - s.getDiscountValue());
+						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
 						
-
 						allHaveSpecial.add(true);
 
 					} else if (s.getDiscountPercent() > 0) {
 
-						pairs.put((price - price * ((float) s.getDiscountPercent() / 100)), s);
+						float newPrice = (price - price * ((float) s.getDiscountPercent() / 100));
+						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
 
 						allHaveSpecial.add(true);
 
-					} else {
+					} else if (s.getDiscountValue() <= 0 && s.getDiscountPercent() <= 0) {
 						allHaveSpecial.add(false);
 					}
 				} else {
@@ -89,6 +90,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				allHaveSpecial.add(false);
 			}
 		}
+
 
 		if (allHaveSpecial.contains(true)) {
 			model.setHaveSpecial(true);
@@ -102,10 +104,12 @@ public final class IncentiveApiImpl implements IncentiveApi {
 			VehicleModel vm = new VehicleModel(vehicle, s);
 			if (s.getScope().contains(id)) {
 				if (s.getDiscountValue() > 0) {
-					vm.setSpecialPrice((price - s.getDiscountValue()));
+					float newPrice = (price - s.getDiscountValue());
+					vm.setSpecialPrice(newPrice > 0 ? newPrice : 0);
 					allSpecials.add(vm);
 				}else if(s.getDiscountPercent() > 0) {
-					vm.setSpecialPrice(price - price * ((float) s.getDiscountPercent() / 100));
+					float newPrice = price - price * ((float) s.getDiscountPercent() / 100);
+					vm.setSpecialPrice(newPrice > 0 ? newPrice : 0);
 					allSpecials.add(vm);
 				} 
 			}
@@ -117,7 +121,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 	}
 
-	public static String incentiveAppliedOn(Special s) {
+	public String incentiveAppliedOn(Special s) {
 		StringBuilder sb = new StringBuilder();
 		if (s.getIsValidOnCashPayment()) {
 			sb.append(" Cash payment discount ");
@@ -134,7 +138,7 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		if (sb.length() == 0) {
 			return " Please contact dealer for details ";
 		}
-		return sb.toString().replace("  ", " , ");
+		return sb.toString().replace("  ", " & ");
 	}
 
 }
