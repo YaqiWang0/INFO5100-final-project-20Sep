@@ -9,8 +9,8 @@ import java.util.List;
 public interface AbstractPersistent {
     List<Dealer> getAllDealers();
     void writeDealers(List<Dealer> dealers);
-    List<Special> getAllSpecials();
-    void writeSpecials(Special special);
+    List<Special> getAllSpecials(String dealerName);
+    void writeSpecial(Special special, String dealerName);
     List<Vehicle> getAllVehicles();
     void writeVehicles(List<Vehicle> vehicles);
     List<Lead> getAllLeads();

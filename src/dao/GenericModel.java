@@ -14,4 +14,6 @@ public class GenericModel {
     }
 
     public String toCSVLine() { return ""; }
+    
+    public String getId() {return "";}
 }

@@ -2,7 +2,9 @@ package dto;
 
 import java.util.UUID;
 
-public class Lead {
+import dao.GenericModel;
+
+public class Lead extends GenericModel {
 
     private String leadId;
     private String vehicleId;
@@ -16,6 +18,9 @@ public class Lead {
     private String contactPreference;
     private String contactTime;
     private String message;
+    private String replyNotes;
+    private boolean read;
+    private boolean contacted;
 
     public Lead() {
     }
@@ -24,6 +29,9 @@ public class Lead {
         this.vehicleId = vehicleId;
         this.dealerId = dealerId;
         this.leadId = UUID.randomUUID().toString();
+        this.replyNotes = "";
+        this.read = false;
+        this.contacted = false;
     }
 
     public void setLeadId(String leadId) {
@@ -72,6 +80,18 @@ public class Lead {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setReplyNotes(String replyNotes) {
+        this.replyNotes = replyNotes;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public void setContacted(boolean contacted) {
+        this.contacted = contacted;
     }
 
     public String getLeadId() {
@@ -124,9 +144,31 @@ public class Lead {
         return message;
     }
 
+    public String getReplyNotes() {
+        return replyNotes;
+    }
+
+    public boolean getRead() {
+        return read;
+    }
+
+    public boolean getContacted() {
+        return contacted;
+    }
+
     public String toCSVLine() {
         return leadId + "," + vehicleId + "," + dealerId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
                 zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
+    }
+    
+    @Override
+    public String toString() {
+        return "<Lead> id: " + this.getVehicleId();
+    }
+    
+    @Override
+    public String getId() {
+        return this.getLeadId();
     }
 
 }
