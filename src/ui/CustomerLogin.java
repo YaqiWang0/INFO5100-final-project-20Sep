@@ -1,5 +1,8 @@
 package ui;
 
+import dao.SqlConnection;
+import dto.Customer;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -9,6 +12,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 
 public class CustomerLogin extends JFrame {
 
@@ -97,7 +102,18 @@ public class CustomerLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// check 
-				
+				SqlConnection sql= null;
+				sql = new SqlConnection();
+				List<Customer> customerList= null;
+				try {
+					customerList = sql.SearchCustomer();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+				Customer customer=new Customer();
+				customer.setId(userNameTextField.getText());
+				customer.setPassword(new String(passwordField.getPassword()));
+				dispose();
 				// if success login
 				
 			}
