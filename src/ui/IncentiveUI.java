@@ -1,7 +1,7 @@
 package ui;
 
 import dao.Special;
-import dao.VehicleModel;
+import dao.SpecialModel;
 import service.CountdownTimeJob;
 import service.IncentiveApiImpl;
 
@@ -225,16 +225,16 @@ public class IncentiveUI extends JPanel implements Observer {
             //countdownLabel.setText(job.getCountdownText());
             countdownLabelTextArea.setText(job.getCountdownText());
 
-            VehicleModel VehicleModel = job.getVehicleModel();
-            Special special = VehicleModel.getSpecial();
+            SpecialModel SpecialModel = job.getSpecialModel();
+            Special special = SpecialModel.getSpecial();
 
             //title.setText("Title: "+ special.getTitle());
             titleTextArea.setText(special.getTitle());
             //description.setText("Description: " + special.getDescription());
             descriptionTextArea.setText(special.getDescription());
 
-            //discountType.setText("Discount type: " + VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
-            //discountTypeTextArea.setText(VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
+            //discountType.setText("Discount type: " + SpecialModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
+            //discountTypeTextArea.setText(SpecialModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
             discountTypeTextArea.setText(IncentiveApiImpl.incentiveAppliedOn(special));
             // this could be discount value or discount percentage.
             if (special.getDiscountValue() > 0) {
@@ -244,8 +244,8 @@ public class IncentiveUI extends JPanel implements Observer {
                 //discountValue.setText("Discount percentage: " + special.getDiscountPercent());
                 discountValueTextArea.setText(special.getDiscountPercent() + "%");
             }
-            //priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
-            priceAfterDiscountTextArea.setText("$"+VehicleModel.getSpecialPrice());
+            //priceAfterDiscount.setText(SpecialModel.getSpecialPrice() + "");
+            priceAfterDiscountTextArea.setText("$"+SpecialModel.getSpecialPrice());
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             //discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
             discountPeriodTextArea.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
