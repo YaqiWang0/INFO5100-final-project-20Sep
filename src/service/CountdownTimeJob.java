@@ -12,18 +12,19 @@ public class CountdownTimeJob extends Observable implements Runnable {
 
     private Date endDate;
     private String countdownText;
-    private SpecialModel specialModel;
+    private SpecialModel SpecialModel;
 
     public String getCountdownText() {
         return countdownText;
     }
-    public SpecialModel getVehicleModel() {
-        return specialModel;
+
+    public SpecialModel getSpecialModel() {
+        return SpecialModel;
     }
 
-    public void start(SpecialModel specialModel) {
-        this.specialModel = specialModel;
-        endDate = specialModel.getSpecial().getEndDate();
+    public void start(SpecialModel SpecialModel) {
+        this.SpecialModel = SpecialModel;
+        endDate = SpecialModel.getSpecial().getEndDate();
         isDone = false;
         thread = new Thread(this);
         thread.start();

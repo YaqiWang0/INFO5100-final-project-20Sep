@@ -233,8 +233,8 @@ public class IncentiveUI extends JPanel implements Observer {
             //description.setText("Description: " + special.getDescription());
             descriptionTextArea.setText(special.getDescription());
 
-            //discountType.setText("Discount type: " + VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
-            //discountTypeTextArea.setText(VehicleModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
+            //discountType.setText("Discount type: " + SpecialModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
+            //discountTypeTextArea.setText(SpecialModel.getIncentiveType()+IncentiveApiImpl.incentiveAppliedOn(special));
             discountTypeTextArea.setText(IncentiveApiImpl.incentiveAppliedOn(special));
             // this could be discount value or discount percentage.
             if (special.getDiscountValue() > 0) {
@@ -244,8 +244,10 @@ public class IncentiveUI extends JPanel implements Observer {
                 //discountValue.setText("Discount percentage: " + special.getDiscountPercent());
                 discountValueTextArea.setText(special.getDiscountPercent() + "%");
             }
+
             //priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
             priceAfterDiscountTextArea.setText("$"+specialModel.getSpecialPrice());
+
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             //discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
             discountPeriodTextArea.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));

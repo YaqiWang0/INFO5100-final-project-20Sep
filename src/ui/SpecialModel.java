@@ -5,6 +5,7 @@ import dao.Vehicle;
 
 import java.util.List;
 
+
 public class SpecialModel {
 
     private Vehicle vehicle;
