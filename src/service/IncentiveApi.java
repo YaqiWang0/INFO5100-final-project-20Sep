@@ -1,6 +1,6 @@
 package service;
 
-import dao.SpecialModel;
+import ui.SpecialModel;
 import dao.Vehicle;
 
 import java.util.Date;
