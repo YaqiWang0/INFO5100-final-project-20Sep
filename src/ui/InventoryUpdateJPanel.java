@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 public class InventoryUpdateJPanel {
     private JPanel UpdateJPanel;
     private JTextField idTextField;
-    private JTextField dealerIdTextField;
     private JTextField yearTextField;
     private JTextField brandTextField;
     private JTextField modelTextField;
@@ -34,7 +33,6 @@ public class InventoryUpdateJPanel {
         frame.setVisible(true);
 
         this.idTextField.setText(id);
-        this.dealerIdTextField.setText(dealerId);
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
