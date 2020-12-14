@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import dao.Dealer;
 
 public class DataPersistence implements AbstractPersistent {
 
