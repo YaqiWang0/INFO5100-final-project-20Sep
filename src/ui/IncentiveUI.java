@@ -225,7 +225,7 @@ public class IncentiveUI extends JPanel implements Observer {
             //countdownLabel.setText(job.getCountdownText());
             countdownLabelTextArea.setText(job.getCountdownText());
 
-            SpecialModel specialModel = job.getVehicleModel();
+            SpecialModel specialModel = job.getSpecialModel();
             Special special = specialModel.getSpecial();
 
             //title.setText("Title: "+ special.getTitle());
