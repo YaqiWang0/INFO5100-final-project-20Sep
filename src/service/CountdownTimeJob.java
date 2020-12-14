@@ -17,6 +17,7 @@ public class CountdownTimeJob extends Observable implements Runnable {
     public String getCountdownText() {
         return countdownText;
     }
+
     public SpecialModel getSpecialModel() {
         return SpecialModel;
     }

@@ -225,8 +225,8 @@ public class IncentiveUI extends JPanel implements Observer {
             //countdownLabel.setText(job.getCountdownText());
             countdownLabelTextArea.setText(job.getCountdownText());
 
-            SpecialModel SpecialModel = job.getSpecialModel();
-            Special special = SpecialModel.getSpecial();
+            SpecialModel specialModel = job.getVehicleModel();
+            Special special = specialModel.getSpecial();
 
             //title.setText("Title: "+ special.getTitle());
             titleTextArea.setText(special.getTitle());
@@ -244,8 +244,10 @@ public class IncentiveUI extends JPanel implements Observer {
                 //discountValue.setText("Discount percentage: " + special.getDiscountPercent());
                 discountValueTextArea.setText(special.getDiscountPercent() + "%");
             }
-            //priceAfterDiscount.setText(SpecialModel.getSpecialPrice() + "");
-            priceAfterDiscountTextArea.setText("$"+SpecialModel.getSpecialPrice());
+
+            //priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
+            priceAfterDiscountTextArea.setText("$"+specialModel.getSpecialPrice());
+
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             //discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
             discountPeriodTextArea.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
