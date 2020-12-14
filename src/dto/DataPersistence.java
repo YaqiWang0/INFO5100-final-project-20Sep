@@ -163,8 +163,6 @@ public class DataPersistence implements AbstractPersistent {
     public List<Vehicle> getAllVehicles() {
         List<Vehicle> result = new ArrayList<>();
         String vehicleFilePath = this.dataPath + "vehicles.csv";
-        //String vehicleFilePath = "/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/" + "vehicles.csv";
-
         File csv = new File(vehicleFilePath);
         BufferedReader br = null;
 
