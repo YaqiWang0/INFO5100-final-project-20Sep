@@ -2,7 +2,7 @@ package ui;
 
 import dao.Special;
 import dao.Vehicle;
-import dao.SpecialModel;
+import ui.SpecialModel;
 import dto.AbstractPersistent;
 import dto.DataPersistence;
 import service.IncentiveApi;
