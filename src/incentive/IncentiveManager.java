@@ -77,6 +77,10 @@ public class IncentiveManager extends JFrame {
         initComponents();
     }
 
+    public IncentiveManager(){
+
+    }
+
     private void initComponents() {
         this.vehicleList = dataPersistence
                             .getAllVehicles()
@@ -418,6 +422,19 @@ public class IncentiveManager extends JFrame {
             }
             return vehicleMileage >= mileage;
         }).collect(Collectors.toList());
+    }
+
+    /*
+    dealer: id:xiang with password:12345 or id:jing with the same password.
+     */
+    public void mainCaller(String dealerId) throws ParseException {
+        IncentiveManager frame = new IncentiveManager(dealerId);
+        frame.setTitle("Create Incentive");
+        frame.setContentPane(frame.panelMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(1000, 400));
+        frame.pack();
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) throws ParseException {

@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class updateInventory {
+public class UpdateInventory {
 
   public static void updateInventoryByDealer(String vehicleId,String dealerId, String year,
       String brand, String model, boolean isNew,
@@ -37,18 +37,21 @@ public class updateInventory {
 
       while ((line = br.readLine()) != null){
         String[] values = line.split(",");
+        //update data by dealerId and VehicleId
         if (values[0].equals(vehicleId) && values[1].equals(dealerId)){
-          //cover
+          //print new data
           pw.println( vehicleId+","+ dealerId+","+year+","+ brand+","+  model+","+  isNew+","+ price+","+  exteriorColor+","+ interiorColor+","+  bodyType+","+ miles+","+feature+","+ image);
         }else {
-          pw.println(values[0]+","+values[1]+","+values[2]+","+values[3]+","+values[4]+","+values[5]+","+values[6]+","+values[7]+","+values[8]+","+values[9]+","+values[10]+","+values[11]+","+values[2]);
+          //copy old data
+          pw.println(values[0]+","+values[1]+","+values[2]+","+values[3]+","+values[4]+","+values[5]+","+values[6]+","+values[7]+","+values[8]+","+values[9]+","+values[10]+","+values[11]+","+values[12]);
         }
 
       }
       pw.flush();
       pw.close();
-      File dump = new File(path);
-      newFile.renameTo(dump);
+      File old = new File(path);
+      old.delete();
+      newFile.renameTo(old);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (IOException e){
@@ -60,7 +63,7 @@ public class updateInventory {
 
 
   public static void main(String[] args) {
-    updateInventoryByDealer("070853c1-750c-406c-9679-201bd8fa7c47","gmps-aj-dohmann","9999","BMW","S",true,"62440.0","Black","Black",CAR,"0","2dr Cpe LT w/1LT	Test feature","http://inventory-dmg.assets-cdk.com/4/6/5/13411476564x90.jpg	http://inventory-dmg.assets-cdk.com/2/3/5/13411476532x90.jpg");
+    updateInventoryByDealer("9b572b09-807f-4b7e-83f0-47473edb9366","gmps-aj-dohmann","9999","Benz","S",true,"62440.0","Black","Black",CAR,"0","2dr Cpe LT w/1LT	Test feature","http://.jpg");
   }
 
 }
