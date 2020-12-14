@@ -1,6 +1,7 @@
 package ui;
 
 import incentive.IncentiveManager;
+import ui.CheckLead.CheckLeadUI;
 
 import java.awt.BorderLayout;
 
@@ -108,6 +109,16 @@ public class DealerHome extends JFrame {
 		
 		JButton case_8Button = new JButton("Show Customer Message (case 8)");
 		MainPanel.add(case_8Button);
+		case_8Button.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CheckLeadUI(dealerId);
+                
+            }
+        });
+		
+		
 		MainPanel.add(lblNewLabel_2);
 		setVisible(true);
 
@@ -141,7 +152,5 @@ public class DealerHome extends JFrame {
 			}
 		});
 	}
-
-
 
 }
