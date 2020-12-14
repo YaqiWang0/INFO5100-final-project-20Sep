@@ -1,5 +1,7 @@
 package ui;
 
+import incentive.IncentiveManager;
+
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -11,6 +13,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -19,6 +22,7 @@ public class DealerHome extends JFrame {
 	private String id;
 	private JPanel contentPane;
 	private final JLabel lblNewLabel_2 = new JLabel("");
+	JButton case_5Button;
 
 	/**
 	 * Launch the application.
@@ -84,7 +88,7 @@ public class DealerHome extends JFrame {
 		createIncLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 		MainPanel.add(createIncLabel);
 		
-		JButton case_5Button = new JButton("Manage Incentives(case5)");
+		case_5Button = new JButton("Manage Incentives(case5)");
 		MainPanel.add(case_5Button);
 		
 		JLabel messageLabel = new JLabel("      Look at all the leads sent by the customers and respond :");
@@ -95,6 +99,22 @@ public class DealerHome extends JFrame {
 		MainPanel.add(case_8Button);
 		MainPanel.add(lblNewLabel_2);
 		setVisible(true);
+
+		createIncentive();
+	}
+
+	public void createIncentive(){
+		case_5Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				IncentiveManager im = new IncentiveManager();
+				try {
+					im.mainCaller("bae705d7-20da-4ee2-871f-345b2271992b");
+				} catch (ParseException parseException) {
+					parseException.printStackTrace();
+				}
+			}
+		});
 	}
 
 }
