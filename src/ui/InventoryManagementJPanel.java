@@ -23,26 +23,29 @@ public class InventoryManagementJPanel {
     private JPanel MainPanel;
     private JPanel SplitPanel;
     private JPanel TablePanel;
+    private JLabel idLabel;
 
-    public InventoryManagementJPanel() throws MalformedURLException {
+    public InventoryManagementJPanel(String dealerId) throws MalformedURLException {
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(InventoryMgmtPanel);
+        idLabel.setText("Welcome, "+dealerId);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1000, 1000);
         frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
 
-        String[] columnNames = {"ID", "Dealer ID", "Year", "Brand", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"};
-        Object[][] tableVales = {{"2960297373", "gmps-roberts-tn", "2016", "Buick", "Cascada", "New", "37400.0", "Black", "Black", "CAR", "2dr Conv Premium", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))},{"2966525563", "gmps-roberts-tn", "2017", "Buick", "Enclave", "New", "46660.0", "Brown", "Black", "SUV", "Leather FWD", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2017/3273383/default/ext_G1F_deg01x90.jpg"))},{"2932765103", "gmps-roberts-tn", "2017", "Chevrolet", "Malibu", "New", "24140.0", "Black", "Black", "CAR", "1LS", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2017/3343993/default/ext_GAZ_deg01x90.jpg"))}};
+        String[] columnNames = {"ID", "Year", "Brand", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"};
+        Object[][] tableVales = {{"2960297373", "2016", "Buick", "Cascada", "New", "37400.0", "Black", "Black", "CAR", "2dr Conv Premium", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))},{"2966525563", "2017", "Buick", "Enclave", "New", "46660.0", "Brown", "Black", "SUV", "Leather FWD", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2017/3273383/default/ext_G1F_deg01x90.jpg"))},{"2932765103", "2017", "Chevrolet", "Malibu", "New", "24140.0", "Black", "Black", "CAR", "1LS", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2017/3343993/default/ext_GAZ_deg01x90.jpg"))}};
         TableModel tableModel = new DefaultTableModel(tableVales, columnNames){
             public Class getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }
         };
         table1.setModel(tableModel);
-        table1.getColumn(columnNames[12]).setPreferredWidth(100);
+        table1.getColumn(columnNames[11]).setPreferredWidth(100);
         table1.setRowHeight(60);
 
         searchButton.addActionListener(new ActionListener() {
@@ -70,14 +73,14 @@ public class InventoryManagementJPanel {
             public void actionPerformed(ActionEvent e) {
                 int row = table1.getSelectedRow();
                 InventoryUpdateJPanel panel = new InventoryUpdateJPanel(table1.getValueAt(row, 0).toString(), table1.getValueAt(row, 1).toString());
-                System.out.println(table1.getValueAt(row, 0).toString() + " " + table1.getValueAt(row, 1).toString());
+//                System.out.println(table1.getValueAt(row, 0).toString() + " " + table1.getValueAt(row, 1).toString());
             }
         });
 
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InventoryCreationJPanel panel = new InventoryCreationJPanel();
+                InventoryCreationJPanel panel = new InventoryCreationJPanel(dealerId);
             }
         });
 
@@ -87,10 +90,17 @@ public class InventoryManagementJPanel {
 //                table1.remove(table1.getSelectedRow());
             }
         });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
     }
 
     public static void main(String[] args) throws MalformedURLException {
-        InventoryManagementJPanel im = new InventoryManagementJPanel();
+        InventoryManagementJPanel im = new InventoryManagementJPanel("test");
     }
 
 
