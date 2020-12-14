@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 
 public class InventoryCreationJPanel {
     private JTextField idTextField;
-    private JTextField dealerIdTextField;
     private JTextField yearTextField;
     private JTextField brandTextField;
     private JTextField modelTextField;
