@@ -1,6 +1,6 @@
 package service;
 
-import dao.SpecialModel;
+import ui.SpecialModel;
 
 import java.util.Date;
 import java.util.Observable;
