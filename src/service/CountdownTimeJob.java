@@ -1,6 +1,6 @@
 package service;
 
-import dao.VehicleModel;
+import dao.SpecialModel;
 
 import java.util.Date;
 import java.util.Observable;
@@ -12,18 +12,18 @@ public class CountdownTimeJob extends Observable implements Runnable {
 
     private Date endDate;
     private String countdownText;
-    private VehicleModel VehicleModel;
+    private SpecialModel SpecialModel;
 
     public String getCountdownText() {
         return countdownText;
     }
-    public VehicleModel getVehicleModel() {
-        return VehicleModel;
+    public SpecialModel getSpecialModel() {
+        return SpecialModel;
     }
 
-    public void start(VehicleModel VehicleModel) {
-        this.VehicleModel = VehicleModel;
-        endDate = VehicleModel.getSpecial().getEndDate();
+    public void start(SpecialModel SpecialModel) {
+        this.SpecialModel = SpecialModel;
+        endDate = SpecialModel.getSpecial().getEndDate();
         isDone = false;
         thread = new Thread(this);
         thread.start();
