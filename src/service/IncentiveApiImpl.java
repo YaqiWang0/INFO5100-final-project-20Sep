@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import dao.Special;
-import dao.SpecialModel;
+import ui.SpecialModel;
 import dao.Vehicle;
 import dto.AbstractPersistent;
 import dto.DataPersistence;
