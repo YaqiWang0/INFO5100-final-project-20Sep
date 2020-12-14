@@ -1,6 +1,6 @@
 This is use case 11 (team 5)!
 
-If you want to run our code, run 'CustomerLogin'.
+If you want to run our code, run 'CustomerLogin'. Please use IntelliJ IDEA! Using eclipse may cause error.
 
 The database contains two forms:
 
