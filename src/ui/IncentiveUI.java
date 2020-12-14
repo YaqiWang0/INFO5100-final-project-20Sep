@@ -1,7 +1,7 @@
 package ui;
 
 import dao.Special;
-import dao.VehicleModel;
+import ui.SpecialModel;
 import service.CountdownTimeJob;
 import service.IncentiveApiImpl;
 
@@ -225,8 +225,8 @@ public class IncentiveUI extends JPanel implements Observer {
             //countdownLabel.setText(job.getCountdownText());
             countdownLabelTextArea.setText(job.getCountdownText());
 
-            VehicleModel VehicleModel = job.getVehicleModel();
-            Special special = VehicleModel.getSpecial();
+            SpecialModel specialModel = job.getVehicleModel();
+            Special special = specialModel.getSpecial();
 
             //title.setText("Title: "+ special.getTitle());
             titleTextArea.setText(special.getTitle());
@@ -245,7 +245,7 @@ public class IncentiveUI extends JPanel implements Observer {
                 discountValueTextArea.setText(special.getDiscountPercent() + "%");
             }
             //priceAfterDiscount.setText(VehicleModel.getSpecialPrice() + "");
-            priceAfterDiscountTextArea.setText("$"+VehicleModel.getSpecialPrice());
+            priceAfterDiscountTextArea.setText("$"+specialModel.getSpecialPrice());
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
             //discountPeriod.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));
             discountPeriodTextArea.setText(sdf.format(special.getStartDate()) + " to " + sdf.format(special.getEndDate()));

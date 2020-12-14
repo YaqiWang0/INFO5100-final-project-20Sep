@@ -1,8 +1,11 @@
-package dao;
+package ui;
+
+import dao.Special;
+import dao.Vehicle;
 
 import java.util.List;
 
-public class VehicleModel {
+public class SpecialModel {
 
     private Vehicle vehicle;
     //Cheapest active special
@@ -14,14 +17,14 @@ public class VehicleModel {
     private boolean haveSpecial;
 
 	//All specials
-    private List<VehicleModel> allSpecials;
+    private List<SpecialModel> allSpecials;
 
 
-	public VehicleModel(Vehicle vehicle) {
+	public SpecialModel(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
         
-	public VehicleModel(Vehicle vehicle, Special special) {
+	public SpecialModel(Vehicle vehicle, Special special) {
         this.vehicle = vehicle;
         this.special = special;
     }
@@ -46,7 +49,7 @@ public class VehicleModel {
 		return haveSpecial;
 	}    
     
-    public List<VehicleModel> getAllSpecials() {
+    public List<SpecialModel> getAllSpecials() {
  		return allSpecials;
  	}
 
@@ -70,12 +73,12 @@ public class VehicleModel {
 		this.haveSpecial = haveSpecial;
 	}
 	
-	public void setAllSpecials(List<VehicleModel> allSpecials) {
+	public void setAllSpecials(List<SpecialModel> allSpecials) {
 		this.allSpecials = allSpecials;
 	}
 	
 	
-	public void addToAllSpecials(VehicleModel special) {
+	public void addToAllSpecials(SpecialModel special) {
 		allSpecials.add(special);
 	}
 }
