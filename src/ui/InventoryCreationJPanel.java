@@ -24,7 +24,7 @@ public class InventoryCreationJPanel {
     private JButton cancelButton;
     private JPanel CreateJPanel;
 
-    public InventoryCreationJPanel(){
+    public InventoryCreationJPanel(String dealerId){
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(CreateJPanel);
@@ -37,7 +37,7 @@ public class InventoryCreationJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    InventoryManagementJPanel panel = new InventoryManagementJPanel();
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
                 } catch (MalformedURLException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }
@@ -46,6 +46,6 @@ public class InventoryCreationJPanel {
     }
 
     public static void main(String[] args){
-        InventoryCreationJPanel ic = new InventoryCreationJPanel();
+//        InventoryCreationJPanel ic = new InventoryCreationJPanel();
     }
 }

@@ -94,7 +94,7 @@ public class DealerLogin extends JFrame {
 					boolean response = new DealerController().login(userNameTextField.getText(), passwordTextField.getText());
 					if(response) {
 						dispose();
-						new DealerHome();
+						new DealerHome(userNameTextField.getText());
 					}else{
 						new mistake();
 					}

@@ -37,7 +37,7 @@ public class InventoryUpdateJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    InventoryManagementJPanel panel = new InventoryManagementJPanel();
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
                 } catch (MalformedURLException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }

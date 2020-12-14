@@ -23,15 +23,18 @@ public class InventoryManagementJPanel {
     private JPanel MainPanel;
     private JPanel SplitPanel;
     private JPanel TablePanel;
+    private JLabel idLabel;
 
-    public InventoryManagementJPanel() throws MalformedURLException {
+    public InventoryManagementJPanel(String dealerId) throws MalformedURLException {
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(InventoryMgmtPanel);
+        idLabel.setText("Welcome, "+dealerId);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1000, 1000);
         frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
 
         String[] columnNames = {"ID", "Year", "Brand", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"};
@@ -77,7 +80,7 @@ public class InventoryManagementJPanel {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InventoryCreationJPanel panel = new InventoryCreationJPanel();
+                InventoryCreationJPanel panel = new InventoryCreationJPanel(dealerId);
             }
         });
 
@@ -87,10 +90,17 @@ public class InventoryManagementJPanel {
 //                table1.remove(table1.getSelectedRow());
             }
         });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
     }
 
     public static void main(String[] args) throws MalformedURLException {
-        InventoryManagementJPanel im = new InventoryManagementJPanel();
+        InventoryManagementJPanel im = new InventoryManagementJPanel("test");
     }
 
 
