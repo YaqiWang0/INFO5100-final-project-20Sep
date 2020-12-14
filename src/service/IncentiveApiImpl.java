@@ -62,7 +62,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				if (timeCheck(s.getStartDate(), s.getEndDate(), getCurrentTime())) {
 					if (s.getDiscountValue() > 0) {
 
-						pairs.put((price - s.getDiscountValue()), s);
+						float newPrice = (price - s.getDiscountValue());
+						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
@@ -72,7 +73,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 					} else if (s.getDiscountPercent() > 0) {
 
-						pairs.put((price - price * ((float) s.getDiscountPercent() / 100)), s);
+						float newPrice = (price - price * ((float) s.getDiscountPercent() / 100));
+						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
@@ -102,10 +104,12 @@ public final class IncentiveApiImpl implements IncentiveApi {
 			VehicleModel vm = new VehicleModel(vehicle, s);
 			if (s.getScope().contains(id)) {
 				if (s.getDiscountValue() > 0) {
-					vm.setSpecialPrice((price - s.getDiscountValue()));
+					float newPrice = (price - s.getDiscountValue());
+					vm.setSpecialPrice(newPrice > 0 ? newPrice : 0);
 					allSpecials.add(vm);
 				}else if(s.getDiscountPercent() > 0) {
-					vm.setSpecialPrice(price - price * ((float) s.getDiscountPercent() / 100));
+					float newPrice = price - price * ((float) s.getDiscountPercent() / 100);
+					vm.setSpecialPrice(newPrice > 0 ? newPrice : 0);
 					allSpecials.add(vm);
 				} 
 			}
