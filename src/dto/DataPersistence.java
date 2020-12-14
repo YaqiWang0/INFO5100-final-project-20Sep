@@ -25,8 +25,8 @@ public class DataPersistence implements AbstractPersistent {
     // Reads dealers file in data directory and returns a map of dealers with
     // the dealer's ids as its keys and its corresponding Dealer object as the value
     @Override
-    public List<Dealer> getAllDealers() {
-        List<Dealer> result = new ArrayList<>();
+    public List<dao.Dealer> getAllDealers() {
+        List<dao.Dealer> result = new ArrayList<>();
         String dealerFilePath = this.dataPath + "dealers.csv";
         File csv = new File(dealerFilePath);
         if (!csv.exists()) {
@@ -39,7 +39,7 @@ public class DataPersistence implements AbstractPersistent {
             String line = br.readLine();
             while (line != null) {
                 String[] fields = line.split(",");
-                Dealer d = new Dealer();
+                dao.Dealer d = new dao.Dealer();
                 d.setDealerId(fields[0]);
                 d.setDealerName(fields[1]);
                 Address a = new Address();
@@ -64,10 +64,10 @@ public class DataPersistence implements AbstractPersistent {
     }
 
     @Override
-    public void writeDealers(List<Dealer> dealers) {
+    public void writeDealers(List<dao.Dealer> dealers) {
         String modelType = "dealers";
         List<GenericModel> models = new ArrayList<>();
-        for (Dealer dealer: dealers) {
+        for (dao.Dealer dealer: dealers) {
             models.add(dealer);
         }
         writeModel(models, modelType);
@@ -163,6 +163,7 @@ public class DataPersistence implements AbstractPersistent {
     public List<Vehicle> getAllVehicles() {
         List<Vehicle> result = new ArrayList<>();
         String vehicleFilePath = this.dataPath + "vehicles.csv";
+        //String vehicleFilePath = "/Users/anjali/Desktop/Project/INFO5100-final-project-20Sep/data/" + "vehicles.csv";
 
         File csv = new File(vehicleFilePath);
         BufferedReader br = null;
