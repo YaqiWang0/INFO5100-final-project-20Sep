@@ -1,5 +1,6 @@
 package service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,7 +63,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				if (timeCheck(s.getStartDate(), s.getEndDate(), getCurrentTime())) {
 					if (s.getDiscountValue() > 0) {
 
-						float newPrice = (price - s.getDiscountValue());
+						float newPrice1 = (price - s.getDiscountValue());
+						float newPrice = new BigDecimal(newPrice1).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
@@ -73,7 +75,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 					} else if (s.getDiscountPercent() > 0) {
 
-						float newPrice = (price - price * ((float) s.getDiscountPercent() / 100));
+						float newPrice2 = (price - price * ((float) s.getDiscountPercent() / 100));
+						float newPrice = new BigDecimal(newPrice2).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
