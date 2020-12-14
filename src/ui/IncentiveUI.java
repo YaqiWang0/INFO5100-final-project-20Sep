@@ -1,7 +1,7 @@
 package ui;
 
 import dao.Special;
-import dao.SpecialModel;
+import ui.SpecialModel;
 import service.CountdownTimeJob;
 import service.IncentiveApiImpl;
 
