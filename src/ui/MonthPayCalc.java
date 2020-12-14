@@ -20,12 +20,12 @@ public class MonthPayCalc extends JFrame {
     }
 
     private void create() {
-        vehiclePriceLabel = new JLabel ("Vehicle Price: ");
-        extraFeesLabel = new JLabel ("Extra Fees (Warranty, etc.): ");
-        downPaymentLabel = new JLabel ("Down Payment: ");
-        taxRateLabel = new JLabel ("Tax Rate (%): ");
-        aprLabel = new JLabel ("APR (%): ");
-        loanTermLabel = new JLabel ("Loan Term: ");
+        vehiclePriceLabel = new JLabel ("1) Vehicle Price: ");
+        extraFeesLabel = new JLabel ("2) Extra Fees (Warranty, etc.): ");
+        downPaymentLabel = new JLabel ("3) Down Payment: ");
+        taxRateLabel = new JLabel ("4) Tax Rate (%): ");
+        aprLabel = new JLabel ("5) APR (%): ");
+        loanTermLabel = new JLabel ("6) Loan Term: ");
         monthlyPaymentLabel = new JLabel ("Your Monthly Payment is: ");
         monthlyPaymentOutput = new JLabel ("");
         errorMessageLabel = new JLabel ("");
@@ -89,7 +89,6 @@ public class MonthPayCalc extends JFrame {
         temp.add(totalOutput);
         this.add(temp);
 
-
         temp = new JPanel();
         temp.add(monthlyPaymentLabel);
         temp.add(monthlyPaymentOutput);
@@ -107,6 +106,7 @@ public class MonthPayCalc extends JFrame {
     private void addActions() {
         calculateButton.addActionListener((ActionEvent ae) -> calculateMonthlyPayment(ae));
         clearButton.addActionListener((ActionEvent ae) -> clearCalculator(ae));
+        loanTermInput.addActionListener((ActionEvent ae) -> calculateMonthlyPayment(ae));
     }
 
     private void calculateMonthlyPayment (ActionEvent ae) {
@@ -196,6 +196,11 @@ public class MonthPayCalc extends JFrame {
         setSize(500, 500);
         setVisible(true);
     }
+
+    public static void main (String args[]) {
+        new MonthPayCalc();
+    }
+
 
 }
 

@@ -1,6 +1,8 @@
 package dto;
 
+import dao.Dealer;
 import dao.Special;
+import dao.Vehicle;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -9,51 +11,48 @@ public class TestSpecialDataPersistent {
     public static void main(String[] args) throws Exception {
         DataPersistence dp = new DataPersistence();
 
-//        // special i1 with complete fields
-//        Special i1 = new Special("1", new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2020"), new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2022"), "Special: 1", "100");
-//        i1.setDescription("This, is, description. Special 1 description.");
-//        i1.setDisclaimer("This, is \"disclaimer\", blah. Special 1 disclaimer.");
-//        i1.setYear("2020");
-//        i1.setBrand("Toyota");
-//        i1.setBodyType("SUV");
-//        i1.setIsNew("New");
-//        i1.setScopeParameter("scope parameter");
-//        i1.setScope(SpecialScope.ALL);
-//
-//        // special i2 without fields{BodyType, IsNew, ScopeParameter, SpecialScope}
-//        Special i2 = new Special("2", new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2020"), new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2022"), "Special: 2", "200");
-//        i2.setDescription("This, is, \"description\". Special 2 description.");
-//        i2.setDisclaimer("This, is \"disclaimer\", blah. Special 2 disclaimer.");
-//        i2.setYear("2020");
-//        i2.setBrand("Toyota");
-//
-//        // specials i3 without fields {Description, Disclaimer, Year, Brand}
-//        Special i3 = new Special("3", new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2020"), new SimpleDateFormat("dd/MM/yyyy").parse("01-01-2022"), "Special: 3", "300");
-//        i3.setBodyType("SUV");
-//        i3.setIsNew("New");
-//        i3.setScopeParameter("scope parameter");
-//        i3.setScope(SpecialScope.ALL);
-//
-//        List<Special> allSpecials = new ArrayList<>();
-//        allSpecials.add(i1);
-//        allSpecials.add(i2);
-//        allSpecials.add(i3);
+        Special i = new Special();
+        i.setStartDate(new SimpleDateFormat("dd/MM/yyyy").parse("08/12/2020"));
+        i.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020"));
+        i.setDiscountValue(1500);
+        //i.setDiscountPercent(0);
+        i.setValidOnCashPayment(true);
+        i.setValidOnCheckPayment(true);
+        i.setValidOnLoan(true);
+        i.setValidOnLease(false);
+        i.setValueOfVehicle("57000");
+        //i.setYear("2017");
+        i.setBrand("Cadillac");
+        //i.setBodyType("Spark");
+        //i.setIsNew("New");
+        //i.setScopeMiles("5000");
+        i.setTitle("Deals on Cadillac");
+        i.setDescription("All Cadillac above $57k on sale with $1500 off.");
+        i.setDisclaimer("The vehicle photo displayed may be an example only. Pricing throughout the web site " +
+                "does not include any options that may have been installed at the dealership. Please see the dealer " +
+                "for details. Vehicles may be in transit or currently in production.");
 
-        // dp.writeSpecials(allSpecials);
+        List<Dealer> allDealers = dp.getAllDealers();
+        i.setDealerId("1f3f02f6-1d69-4874-b976-e45d0d44a5bc");
 
-        Special sp = new Special();
-        sp.setStartDate(new SimpleDateFormat("dd/MM/yyyy").parse("25/12/2020"));
-        sp.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020"));
-        sp.setDiscountValue(4500);
-        sp.setTitle("Christmas");
-        dp.writeSpecials(sp);
+        List<Vehicle> allVehicles = dp.getAllVehicles();
+        List<String> scopes = new ArrayList<>();
+        for (Vehicle v : allVehicles) {
+            scopes.add(v.getVehicleId());
+        }
+        //i.setScope(scopes);
 
-//        List<Special> allSpecialsRead = dp.getAllSpecials();
+        //dp.writeSpecial(i, i.getDealerName());
+
+        List<Special> allSpecialsRead = dp.getAllSpecials("bae705d7-20da-4ee2-871f-345b2271992b");
+        for (Special s: allSpecialsRead) {
+            System.out.println(s.getSpecialId());
+            System.out.println(s.getScope());
+        }
 //        System.out.println(allSpecialsRead.get(0).getTitle());
 //        System.out.println(allSpecialsRead.get(1).getTitle());
 //        System.out.println(allSpecialsRead.get(2).getTitle());
 
     }
-
 
 }

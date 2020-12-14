@@ -6,6 +6,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class InventoryManagementJPanel {
     private JPanel InventoryMgmtPanel;
@@ -22,7 +24,7 @@ public class InventoryManagementJPanel {
     private JPanel SplitPanel;
     private JPanel TablePanel;
 
-    public InventoryManagementJPanel(){
+    public InventoryManagementJPanel() throws MalformedURLException {
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(InventoryMgmtPanel);
@@ -33,9 +35,15 @@ public class InventoryManagementJPanel {
         frame.setVisible(true);
 
         String[] columnNames = {"ID", "Dealer ID", "Year", "Brand", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"};
-        String[][] tableVales = {{"1", "Dealer ID", "Year", "Brand1", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"},{"2", "Dealer ID", "Year", "Brand2", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"},{"3", "Dealer ID", "Year", "Brand2", "Model", "New/Used", "Price", "Exterior Color", "Interior Color", "Body Type", "Features", "Miles", "Images"}};
-        TableModel tableModel = new DefaultTableModel(tableVales, columnNames);
+        Object[][] tableVales = {{"2960297373", "gmps-roberts-tn", "2016", "Buick", "Cascada", "New", "37400.0", "Black", "Black", "CAR", "2dr Conv Premium", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))},{"2966525563", "gmps-roberts-tn", "2017", "Buick", "Enclave", "New", "46660.0", "Brown", "Black", "SUV", "Leather FWD", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2017/3273383/default/ext_G1F_deg01x90.jpg"))},{"2932765103", "gmps-roberts-tn", "2017", "Chevrolet", "Malibu", "New", "24140.0", "Black", "Black", "CAR", "1LS", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2017/3343993/default/ext_GAZ_deg01x90.jpg"))}};
+        TableModel tableModel = new DefaultTableModel(tableVales, columnNames){
+            public Class getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         table1.setModel(tableModel);
+        table1.getColumn(columnNames[12]).setPreferredWidth(100);
+        table1.setRowHeight(60);
 
         searchButton.addActionListener(new ActionListener() {
             @Override
@@ -81,7 +89,7 @@ public class InventoryManagementJPanel {
         });
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws MalformedURLException {
         InventoryManagementJPanel im = new InventoryManagementJPanel();
     }
 
