@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.DealerMapper">
+  <resultMap id="BaseResultMap" type="dto.Dealer">
+    <result column="webId" jdbcType="VARCHAR" property="webid" />
+    <result column="Id" jdbcType="VARCHAR" property="id" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+  <insert id="insert" parameterType="dto.Dealer">
+    insert into dealer (webId, Id, password
+      )
+    values (#{webid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="dto.Dealer">
+    insert into dealer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="webid != null">
+        webId,
+      </if>
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="webid != null">
+        #{webid,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="dealerSearch" resultMap="BaseResultMap">
+  SELECT
+  webId, Id, password
+  FROM dealer
+</select>
+
+  <select id="findById" resultMap="BaseResultMap">
+  SELECT
+  webId, Id, password
+  FROM dealer
+  WHERE Id=#{id}
+</select>
+
+</mapper>
