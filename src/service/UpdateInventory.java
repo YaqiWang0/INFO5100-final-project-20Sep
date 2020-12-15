@@ -1,8 +1,6 @@
 package service;
 
-import static dao.BodyType.CAR;
 
-import dao.BodyType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,15 +12,15 @@ import java.io.PrintWriter;
 
 public class UpdateInventory {
 
-  public static void updateInventoryByDealer(String vehicleId,String dealerId, String year,
-      String brand, String model, boolean isNew,
-      String price, String exteriorColor,
-      String interiorColor, BodyType bodyType,
-      String miles,String feature,String image){
+  public static void updateInventoryByDealer(String vehicleId,String webId, String category,
+      String year, String make, String model,
+      String trim, String type,String price, String photo
+  ){
 
 
-    String tempFile = "data/temp.csv";
-    String path = "data/vehicles.csv";
+
+    String tempFile = "data/temp";
+    String path = "data/"+webId;
     File newFile = new File(tempFile);
 
     String line = "";
@@ -35,15 +33,16 @@ public class UpdateInventory {
       BufferedWriter bw = new BufferedWriter(fw);
       PrintWriter pw = new PrintWriter(bw);
 
+//      pw.println();
       while ((line = br.readLine()) != null){
-        String[] values = line.split(",");
+        String[] values = line.split("~");
         //update data by dealerId and VehicleId
-        if (values[0].equals(vehicleId) && values[1].equals(dealerId)){
+        if (values[0].equals(vehicleId)){
           //print new data
-          pw.println( vehicleId+","+ dealerId+","+year+","+ brand+","+  model+","+  isNew+","+ price+","+  exteriorColor+","+ interiorColor+","+  bodyType+","+ miles+","+feature+","+ image);
+          pw.println( values[0]+"~"+values[1]+"~"+ category+"~"+year+"~"+make+"~"+ model+"~"+  trim+"~"+ type+"~"+ price+"~"+ photo);
         }else {
           //copy old data
-          pw.println(values[0]+","+values[1]+","+values[2]+","+values[3]+","+values[4]+","+values[5]+","+values[6]+","+values[7]+","+values[8]+","+values[9]+","+values[10]+","+values[11]+","+values[12]);
+          pw.println(values[0]+"~"+values[1]+"~"+values[2]+"~"+values[3]+"~"+values[4]+"~"+values[5]+"~"+values[6]+"~"+values[7]+"~"+values[8]+"~"+values[9]);
         }
 
       }
@@ -63,7 +62,7 @@ public class UpdateInventory {
 
 
   public static void main(String[] args) {
-    updateInventoryByDealer("9b572b09-807f-4b7e-83f0-47473edb9366","gmps-aj-dohmann","9999","Benz","S",true,"62440.0","Black","Black",CAR,"0","2dr Cpe LT w/1LT	Test feature","http://.jpg");
+    updateInventoryByDealer("2957999103","gmps-shaheen","used","999","Chevrolet","Equinox","FWD LS","SUV","22","http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2018/3436853/default/ext_G7Q_deg01x90.jpg");
   }
 
 }
