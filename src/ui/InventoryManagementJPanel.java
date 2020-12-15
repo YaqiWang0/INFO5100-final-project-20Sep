@@ -53,10 +53,13 @@ public class InventoryManagementJPanel {
                             "application/x-www-form-urlencoded");
                     if (urlcon.getResponseCode() == HttpURLConnection.HTTP_OK) {
                         Image image = ImageIO.read(url);
-                        imageIcon = new ImageIcon(image);
+                        imageIcon = new ImageIcon(new URL(vehicleImagePath));
                     } else {
-                        vehicleImagePath = "src/ui/pictures/default-60x60.png";
-                        imageIcon = new ImageIcon(vehicleImagePath);
+//                        vehicleImagePath = "src/ui/pictures/default-60x60.png";
+//                        imageIcon = new ImageIcon(vehicleImagePath);
+                        //online image
+                        vehicleImagePath = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=654480783,3410226424&fm=26&gp=0.jpg";
+                        imageIcon = new ImageIcon(new URL(vehicleImagePath));
                     }
 
                     System.out.println(j);
@@ -120,12 +123,13 @@ public class InventoryManagementJPanel {
             }
         });
 
+        //upload button
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = table1.getSelectedRow();
-                InventoryUpdateJPanel panel = new InventoryUpdateJPanel(table1.getValueAt(row, 0).toString(), table1.getValueAt(row, 1).toString());
-//                System.out.println(table1.getValueAt(row, 0).toString() + " " + table1.getValueAt(row, 1).toString());
+                InventoryUpdateJPanel panel = new InventoryUpdateJPanel(table1.getValueAt(row, 0).toString(),dealerId,table1.getValueAt(row, 1).toString(),table1.getValueAt(row, 2).toString(),table1.getValueAt(row, 3).toString(),table1.getValueAt(row, 4).toString(),table1.getValueAt(row, 5).toString(),table1.getValueAt(row, 6).toString(),"4dr Sdn Turbo FWD",table1.getValueAt(row, 7).toString());
+                System.out.println(table1.getValueAt(row, 0).toString() + " " + table1.getValueAt(row, 1).toString());
             }
         });
 
