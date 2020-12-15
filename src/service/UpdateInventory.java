@@ -1,8 +1,6 @@
 package service;
 
-import static dao.BodyType.CAR;
 
-import dao.BodyType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

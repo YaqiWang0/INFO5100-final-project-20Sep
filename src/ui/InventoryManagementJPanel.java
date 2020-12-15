@@ -40,7 +40,7 @@ public class InventoryManagementJPanel {
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/"+dealerId)));
                 String line = br.readLine();
                 int j =0;
-                while((line=br.readLine())!=null&&j<3){
+                while((line=br.readLine())!=null){
                     String[] info = line.split("~");
 
                     String vehicleImagePath = info[9];
