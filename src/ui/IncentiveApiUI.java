@@ -2,7 +2,7 @@ package ui;
 
 import dao.Special;
 import dao.Vehicle;
-import dao.VehicleModel;
+import ui.SpecialModel;
 import dto.AbstractPersistent;
 import dto.DataPersistence;
 import service.IncentiveApi;
@@ -49,8 +49,8 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
         // add Component to centerPanel
         int count = 0;
         for (Vehicle vehicle: vehicles) {
-            VehicleModel vehicleModel = incentiveApi.updateSpecialPrice(vehicle);
-            Special special = vehicleModel.getSpecial();
+            SpecialModel specialModel = incentiveApi.updateSpecialPrice(vehicle);
+            Special special = specialModel.getSpecial();
 
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
             centerPanel.add(new JLabel(vehicle.getVehicleId()));
@@ -60,7 +60,7 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
 
             if (special != null) {
                 centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
-                centerPanel.add(new JLabel(vehicleModel.getSpecialPrice() + ""));
+                centerPanel.add(new JLabel(specialModel.getSpecialPrice() + ""));
 
                 Date startDate = special.getStartDate();
                 Date endDate = special.getEndDate();
@@ -73,7 +73,7 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
 
                 if ((now.after(startDate) && now.before(endDate))
                     || now.equals(startDate) || now.equals(startDate)) {
-                    centerPanel.add(getPopupBtn(vehicleModel));
+                    centerPanel.add(getPopupBtn(specialModel));
                 }
             }
 
@@ -86,19 +86,19 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
 
     /**
      * pop-up incentive details ---Case6
-     * @param vehicleModel
+     * @param specialModel
      * @return
      */
-    private JButton getPopupBtn(VehicleModel vehicleModel) {
+    private JButton getPopupBtn(SpecialModel specialModel) {
         JButton popBtn = new JButton("Learn About Discount!!!");
 
         popBtn.addActionListener((ActionEvent e) -> {
-            timeJob.start(vehicleModel);
+            timeJob.start(specialModel);
             JOptionPane.showConfirmDialog(centerPanel, incentiveUI, "Incentive details",
                     JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             // if sales promotion is ended, the button could not be clicked on.
-            if (vehicleModel.getSpecial().getEndDate().getTime() < new Date().getTime()) {
+            if (specialModel.getSpecial().getEndDate().getTime() < new Date().getTime()) {
                 popBtn.setEnabled(false);
                 popBtn.setText("Discount Expired");
             }

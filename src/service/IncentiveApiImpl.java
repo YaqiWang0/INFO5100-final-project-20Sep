@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.TreeMap;
 
 import dao.Special;
+import ui.SpecialModel;
 import dao.Vehicle;
-import dao.VehicleModel;
 import dto.AbstractPersistent;
 import dto.DataPersistence;
 
@@ -43,15 +43,15 @@ public final class IncentiveApiImpl implements IncentiveApi {
 	 * at the same time.
 	 */
 	@Override
-	public VehicleModel updateSpecialPrice(Vehicle vehicle) {
+	public SpecialModel updateSpecialPrice(Vehicle vehicle) {
 
 		String id = vehicle.getVehicleId();
 		List<Special> sList = dao.getAllSpecials(vehicle.getDealerId());
 
-		VehicleModel model = new VehicleModel(vehicle);
+		SpecialModel model = new SpecialModel(vehicle);
 		float price = Float.parseFloat(vehicle.getPrice());
 
-		List<VehicleModel> allSpecials = new ArrayList<>();
+		List<SpecialModel> allSpecials = new ArrayList<>();
 		List<Boolean> allHaveSpecial = new ArrayList<>();
 
 		TreeMap<Float, Special> pairs = new TreeMap<>();
@@ -62,7 +62,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				if (timeCheck(s.getStartDate(), s.getEndDate(), getCurrentTime())) {
 					if (s.getDiscountValue() > 0) {
 
-						pairs.put((price - s.getDiscountValue()), s);
+						float newPrice = (price - s.getDiscountValue());
+						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
@@ -72,7 +73,8 @@ public final class IncentiveApiImpl implements IncentiveApi {
 
 					} else if (s.getDiscountPercent() > 0) {
 
-						pairs.put((price - price * ((float) s.getDiscountPercent() / 100)), s);
+						float newPrice = (price - price * ((float) s.getDiscountPercent() / 100));
+						pairs.put(newPrice > 0 ? newPrice : 0, s);
 						float specialPrice = pairs.firstKey();
 						model.setSpecialPrice(specialPrice);
 						model.setSpecial(pairs.get(pairs.firstKey()));
@@ -99,13 +101,15 @@ public final class IncentiveApiImpl implements IncentiveApi {
 		//generate allSpecials
 		for (int j = 0; j < sList.size(); j++) {
 			Special s = sList.get(j);
-			VehicleModel vm = new VehicleModel(vehicle, s);
+			SpecialModel vm = new SpecialModel(vehicle, s);
 			if (s.getScope().contains(id)) {
 				if (s.getDiscountValue() > 0) {
-					vm.setSpecialPrice((price - s.getDiscountValue()));
+					float newPrice = (price - s.getDiscountValue());
+					vm.setSpecialPrice(newPrice > 0 ? newPrice : 0);
 					allSpecials.add(vm);
 				}else if(s.getDiscountPercent() > 0) {
-					vm.setSpecialPrice(price - price * ((float) s.getDiscountPercent() / 100));
+					float newPrice = price - price * ((float) s.getDiscountPercent() / 100);
+					vm.setSpecialPrice(newPrice > 0 ? newPrice : 0);
 					allSpecials.add(vm);
 				} 
 			}

@@ -1,12 +1,10 @@
 package service;
 
+import ui.SpecialModel;
 import dao.Vehicle;
-import dao.VehicleModel;
-
-import java.util.Date;
 
 public interface IncentiveApi {
 
-    VehicleModel updateSpecialPrice(Vehicle vehicle);
+    SpecialModel updateSpecialPrice(Vehicle vehicle);
 
 }

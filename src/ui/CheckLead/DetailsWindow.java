@@ -37,13 +37,18 @@ public class DetailsWindow {
         vehicleImageUrl = vehicles[vehicleIndex].getImg();
     }
 
-    /*public static void main (String[] args) {
+    public static void main (String[] args) {
         LeadDataHelper helper = LeadDataHelper.instance();
-        List<Lead> forms =  helper.getLeads();
-        Vehicle[] vehicles={helper.getVehicle(forms.get(0).getVehicleId()),
-                helper.getVehicle(forms.get(1).getVehicleId())};
+        MergeFormsHelper mergedFormsHelper = new MergeFormsHelper("bae705d7-20da-4ee2-871f-345b2271992b");
+        ArrayList<Lead> forms = (ArrayList<Lead>) mergedFormsHelper.getMergedForms();
+        java.util.List<java.util.List<String>> mergedIds = mergedFormsHelper.getMergedIds();
+        Vehicle[] vehicles = new Vehicle[mergedIds.get(0).size()];
+        for (int j = 0; j < mergedIds.get(0).size(); j++) {
+            java.util.List<String> ids = mergedIds.get(0);
+            vehicles[j] = mergedFormsHelper.getHelper().getVehicle(ids.get(j));
+        }
 	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }*/
+    }
 
     public void buildGUI () {
 	    theFrame = new JFrame("Details Window");
@@ -199,16 +204,27 @@ public class DetailsWindow {
         GridLayout grid = new GridLayout(0,2);
         grid.setHgap(1);
         grid.setVgap(1);
+        JPanel vehicleDataPanel = new JPanel(grid);
+        vehicleDataPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         /**
          * fill brand
          */
-        JPanel vehicleDataPanel = new JPanel(grid);
+
         JLabel brandLabel = new JLabel();
         brandLabel.setText("Brand: ");
         vehicleDataPanel.add(brandLabel);
         JLabel brand = new JLabel();
         brand.setText(vehicles[vehicleIndex].getBrand());
         vehicleDataPanel.add(brand);
+        /**
+         * fill model
+         */
+        JLabel modelLabel = new JLabel();
+        modelLabel.setText("Model: ");
+        vehicleDataPanel.add(modelLabel);
+        JLabel model = new JLabel();
+        model.setText(vehicles[vehicleIndex].getModel());
+        vehicleDataPanel.add(model);
         /**
          * fill body type
          */
@@ -243,7 +259,7 @@ public class DetailsWindow {
         priceLabel.setText("Price: ");
         vehicleDataPanel.add(priceLabel);
         JLabel price = new JLabel();
-        price.setText(vehicles[vehicleIndex].getPrice());
+        price.setText(vehicles[vehicleIndex].getPrice() + " USD");
         vehicleDataPanel.add(price);
         /**
          * fill miles
@@ -252,7 +268,7 @@ public class DetailsWindow {
         milesLabel.setText("Miles: ");
         vehicleDataPanel.add(milesLabel);
         JLabel miles = new JLabel();
-        miles.setText(vehicles[vehicleIndex].getMiles());
+        miles.setText(vehicles[vehicleIndex].getMiles() + " miles");
         vehicleDataPanel.add(miles);
 
         vehicleInfoSubPanel.add(vehicleDataPanel);
@@ -263,7 +279,10 @@ public class DetailsWindow {
 
 
         vehicleImageUrl = vehicles[vehicleIndex].getImg();
-        vehicleImageLabel.setText(vehicleImageUrl.get(vehicleImageIndex));
+        String urlString = vehicleImageUrl.get(vehicleImageIndex);
+        int mid = urlString.length() / 2; //get the middle of the String
+        urlString = "<html>" + urlString.substring(0, mid)+ "<br/>" + urlString.substring(mid) + "<html>";
+        vehicleImageLabel.setText(urlString);
         Border border = BorderFactory.createLineBorder(Color.WHITE, 2);
         vehicleImageLabel.setBorder(border);
 
@@ -272,7 +291,6 @@ public class DetailsWindow {
 
         vehicleImageLabel.setBounds(new Rectangle(10, 10));
         vehicleImageLabel.setHorizontalAlignment(JLabel.CENTER);
-        vehicleImageLabel.setText(vehicleImageUrl.get(vehicleImageIndex));
 
     }
 
@@ -429,8 +447,6 @@ public class DetailsWindow {
         buttonPane.add(saveButton);
         buttonPane.add(replyButton);
 
-
-
         userNotesPanel.add(BorderLayout.PAGE_END, buttonPane);
     }
 
@@ -459,6 +475,7 @@ public class DetailsWindow {
                         vehicleInfoSubPanel.removeAll();
                         vehicleInfoSubPanel.revalidate();
                         vehicleInfoSubPanel.repaint();
+                        vehicleImageIndex = 0;
                         UpdateVehiclePanel(vehicleInfoSubPanel);
                         if (vehicleIndex== 0) {
                             vehicleInfoPreviousButton.setEnabled(false);
@@ -478,6 +495,7 @@ public class DetailsWindow {
                         vehicleInfoPreviousButton.setEnabled(true);
                         vehicleIndex++;
                         vehicleInfoSubPanel.removeAll();
+                        vehicleImageIndex = 0;
                         UpdateVehiclePanel(vehicleInfoSubPanel);
                         vehicleInfoSubPanel.revalidate();
                         vehicleInfoSubPanel.repaint();
@@ -504,8 +522,7 @@ public class DetailsWindow {
         /**
          previous button
          */
-        vehicleImagePreviousButton = makeNavigationButton("<html>&larr<html>",
-                                                    "go to previous image");
+        vehicleImagePreviousButton = makeNavigationButton("<html>&larr<html>", "go to previous image");
         vehicleImagePreviousButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

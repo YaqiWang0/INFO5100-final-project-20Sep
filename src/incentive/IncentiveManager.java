@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IncentiveManager extends JFrame {
     private JButton button1;
@@ -69,15 +70,23 @@ public class IncentiveManager extends JFrame {
     private DataPersistence dataPersistence;
     private boolean applyToAllVehicles = true;
 
-    public IncentiveManager() {
+    public IncentiveManager(String dealerId) {
         spl = new Special();
         dataPersistence = new DataPersistence();
+        this.spl.setDealerId(dealerId);
         initComponents();
+    }
+
+    public IncentiveManager(){
 
     }
 
     private void initComponents() {
-        this.vehicleList = dataPersistence.getAllVehicles();
+        this.vehicleList = dataPersistence
+                            .getAllVehicles()
+                            .stream()
+                            .filter(vehicle ->
+                            vehicle.getDealerId().equals(this.spl.getDealerId())).collect(Collectors.toList());
         publish();
         addItemsToComboBoxes();
         clearCriteria();
@@ -85,6 +94,7 @@ public class IncentiveManager extends JFrame {
         selectMake();
         specialScopeButtonGroup();
         discountButtonGroup();
+        createTable();
     }
 
     public void discountButtonGroup(){
@@ -148,9 +158,8 @@ public class IncentiveManager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String brand = (String) makeComboBox.getSelectedItem();
-                if (brand == null || brand.equals("All Makes")) {
-                    clearModelItems();
-                } else {
+                clearModelItems();
+                if (brand != null && !brand.equals("All Makes")) {
                     Set<String> models = new HashSet<>();
                     vehicleList.stream().filter(vehicle -> vehicle.getBrand()
                             .equals(brand))
@@ -283,8 +292,6 @@ public class IncentiveManager extends JFrame {
         spl.setDisclaimer(disclaimerArea.getText());
     }
 
-    //TODO get & set dealerID
-
     public void setVehicleFilters(){
         String year = String.valueOf(yearComboBox.getSelectedItem());
         spl.setYear(year);
@@ -319,7 +326,7 @@ public class IncentiveManager extends JFrame {
             //add this special to database
             System.out.println("#2 " + spl.getDiscountValue());
             ;
-            dp.writeSpecial(spl, spl.getDealerId());
+            dp.writeSpecial(spl, this.spl.getDealerId());
 
             JOptionPane.showMessageDialog(null, "Incentive Created!");
 
@@ -370,9 +377,9 @@ public class IncentiveManager extends JFrame {
             return makeCondition && selectedModel.equals(vehicle.getModel());
         }).filter(vehicle -> {
             // Price filter
-            int price = 0;
+            double price = 0;
             try {
-                price = Integer.parseInt(priceTextField.getText());
+                price = Double.parseDouble(priceTextField.getText());
             } catch (Exception e) {
                 return true;
             }
@@ -381,9 +388,9 @@ public class IncentiveManager extends JFrame {
                 return true;
             }
 
-            int vehiclePrice = 0;
+            double vehiclePrice = 0;
             try {
-                vehiclePrice = Integer.parseInt(vehicle.getPrice());
+                vehiclePrice = Double.parseDouble(vehicle.getPrice());
             } catch (Exception e) {
                 return true;
             }
@@ -406,7 +413,7 @@ public class IncentiveManager extends JFrame {
 
             int vehicleMileage = 0;
             try {
-                vehicleMileage = Integer.parseInt(vehicle.getPrice());
+                vehicleMileage = Integer.parseInt(vehicle.getMiles());
             } catch (Exception e) {
                 return true;
             }
@@ -417,8 +424,22 @@ public class IncentiveManager extends JFrame {
         }).collect(Collectors.toList());
     }
 
+    /*
+    dealer: id:xiang with password:12345 or id:jing with the same password.
+     */
+    public void mainCaller(String dealerId) throws ParseException {
+        IncentiveManager frame = new IncentiveManager(dealerId);
+        frame.setTitle("Create Incentive");
+        frame.setContentPane(frame.panelMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(1000, 400));
+        frame.pack();
+        frame.setVisible(true);
+    }
+
     public static void main(String[] args) throws ParseException {
-        IncentiveManager frame = new IncentiveManager();
+        String dealerId = "bae705d7-20da-4ee2-871f-345b2271992b";
+        IncentiveManager frame = new IncentiveManager(dealerId);
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
