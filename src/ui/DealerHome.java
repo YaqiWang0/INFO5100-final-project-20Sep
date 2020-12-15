@@ -1,6 +1,7 @@
 package ui;
 
 import incentive.IncentiveManager;
+import ui.CheckLead.CheckLeadUI;
 
 import java.awt.BorderLayout;
 
@@ -13,31 +14,45 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class DealerHome extends JFrame {
-	private String id;
+	private String dealerId;
 	private JPanel contentPane;
 	private final JLabel lblNewLabel_2 = new JLabel("");
+	JButton case_4Button;
 	JButton case_5Button;
+
+	public void findID(String username) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/dealers-id.csv")));
+		String line;
+		while((line=br.readLine())!=null){
+			String[] info = line.split(",");
+			if (info[1].equals(username)){
+				this.dealerId = info[0];
+			}
+		}
+	}
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		            Locale.setDefault(new Locale("en","US"));
-					DealerHome frame = new DealerHome();
-					
+					DealerHome frame = new DealerHome("xiang");
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public DealerHome() {
+	public DealerHome(String username) throws IOException {
 //		Locale.setDefault(new Locale("en","US"));
+		findID(username);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 891, 584);
 		contentPane = new JPanel();
@@ -49,7 +64,8 @@ public class DealerHome extends JFrame {
 		contentPane.add(NorthPanel, BorderLayout.NORTH);
 		NorthPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JLabel lblNewLabel = new JLabel("Hi, id");
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setText(this.dealerId);
 		NorthPanel.add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("Log Out");
@@ -73,11 +89,7 @@ public class DealerHome extends JFrame {
 		contentPane.add(MainPanel, BorderLayout.CENTER);
 		MainPanel.setLayout(new GridLayout(4, 2, 5, 5));
 		
-		JButton case_4Button = new JButton("Manage My Inventory (case4)");
-		case_4Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		case_4Button = new JButton("Manage My Inventory (case4)");
 		
 		JLabel manageInvLabel = new JLabel("       Create/update/modify my Inventor :");
 		manageInvLabel.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -97,10 +109,34 @@ public class DealerHome extends JFrame {
 		
 		JButton case_8Button = new JButton("Show Customer Message (case 8)");
 		MainPanel.add(case_8Button);
+		case_8Button.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CheckLeadUI(dealerId);
+                
+            }
+        });
+		
+		
 		MainPanel.add(lblNewLabel_2);
 		setVisible(true);
 
+		createInventory();
 		createIncentive();
+	}
+
+	public void createInventory(){
+		case_4Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
+				} catch (IOException malformedURLException) {
+					malformedURLException.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void createIncentive(){
