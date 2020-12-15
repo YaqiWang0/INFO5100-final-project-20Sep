@@ -2,8 +2,10 @@ package dto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import dao.Dealer;
@@ -28,9 +30,6 @@ public class LeadDataHelper {
     
     private List<Dealer> dealers;
     private Map<String, Integer> dealerNameMapping = new HashMap<>();
-
-    private List<Lead> mergedLeads;
-    private List<List<String>> mergedVehicleIds;
     
     
     private LeadDataHelper() {
@@ -60,7 +59,10 @@ public class LeadDataHelper {
         initIdMapping(leads, leadIdMapping);
         
         dealers = dp.getAllDealers();
-        initIdMapping(dealers, dealerNameMapping);
+        dealerNameMapping.clear();
+        for (int i = 0; i < dealers.size(); i++) {
+            dealerNameMapping.put(dealers.get(i).getDealerName(), i);
+        }
         
         vehicles = dp.getAllVehicles();
         initIdMapping(vehicles, vehicleIdMapping);
@@ -110,32 +112,38 @@ public class LeadDataHelper {
         return leads;
     }
 
-    /**
-     * merge leads by email address which are filtered by specific dealer id
-     * @param dealerName  specify dealer which the leads data belongs to.
-     */
-    public void mergeLeadsHelper(String dealerName) {
-        List<Lead> originalLeads = getLeadsByDealer(dealerName);
-        Map<String, List<Lead>> groupedMap = originalLeads.stream().
-                                        collect(groupingBy(Lead::getEmailAddress));
-        mergedLeads = groupedMap.entrySet().stream().
-                                    map(v -> v.getValue().get(0)).collect(toList());
-        mergedVehicleIds = groupedMap.entrySet().stream().map(v -> v.getValue()).
-                                            map(v -> v.stream().map(u -> u.getVehicleId()).
-                                            collect(toList())).collect(Collectors.toList());
-    }
-
+    
     /**
      * Get merged leads
      * @return merged leads
      */
-    public List<Lead> getMergedLeads() { return this.mergedLeads; }
-
-    /**
-     * Get merged vehicle ids
-     * @return merged vehicle ids
-     */
-    public List<List<String>> getMergedVehicleIds() { return this.mergedVehicleIds; }
+    public List<Lead> getMergedLeads(String dealerName) { 
+        List<Lead> mergedLeads = new ArrayList<Lead>();
+        Set<String> emailSet = new HashSet<>();
+        
+        for (Lead lead : getLeadsByDealer(dealerName)) {
+            String email = lead.getEmailAddress();
+            if (!emailSet.contains(email)) {
+                mergedLeads.add(lead);
+                emailSet.add(email);
+            }
+        }
+        
+        return mergedLeads;
+    }
+    
+    public Vehicle[] getVehiclesByEmail(String dealerName, String email) {
+        List<Lead> originalLeads = getLeadsByDealer(dealerName);
+        List<Vehicle>  vehicles = new ArrayList<>();
+        for (Lead lead : originalLeads) {
+            if (lead.getEmailAddress().equals(email)) {
+                vehicles.add(getVehicle(lead.getVehicleId()));
+            }
+        }
+        
+        Vehicle[] vehicleArr = new Vehicle[vehicles.size()];
+        return vehicles.toArray(vehicleArr);
+    }
 
 
     /**
@@ -177,6 +185,7 @@ public class LeadDataHelper {
     public Dealer getDealer(String dealerName) {
         return (Dealer) getObject(dealerName, dealers, dealerNameMapping);
     }
+    
     
 //    public static void main(String[] args) {
 //        LeadDataHelper helper = LeadDataHelper.instance();

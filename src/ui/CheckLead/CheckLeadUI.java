@@ -3,258 +3,239 @@ package ui.CheckLead;
 import dao.*;
 import dto.*;
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import javax.swing.table.DefaultTableCellRenderer;
 
 
 public class CheckLeadUI extends JFrame {
-    private JPanel mainPanel, functionPanel, tablePanel;
-    private JTable table;
-    private JLabel first, second;
-    private JButton export, detail, delete;
-    LeadDataHelper helper;
-    private List<Lead> forms;
-    private TableModel tableModel;
-    private JComboBox filter, sortBy;
-    private Font tableFont, tableHeadFont;
-    private JScrollPane jScrollPane;
-    private List<List<String>> mergedVehicleIds;
-    private Map<Lead, List<String>> LeadWithIds;
+
+    private static final long serialVersionUID = -1484589037032558776L;
+    
+    private LeadDataHelper helper;
+    private List<Lead> leads;
+    
+    private LeadFormsTableModel tableModel;
+    private int selectedRow = -1;
+    
+    private String[] FILTER_ITEMS = {"--Select filter--", "1", "2"};
+    private String[] SORT_BY_ITEMS = {"--Select sort--", "Name", "Phone Number", "Email", 
+                                      "Contact Preference","Contact Time", "Use Purpose", "Contacted"};
 
     public CheckLeadUI(String dealerName) {
         helper = LeadDataHelper.instance();
-        helper.mergeLeadsHelper(dealerName);
-        forms = helper.getMergedLeads();
-        mergedVehicleIds = helper.getMergedVehicleIds();
-        LeadWithIds = IntStream.range(0, forms.size()).boxed()
-                .collect(Collectors.toMap(forms::get, mergedVehicleIds::get));
-        tableModel = new LeadFormsTableModel(forms);
-        table = new JTable(tableModel);
-        create();
-        addComponents();
+        leads = helper.getMergedLeads(dealerName);
+        tableModel = new LeadFormsTableModel(leads);
+
+        setupUI();
         display();
     }
+    
+    private void setupUI() {
+        JPanel mainPanel = new JPanel();
 
-    private void addComponents() {
+        setupMainPanel(mainPanel);
+        setupHeaderUI(mainPanel);
+        setupTableUI(mainPanel);
+    }
+    
+    private void setupMainPanel(JPanel mainPanel) {
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        getContentPane().add(mainPanel);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+    
+    private void setupHeaderUI(JPanel mainPanel) {
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout());
+        
+        // Filter Label 
+        JLabel filterLabel = new JLabel("Filter");
+        headerPanel.add(filterLabel);
+        
+        // Filter ComboBox
+        JComboBox<String> filterCombo = new JComboBox<String>(FILTER_ITEMS);
+        filterCombo.addItemListener(new FilterItemChangeListener());
+        headerPanel.add(filterCombo);
+        
+        // Sort By Label
+        JLabel sortByLabel = new JLabel("Sort by");
+        headerPanel.add(sortByLabel);
+        
+        //Sort By ComboxBox
+        JComboBox<String> sortByCBox = new JComboBox<String>(SORT_BY_ITEMS);
+        sortByCBox.addItemListener(new SortByItemChangeListener());
+        headerPanel.add(sortByCBox);
+        
+        // Export Button
+        JButton exportBtn = new JButton("Export");
+        exportBtn.addActionListener(new ExportActionListener());
+        headerPanel.add(exportBtn);
+        
+        // Detail Button
+        JButton detailBtn = new JButton("Detail");
+        detailBtn.addActionListener(new DetailActionListener());
+        headerPanel.add(detailBtn);
+        
+        // Delete Button
+        JButton deleteBtn = new JButton("Delete");
+        deleteBtn.addActionListener(new DeleteActionListener());
+        headerPanel.add(deleteBtn);
+        
+        mainPanel.add(headerPanel);
+    }
+    
+    private void setupTableUI(JPanel mainPanel) {
+        // Table
+        JTable table = new JTable(tableModel);
+        
+        // Add double click Listener
+        table.addMouseListener(new TableMouseAdapter());
+        
+        // Add selected row changed Listener
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                selectedRow = table.getSelectedRow();
+            }
+        });
 
-        functionPanel = new JPanel();
-        functionPanel.setLayout(new FlowLayout());
-        functionPanel.add(first);
-        functionPanel.add(filter);
-        functionPanel.add(second);
-        functionPanel.add(sortBy);
-        functionPanel.add(export);
-        functionPanel.add(detail);
-        functionPanel.add(delete);
-
-        jScrollPane = new JScrollPane(table,
+        // Set table fonts
+        table.getTableHeader().setFont(new Font("Baskerville", Font.BOLD, 14));
+        table.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        
+        // Set Table style
+        table.setShowGrid(true);
+        table.setShowHorizontalLines(true);
+        table.setRowHeight(30);
+        table.setBackground(getContentPane().getBackground());
+        
+        // jScrollPane
+        JScrollPane jScrollPane = new JScrollPane(table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane.setPreferredSize(new Dimension(1000, 600));
         jScrollPane.setBackground(getContentPane().getBackground());
-        mainPanel = new JPanel();
-        tablePanel = new JPanel();
-        tablePanel.add(jScrollPane);
-
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(functionPanel);
-
-        mainPanel.add(tablePanel);
-        getContentPane().add(mainPanel);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-
+        
+        mainPanel.add(jScrollPane);
     }
-
+    
     private void display() {
         this.setPreferredSize(new Dimension(1000, 800));
         setVisible(true);
         pack();
     }
-
-    private void create() {
-        first = new JLabel("Filter");
-        second = new JLabel("Sort by");
-        export = new JButton("Export");
-        export.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() != -1) {
-                    int i = table.getSelectedRow();
-                    DataPersistence dp = new DataPersistence();
-                    dp.writeLead(forms.get(i));
-                }
-            }
-        });
-        detail = new JButton("Detail");
-        detail.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() != -1) {
-                    int i = table.getSelectedRow();
-                    List<String> vehicleIds = LeadWithIds.get(forms.get(i));
-                    Vehicle[] vehicles = new Vehicle[vehicleIds.size()];
-                    for (int j = 0; j < vehicleIds.size(); j++) {
-                        vehicles[j] = helper.getVehicle(vehicleIds.get(j));
-                    }
-                    new DetailsWindow(forms.get(i), vehicles).buildGUI();
-                    forms.get(i).setRead(true);
-                    table.updateUI();
-                }
-            }
-        });
-
-        delete = new JButton("Delete");
-        delete.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() != -1) {
-                    int i = table.getSelectedRow();
-                    int result = JOptionPane.showConfirmDialog(table,
-                            "Do you want to continue to delete the contact",
-                            "Delete window",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    if(result == JOptionPane.YES_OPTION) {
-                        ((LeadFormsTableModel) tableModel).removeRow(i);
-                    }
-                }
-            }
-        });
-
-
-        String[] f = {"--Select filter--", "1", "2"};
-        filter = new JComboBox(f);
-        filter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String s = (String) filter.getSelectedItem();
-                if (s == "car") {
-
-                }
-            }
-        });
-
-        String[] s = {"--Select sort--", "Name", "Phone Number", "Email", "Contact Preference",
-                                        "Contact Time", "Use Purpose", "Contacted"};
-        sortBy = new JComboBox(s);
-        sortBy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String s = (String) sortBy.getSelectedItem();
-                if (s == "Name") {
-                    forms.sort(Comparator.comparing(a -> a.getFirstName() + " " + a.getLastName()));
-                    table.updateUI();
-                }
-                if (s == "Phone Number") {
-                    forms.sort(Comparator.comparing(a -> a.getPhoneNumber()));
-                    table.updateUI();
-                }
-                if (s == "Email") {
-                    forms.sort(Comparator.comparing(a -> a.getEmailAddress()));
-                    table.updateUI();
-                }
-                if (s == "Contact Preference") {
-                    forms.sort(Comparator.comparing(a -> a.getContactPreference()));
-                    table.updateUI();
-                }
-                if (s == "Contact Time") {
-                    forms.sort(Comparator.comparing(a -> a.getContactTime()));
-                    table.updateUI();
-                }
-                if (s == "Use Purpose") {
-                    forms.sort(Comparator.comparing(a -> a.getUsePurpose()));
-                    table.updateUI();
-                }
-                if (s == "Contacted") {
-                    forms.sort(Comparator.comparing(a -> a.getContacted()));
-                    table.updateUI();
-                }
-            }
-        });
-
-
-        createTableComponents();
-
-
+    
+    private void openDetailWindow(int row) {
+        Lead lead = leads.get(row);
+        Vehicle[] vehicles = helper.getVehiclesByEmail(lead.getDealerName(), lead.getEmailAddress());
+        new DetailsWindow(lead, vehicles).buildGUI();
+    }
+    
+    private void updateLeadRead(int row) {
+        leads.get(row).setRead(true);
+        tableModel.fireTableDataChanged();
     }
 
-
-
-    private void createTableComponents() {
-
-        table.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (table.getSelectedRow() != -1) {
-                    int i = table.getSelectedRow();
-                    if (e.getClickCount() == 2) {
-                        List<String> vehicleIds = LeadWithIds.get(forms.get(i));
-                        Vehicle[] vehicles = new Vehicle[vehicleIds.size()];
-                        for (int j = 0; j < vehicleIds.size(); j++) {
-                            vehicles[j] = helper.getVehicle(vehicleIds.get(j));
-                        }
-                        new DetailsWindow(forms.get(i), vehicles).buildGUI();
-                        forms.get(i).setRead(true);
-                        table.updateUI();
-                    }
-                }
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
-                                                           int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (forms.get(row).getRead()) {
-                    c.setFont(new Font("Baskerville", Font.PLAIN, 18));
-                }
-                return this;
-            }
-        });
-        tableFont = new Font("Baskerville", Font.BOLD, 18);
-        tableHeadFont = new Font("Baskerville", Font.PLAIN, 19);
-
-
-        JTableHeader head = this.table.getTableHeader();
-        head.setFont(tableHeadFont);
-        table.setShowGrid(true);
-        table.setShowHorizontalLines(true);
-        table.setFont(tableFont);
-        table.setRowHeight(30);
-        table.setBackground(getContentPane().getBackground());
-
-
+    class FilterItemChangeListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+           if (event.getStateChange() == ItemEvent.SELECTED) {
+              String item = (String)event.getItem();
+              //TODO do something with object
+              System.out.println(item);
+           }
+        }       
     }
+    
+    class SortByItemChangeListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+           if (event.getStateChange() == ItemEvent.SELECTED) {
+               
+               switch ((String) event.getItem()) {
+                   case "Name":
+                       leads.sort(Comparator.comparing(a -> a.getFirstName() + " " + a.getLastName()));
+                       break;
+                   case "Phone Number":
+                       leads.sort(Comparator.comparing(a -> a.getPhoneNumber()));
+                       break;
+                   case "Email":
+                       leads.sort(Comparator.comparing(a -> a.getEmailAddress()));
+                       break;
+                   case "Contact Preference":
+                       leads.sort(Comparator.comparing(a -> a.getContactPreference()));
+                       break;
+                   case "Contact Time":
+                       leads.sort(Comparator.comparing(a -> a.getContactTime()));
+                       break;
+                   case "Use Purpose":
+                       leads.sort(Comparator.comparing(a -> a.getUsePurpose()));
+                       break;
+                   case "Contacted":
+                       leads.sort(Comparator.comparing(a -> a.getContacted()));
+                       break;
+                   default:
+                       break;
+               }
+               tableModel.fireTableDataChanged();
+           }
+        }
+    }
+    
+    class ExportActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // TODO need export
+            System.out.println("Export");
+        }
+        
+    }
+    
+    class DetailActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (selectedRow != -1) {
+                int row = selectedRow;
+                updateLeadRead(row);
+                openDetailWindow(row);
+            }
+        }
+    }
+    
+    class DeleteActionListener implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (selectedRow != -1) {
+                int result = JOptionPane.showConfirmDialog(null,
+                        "Do you want to continue to delete the contact",
+                        "Delete Confirmation",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                if(result == JOptionPane.YES_OPTION) {
+                    // TODO add delete feature
+                    tableModel.removeRow(selectedRow);
+                }
+            }
+        }
+    }
+    
+    class TableMouseAdapter extends MouseAdapter {
+        public void mousePressed(MouseEvent mouseEvent) {
+            if (mouseEvent.getClickCount() == 2 && selectedRow != -1) {
+                int row = selectedRow;
+                updateLeadRead(row);
+                openDetailWindow(row);
+            }
+        }
+    }
+    
+    
     public static void main(String[] args) {
         new CheckLeadUI("bae705d7-20da-4ee2-871f-345b2271992b");
     }
