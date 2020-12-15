@@ -147,7 +147,7 @@ public class IncentiveManager extends JFrame {
 
         vehicleTable.setModel(new DefaultTableModel(
                 data,
-                new String[]{"VIN", "Category", "Year", "Make", "Model", "Price", "Mileage"}
+                new String[]{"VehicleID", "Category", "Year", "Make", "Model", "Price", "Mileage"}
         ));
     }
 
