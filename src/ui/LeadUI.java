@@ -20,7 +20,7 @@ import java.io.IOException;
 public class LeadUI extends JFrame {
 
     private JLabel quoteTitle, firstName, lastName, emailAddress, phone, message,
-            zipcode, contactPreference, purpose, time, dealerName, dealerAddress;
+            zipcode, contactPreference, purpose, time, dealerInfo, vehicleInfo;// change dealerName to dealerInfo; change dealerAddress to vehicleInfo
     private JTextField firstNameText, lastNameText, emailText, phoneDigit, zipcodeDigit;
     private JTextArea msgArea;
     private JComboBox<String> usePurpose;
@@ -31,11 +31,13 @@ public class LeadUI extends JFrame {
     private JButton submit, cancel;
 
     private String vehicleId;
-    private String dealerId;
-    private String dealerNAME;
-    private String dealerADDRESS;
+    private String vehicleYearMakeModel; // add new field for display vehicle info to customer
+    private String dealerId; // this field will be removed later
+    private String dealerNAME; // this field will be removed later
+    private String dealerADDRESS; // this field will be removed later
+    private String dealerName; // add new field for connect lead to dealer, and display dealerInfo to customer
 
-
+    // this constructor will be removed later after case8 merge without conflict.
     public LeadUI(Vehicle v, Dealer d) {
         vehicleId = v.getVehicleId();
         dealerId = d.getDealerId();
@@ -48,7 +50,20 @@ public class LeadUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);
+    }
 
+    // new modified constructor, will replace the above one
+    public LeadUI(String vehicleId, String dealerName, String vehicleYearMakeModel) {
+        this.vehicleId = vehicleId;
+        this.dealerName = dealerName;
+        this.vehicleYearMakeModel = vehicleYearMakeModel;
+        createUI();
+        addComponents();
+        addActions();
+        setSize(700, 800);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        pack();
+        setVisible(true);
     }
 
     private void addActions() {
@@ -97,8 +112,8 @@ public class LeadUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter 10 digit phone number!",
                         "Reminder", JOptionPane.WARNING_MESSAGE);
             } else {
-
-                Lead lead = new Lead(vehicleId, dealerId);
+                // modified Lead initialization parameter name: changed dealerId to dealerName
+                Lead lead = new Lead(vehicleId, dealerName);
                 lead.setFirstName(firstNameText.getText());
                 lead.setLastName(lastNameText.getText());
                 lead.setEmailAddress(emailText.getText());
@@ -143,10 +158,10 @@ public class LeadUI extends JFrame {
         // label description for request info
         quoteTitle = new JLabel("REQUEST QUOTE");
         quoteTitle.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        dealerName = new JLabel(dealerNAME);
-        dealerName.setFont(new Font("Times New Roman", Font.ITALIC, 20));
-        dealerAddress = new JLabel(dealerADDRESS);
-        dealerAddress.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+        dealerInfo = new JLabel(dealerName);
+        dealerInfo.setFont(new Font("Times New Roman", Font.ITALIC, 20));
+        vehicleInfo = new JLabel(vehicleYearMakeModel);
+        vehicleInfo.setFont(new Font("Times New Roman", Font.ITALIC, 18));
         firstName = new JLabel("First Name*");
         firstName.setFont(new Font("Times New Roman", Font.BOLD, 15));
         lastName = new JLabel("Last Name*");
@@ -253,10 +268,10 @@ public class LeadUI extends JFrame {
         this.add(panel);
 
         panel = new JPanel();
-        panel.add(dealerName);
+        panel.add(dealerInfo);
         this.add(panel);
         panel = new JPanel();
-        panel.add(dealerAddress);
+        panel.add(vehicleInfo);
         this.add(panel);
 
         panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
