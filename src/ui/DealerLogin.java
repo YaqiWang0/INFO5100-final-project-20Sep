@@ -1,6 +1,7 @@
 package ui;
 
 import controller.DealerController;
+import javafx.scene.input.InputMethodTextRun;
 
 import java.awt.BorderLayout;
 
@@ -87,14 +88,15 @@ public class DealerLogin extends JFrame {
 		loginButton = new JButton("Login");
 
 		loginButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					//DealerHome dealerHome = new DealerHome(userNameTextField.getText());
 					boolean response = new DealerController().login(userNameTextField.getText(), passwordTextField.getText());
 					if(response) {
 						dispose();
-						new DealerHome();
+						new DealerHome(userNameTextField.getText());
 					}else{
 						new mistake();
 					}
@@ -135,16 +137,5 @@ public class DealerLogin extends JFrame {
 		setVisible(true);
 	}
 
-	public boolean isUserNamePresent()
-	{
-		String userName = userNameTextField.getText();
-		return userName != null && !userName.isEmpty();
-	}
-
-	public boolean isPasswordPresent()
-	{
-		char[] password = passwordTextField.getPassword();
-		return password.length > 0;
-	}
 
 }

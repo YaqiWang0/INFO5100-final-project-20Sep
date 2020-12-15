@@ -29,10 +29,13 @@ public class DealerHome extends JFrame {
 					
 	}
 
+	public DealerHome(){
+
+	}
 	/**
 	 * Create the frame.
 	 */
-	public DealerHome() {
+	public DealerHome(String jText) {
 //		Locale.setDefault(new Locale("en","US"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 891, 584);
@@ -44,8 +47,9 @@ public class DealerHome extends JFrame {
 		JPanel NorthPanel = new JPanel();
 		contentPane.add(NorthPanel, BorderLayout.NORTH);
 		NorthPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		
-		JLabel lblNewLabel = new JLabel("Hi, id");
+
+		this.id = jText;
+		JLabel lblNewLabel = new JLabel("Hi, " + id);
 		NorthPanel.add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("Log Out");
