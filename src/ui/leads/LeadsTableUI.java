@@ -48,52 +48,55 @@ public class LeadsTableUI extends JFrame {
     }
     
     private void setupMainPanel(JPanel mainPanel) {
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setLayout(new BorderLayout(10, 5));
         getContentPane().add(mainPanel);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
     private void setupHeaderUI(JPanel mainPanel) {
         JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new FlowLayout());
+        
+        headerPanel.setPreferredSize(new Dimension(this.getContentPane().getWidth(), 80));
+        headerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
         
         // Filter Label 
         JLabel filterLabel = new JLabel("Filter");
-        headerPanel.add(filterLabel);
+        headerPanel.add(filterLabel, gbc);
         
         // Filter ComboBox
         JComboBox<String> filterCombo = new JComboBox<String>(FILTER_ITEMS);
         filterCombo.addItemListener(new FilterItemChangeListener());
-        headerPanel.add(filterCombo);
+        headerPanel.add(filterCombo, gbc);
         
         // Sort By Label
         JLabel sortByLabel = new JLabel("Sort by");
-        headerPanel.add(sortByLabel);
+        headerPanel.add(sortByLabel, gbc);
         
         //Sort By ComboxBox
         JComboBox<String> sortByCBox = new JComboBox<String>(SORT_BY_ITEMS);
         sortByCBox.addItemListener(new SortByItemChangeListener());
-        headerPanel.add(sortByCBox);
+        headerPanel.add(sortByCBox, gbc);
         
         // Export Button
         JButton exportBtn = new JButton("Export");
         exportBtn.addActionListener(new ExportActionListener());
-        headerPanel.add(exportBtn);
+        headerPanel.add(exportBtn, gbc);
         
         // Detail Button
         detailBtn = new JButton("Detail");
         detailBtn.addActionListener(new DetailActionListener());
-        headerPanel.add(detailBtn);
+        headerPanel.add(detailBtn, gbc);
         
         // Delete Button
         deleteBtn = new JButton("Delete");
         deleteBtn.addActionListener(new DeleteActionListener());
-        headerPanel.add(deleteBtn);
+        headerPanel.add(deleteBtn, gbc);
         
         // disable details and delete buttons
         updateHeaderBtnStatus(false);
         
-        mainPanel.add(headerPanel);
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
     }
     
     private void setupTableUI(JPanel mainPanel) {
@@ -123,9 +126,19 @@ public class LeadsTableUI extends JFrame {
         
         // Set Table style
         table.setShowGrid(true);
-        table.setShowHorizontalLines(true);
+        table.setGridColor(Color.LIGHT_GRAY);
         table.setRowHeight(30);
         table.setBackground(getContentPane().getBackground());
+        
+        // Set Table column width
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        table.getColumnModel().getColumn(0).setPreferredWidth(80);
+        table.getColumnModel().getColumn(1).setPreferredWidth(20);
+        table.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table.getColumnModel().getColumn(3).setPreferredWidth(10);
+        table.getColumnModel().getColumn(5).setPreferredWidth(10);
+        table.getColumnModel().getColumn(6).setPreferredWidth(10);
+        table.getColumnModel().getColumn(7).setPreferredWidth(10);
         
         // jScrollPane
         JScrollPane jScrollPane = new JScrollPane(table,
@@ -134,13 +147,14 @@ public class LeadsTableUI extends JFrame {
         jScrollPane.setPreferredSize(new Dimension(1000, 600));
         jScrollPane.setBackground(getContentPane().getBackground());
         
-        mainPanel.add(jScrollPane);
+        mainPanel.add(jScrollPane, BorderLayout.EAST);
     }
     
     private void display() {
         this.setPreferredSize(new Dimension(1000, 800));
-        setVisible(true);
         pack();
+        this.setLocationRelativeTo(null);
+        setVisible(true);
     }
     
     private void openDetailWindow(int row) {
@@ -167,7 +181,7 @@ public class LeadsTableUI extends JFrame {
               //TODO do something with object
               System.out.println(item);
            }
-        }       
+        }
     }
     
     class SortByItemChangeListener implements ItemListener {
@@ -247,8 +261,7 @@ public class LeadsTableUI extends JFrame {
                 int result = JOptionPane.showConfirmDialog(null,
                         "Do you want to continue to delete the contact",
                         "Delete Confirmation",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
+                        JOptionPane.YES_NO_OPTION);
                 if(result == JOptionPane.YES_OPTION) {
                     Lead lead = leads.get(selectedRow);
                     tableModel.removeRow(selectedRow);

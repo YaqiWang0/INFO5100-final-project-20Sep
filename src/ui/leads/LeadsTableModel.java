@@ -33,7 +33,7 @@ public class LeadsTableModel extends AbstractTableModel {
             return "Name";
         }
         if (columnIndex == 1) {
-            return "Phone Number";
+            return "Phone";
         }
         if (columnIndex == 2) {
             return "Email";
