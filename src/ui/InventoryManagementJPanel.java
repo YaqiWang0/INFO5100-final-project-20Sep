@@ -59,7 +59,7 @@ public class InventoryManagementJPanel {
                         imageIcon = new ImageIcon(vehicleImagePath);
                     }
 
-                    System.out.println(info[3]);
+                    System.out.println(j);
                     Object[] o = new Object[]{info[0],info[3],info[4],info[5],info[2],info[8],info[7],imageIcon};
                     this.data.add(o);
                     j++;
