@@ -1,4 +1,4 @@
-package ui.CheckLead;
+package ui.leads;
 
 import dto.*;
 
@@ -6,13 +6,13 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 
-public class LeadFormsTableModel extends AbstractTableModel {
+public class LeadsTableModel extends AbstractTableModel {
     
     private static final long serialVersionUID = -5171313872366476315L;
     
     public List<Lead> leads;
     
-    public LeadFormsTableModel(List<Lead> leads) {
+    public LeadsTableModel(List<Lead> leads) {
         this.leads = leads;
     }
 

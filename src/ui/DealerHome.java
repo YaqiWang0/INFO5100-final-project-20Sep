@@ -1,7 +1,7 @@
 package ui;
 
 import incentive.IncentiveManager;
-import ui.CheckLead.CheckLeadUI;
+import ui.leads.LeadsTableUI;
 
 import java.awt.BorderLayout;
 
@@ -113,7 +113,8 @@ public class DealerHome extends JFrame {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CheckLeadUI(dealerId);
+                // NOTE: in fact, the dealerID here is dealer Name
+                new LeadsTableUI(dealerId);
                 
             }
         });

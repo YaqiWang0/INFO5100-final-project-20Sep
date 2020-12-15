@@ -1,4 +1,4 @@
-package ui.CheckLead;
+package ui.leads;
 
 import dao.*;
 import dto.*;
@@ -9,7 +9,7 @@ import javax.swing.border.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class DetailsWindow {
+public class LeadDetailsUI {
 
     private Lead lead;
     private Vehicle vehicles[];
@@ -29,7 +29,7 @@ public class DetailsWindow {
     private JFrame theFrame;
 
 
-    public DetailsWindow (Lead lead, Vehicle[] vehicles) {
+    public LeadDetailsUI (Lead lead, Vehicle[] vehicles) {
 	    this.lead = lead;
 	    this.vehicles = vehicles;
 	    vehicleIndex = 0;
