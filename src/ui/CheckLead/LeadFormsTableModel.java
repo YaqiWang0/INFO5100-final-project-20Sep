@@ -19,7 +19,7 @@ public class LeadFormsTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -44,6 +44,9 @@ public class LeadFormsTableModel extends AbstractTableModel {
             return "Use Purpose";
         }
         if (columnIndex == 6) {
+            return "Read";
+        }
+        if (columnIndex == 7) {
             return "Contacted";
         }
         return null;
@@ -72,6 +75,9 @@ public class LeadFormsTableModel extends AbstractTableModel {
             return f.getUsePurpose();
         }
         if (columnIndex == 6) {
+            return f.getRead() ? "Yes": "No";
+        }
+        if (columnIndex == 7) {
             return f.getContacted()? "Yes": "No";
         }
 
