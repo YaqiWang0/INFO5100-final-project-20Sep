@@ -1,14 +1,13 @@
 package ui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class InventoryCreationJPanel {
+public class InventoryUpdateJPanel {
+    private JPanel UpdateJPanel;
     private JTextField idTextField;
     private JTextField yearTextField;
     private JTextField brandTextField;
@@ -23,17 +22,18 @@ public class InventoryCreationJPanel {
     private JTextField imagesTextField;
     private JButton confirmButton;
     private JButton cancelButton;
-    private JPanel CreateJPanel;
 
-    public InventoryCreationJPanel(String dealerId){
+    public InventoryUpdateJPanel(String id, String dealerId){
         super();
         JFrame frame = new JFrame("Inventory Management");
-        frame.setContentPane(CreateJPanel);
+        frame.setContentPane(UpdateJPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setSize(500, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        this.idTextField.setText(id);
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -44,9 +44,5 @@ public class InventoryCreationJPanel {
                 }
             }
         });
-    }
-
-    public static void main(String[] args){
-//        InventoryCreationJPanel ic = new InventoryCreationJPanel();
     }
 }
