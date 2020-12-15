@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.util.Comparator;
 import java.util.List;
@@ -192,11 +193,12 @@ public class LeadsTableUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Specify a file to save");
-             
+            fileChooser.setSelectedFile(new File("leads.csv"));
+
             int userSelection = fileChooser.showSaveDialog(null);
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 try {
-                    FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".csv");
+                    FileWriter fw = new FileWriter(fileChooser.getSelectedFile());
                     for (Lead l : leads) {
                         fw.write(l.toCSVLine() + "\n");
                     }
