@@ -8,7 +8,11 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.table.DefaultTableCellRenderer;
 
 
@@ -24,12 +28,15 @@ public class CheckLeadUI extends JFrame {
     private Font tableFont, tableHeadFont;
     private JScrollPane jScrollPane;
     private List<List<String>> mergedVehicleIds;
+    private Map<Lead, List<String>> LeadWithIds;
 
     public CheckLeadUI(String dealerName) {
         helper = LeadDataHelper.instance();
         helper.mergeLeadsHelper(dealerName);
         forms = helper.getMergedLeads();
         mergedVehicleIds = helper.getMergedVehicleIds();
+        LeadWithIds = IntStream.range(0, forms.size()).boxed()
+                .collect(Collectors.toMap(forms::get, mergedVehicleIds::get));
         tableModel = new LeadFormsTableModel(forms);
         table = new JTable(tableModel);
         create();
@@ -96,11 +103,10 @@ public class CheckLeadUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (table.getSelectedRow() != -1) {
                     int i = table.getSelectedRow();
-                    Vehicle[] vehicles = new Vehicle[mergedVehicleIds.get(i).size()];
-                    for (int j = 0; j < mergedVehicleIds.get(i).size(); j++) {
-                        List<String> ids = mergedVehicleIds.get(i);
-                        vehicles[j] = helper.getVehicle(ids.get(j));
-
+                    List<String> vehicleIds = LeadWithIds.get(forms.get(i));
+                    Vehicle[] vehicles = new Vehicle[vehicleIds.size()];
+                    for (int j = 0; j < vehicleIds.size(); j++) {
+                        vehicles[j] = helper.getVehicle(vehicleIds.get(j));
                     }
                     new DetailsWindow(forms.get(i), vehicles).buildGUI();
                     forms.get(i).setRead(true);
@@ -195,11 +201,10 @@ public class CheckLeadUI extends JFrame {
                 if (table.getSelectedRow() != -1) {
                     int i = table.getSelectedRow();
                     if (e.getClickCount() == 2) {
-                        Vehicle[] vehicles = new Vehicle[mergedVehicleIds.get(i).size()];
-                        for (int j = 0; j < mergedVehicleIds.get(i).size(); j++) {
-                            List<String> ids = mergedVehicleIds.get(i);
-                            vehicles[j] = helper.getVehicle(ids.get(j));
-
+                        List<String> vehicleIds = LeadWithIds.get(forms.get(i));
+                        Vehicle[] vehicles = new Vehicle[vehicleIds.size()];
+                        for (int j = 0; j < vehicleIds.size(); j++) {
+                            vehicles[j] = helper.getVehicle(vehicleIds.get(j));
                         }
                         new DetailsWindow(forms.get(i), vehicles).buildGUI();
                         forms.get(i).setRead(true);
