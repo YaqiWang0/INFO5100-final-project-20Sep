@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class InventoryCreationJPanel {
@@ -24,7 +25,7 @@ public class InventoryCreationJPanel {
     private JButton cancelButton;
     private JPanel CreateJPanel;
 
-    public InventoryCreationJPanel(){
+    public InventoryCreationJPanel(String dealerId){
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(CreateJPanel);
@@ -37,8 +38,8 @@ public class InventoryCreationJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    InventoryManagementJPanel panel = new InventoryManagementJPanel();
-                } catch (MalformedURLException malformedURLException) {
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
+                } catch (IOException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }
             }
@@ -46,6 +47,6 @@ public class InventoryCreationJPanel {
     }
 
     public static void main(String[] args){
-        InventoryCreationJPanel ic = new InventoryCreationJPanel();
+//        InventoryCreationJPanel ic = new InventoryCreationJPanel();
     }
 }

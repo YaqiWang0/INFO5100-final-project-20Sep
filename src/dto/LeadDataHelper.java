@@ -2,12 +2,18 @@ package dto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import dao.Dealer;
 import dao.GenericModel;
 import dao.Vehicle;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 
 public class LeadDataHelper {
@@ -23,7 +29,7 @@ public class LeadDataHelper {
     private Map<String, Integer> vehicleIdMapping = new HashMap<>();
     
     private List<Dealer> dealers;
-    private Map<String, Integer> dealerIdMapping = new HashMap<>();
+    private Map<String, Integer> dealerNameMapping = new HashMap<>();
     
     
     private LeadDataHelper() {
@@ -53,7 +59,10 @@ public class LeadDataHelper {
         initIdMapping(leads, leadIdMapping);
         
         dealers = dp.getAllDealers();
-        initIdMapping(dealers, dealerIdMapping);
+        dealerNameMapping.clear();
+        for (int i = 0; i < dealers.size(); i++) {
+            dealerNameMapping.put(dealers.get(i).getDealerName(), i);
+        }
         
         vehicles = dp.getAllVehicles();
         initIdMapping(vehicles, vehicleIdMapping);
@@ -89,20 +98,54 @@ public class LeadDataHelper {
     
     /**
      * Get leads which filter by specific dealer id
-     * @param dealerId  specify dealer which the leads data belongs to. 
+     * @param dealerName  specify dealer which the leads data belongs to. 
      * @return a List contains all leads object which belongs to the specific dealer 
      */
-    public List<Lead> getLeadsByDealer(String dealerId) {
+    public List<Lead> getLeadsByDealer(String dealerName) {
         List<Lead> leads = new ArrayList<>();
         
         for(Lead lead: getLeads()) {
-            if(lead.getDealerId().equals(dealerId)) {
+            if(lead.getDealerName().equals(dealerName)) {
                 leads.add(lead);
             }
         }
         return leads;
     }
+
     
+    /**
+     * Get merged leads
+     * @return merged leads
+     */
+    public List<Lead> getMergedLeads(String dealerName) { 
+        List<Lead> mergedLeads = new ArrayList<Lead>();
+        Set<String> emailSet = new HashSet<>();
+        
+        for (Lead lead : getLeadsByDealer(dealerName)) {
+            String email = lead.getEmailAddress();
+            if (!emailSet.contains(email)) {
+                mergedLeads.add(lead);
+                emailSet.add(email);
+            }
+        }
+        
+        return mergedLeads;
+    }
+    
+    public Vehicle[] getVehiclesByEmail(String dealerName, String email) {
+        List<Lead> originalLeads = getLeadsByDealer(dealerName);
+        List<Vehicle>  vehicles = new ArrayList<>();
+        for (Lead lead : originalLeads) {
+            if (lead.getEmailAddress().equals(email)) {
+                vehicles.add(getVehicle(lead.getVehicleId()));
+            }
+        }
+        
+        Vehicle[] vehicleArr = new Vehicle[vehicles.size()];
+        return vehicles.toArray(vehicleArr);
+    }
+
+
     /**
      * Get Object from list by object id.
      * 
@@ -136,12 +179,13 @@ public class LeadDataHelper {
     
     /**
      * Get Dealer object by dealer id
-     * @param dealerId
+     * @param dealerName
      * @return Dealer object, of null if not exits
      */
-    public Dealer getDealer(String dealerId) {
-        return (Dealer) getObject(dealerId, dealers, dealerIdMapping);
+    public Dealer getDealer(String dealerName) {
+        return (Dealer) getObject(dealerName, dealers, dealerNameMapping);
     }
+    
     
 //    public static void main(String[] args) {
 //        LeadDataHelper helper = LeadDataHelper.instance();
