@@ -8,7 +8,6 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.FileWriter;
 import java.util.Comparator;
 import java.util.List;
@@ -232,8 +231,9 @@ public class CheckLeadUI extends JFrame {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION) {
-                    // TODO add delete feature
+                    Lead lead = leads.get(selectedRow);
                     tableModel.removeRow(selectedRow);
+                    helper.removeAndSave(lead);
                 }
             }
         }
