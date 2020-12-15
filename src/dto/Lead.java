@@ -1,14 +1,15 @@
 package dto;
 
-import java.util.UUID;
-
 import dao.GenericModel;
+
+import java.util.UUID;
 
 public class Lead extends GenericModel {
 
     private String leadId;
     private String vehicleId;
-    private String dealerId;
+    private String dealerId; // this member field will be removed after case8 modify code and merge without conflict.
+    private String dealerName; // this member field will replace dealerId.
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -24,10 +25,11 @@ public class Lead extends GenericModel {
 
     public Lead() {
     }
-    
-    public Lead(String vehicleId, String dealerId) {
+
+    // new modified constructor, replace dealerId with dealerName
+    public Lead(String vehicleId, String dealerName) {
         this.vehicleId = vehicleId;
-        this.dealerId = dealerId;
+        this.dealerName = dealerName;
         this.leadId = UUID.randomUUID().toString();
         this.replyNotes = "";
         this.read = false;
@@ -42,8 +44,14 @@ public class Lead extends GenericModel {
         this.vehicleId = vehicleId;
     }
 
+    // setDealerId will be removed later
     public void setDealerId(String dealerId) {
         this.dealerId = dealerId;
+    }
+
+    // setter for dealerName
+    public void setDealerName(String dealerName) {
+        this.dealerName = dealerName;
     }
 
     public void setFirstName(String firstName) {
@@ -102,8 +110,14 @@ public class Lead extends GenericModel {
         return vehicleId;
     }
 
+    // getDealerId will be removed later
     public String getDealerId() {
         return dealerId;
+    }
+
+    // getter for dealerName
+    public String getDealerName() {
+        return dealerName;
     }
 
     public String getFirstName() {
@@ -156,16 +170,17 @@ public class Lead extends GenericModel {
         return contacted;
     }
 
+    // change third variable from dealerId to dealerName
     public String toCSVLine() {
-        return leadId + "," + vehicleId + "," + dealerId + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
+        return leadId + "," + vehicleId + "," + dealerName + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
                 zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
     }
-    
+
     @Override
     public String toString() {
         return "<Lead> id: " + this.getVehicleId();
     }
-    
+
     @Override
     public String getId() {
         return this.getLeadId();

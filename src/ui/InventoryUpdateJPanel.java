@@ -3,6 +3,7 @@ package ui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class InventoryUpdateJPanel {
@@ -37,8 +38,8 @@ public class InventoryUpdateJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    InventoryManagementJPanel panel = new InventoryManagementJPanel();
-                } catch (MalformedURLException malformedURLException) {
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
+                } catch (IOException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }
             }
