@@ -42,25 +42,29 @@ public class InventoryManagementJPanel {
                     String[] info = line.split("~");
 
                     String vehicleImagePath = info[9];
-                    ImageIcon imageIcon;
-                    try {
-                        URL url = new URL(vehicleImagePath);
-                        Image image = ImageIO.read(url);
-                        imageIcon = new ImageIcon(image);
-                    } catch (MalformedURLException e) {
-                        //e.printStackTrace();
-                        vehicleImagePath = "src/ui/pictures/car.png";
-                        imageIcon = new ImageIcon(vehicleImagePath);
-                    } catch (IOException e) {
-                        vehicleImagePath = "src/ui/pictures/car.png";
-                        imageIcon = new ImageIcon(vehicleImagePath);
-                    }
+                    ImageIcon imageIcon = new ImageIcon(vehicleImagePath);
+//                    try {
+//                        URL url = new URL(vehicleImagePath);
+//                        Image image = ImageIO.read(url);
+//                        imageIcon = new ImageIcon(image);
+//                    } catch (MalformedURLException e) {
+//                        //e.printStackTrace();
+//                        vehicleImagePath = "src/ui/pictures/car.png";
+//                        imageIcon = new ImageIcon(vehicleImagePath);
+//                    } catch (IOException e) {
+//                        vehicleImagePath = "src/ui/pictures/car.png";
+//                        imageIcon = new ImageIcon(vehicleImagePath);
+//                    }
 
                     Object[] o = new Object[]{info[0],info[3],info[4],info[5],info[2],info[8],info[7],imageIcon};
-                    data.add(o);
+                    this.data.add(o);
                 }
                 break;
             }
+        }
+        tableVales = new Object[data.size()][8];
+        for (int i = 0; i < data.size(); i++) {
+            tableVales[i] = data.get(i);
         }
     }
 
@@ -77,8 +81,10 @@ public class InventoryManagementJPanel {
         frame.setVisible(true);
 
         String[] columnNames = {"ID", "Year", "Brand", "Model", "New/Used", "Price", "Body Type", "Images"};
+        data = new ArrayList<Object[]>();
         InitialData(dealerId);
-//        tableVales[0] = new Object[]{"2960297373", "2016", "Buick", "Cascada", "New", "37400.0", "CAR", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))};
+
+        tableVales[0] = new Object[]{"2960297373", "2016", "Buick", "Cascada", "New", "37400.0", "CAR", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))};
 //        tableVales = new Object[][]{{"2960297373", "2016", "Buick", "Cascada", "New", "37400.0", "Black", "Black", "CAR", "2dr Conv Premium", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))}, {"2966525563", "2017", "Buick", "Enclave", "New", "46660.0", "Brown", "Black", "SUV", "Leather FWD", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2017/3273383/default/ext_G1F_deg01x90.jpg"))}, {"2932765103", "2017", "Chevrolet", "Malibu", "New", "24140.0", "Black", "Black", "CAR", "1LS", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2017/3343993/default/ext_GAZ_deg01x90.jpg"))}};
         TableModel tableModel = new DefaultTableModel(tableVales, columnNames){
             public Class getColumnClass(int column) {
@@ -141,9 +147,7 @@ public class InventoryManagementJPanel {
     }
 
     public static void main(String[] args) throws IOException {
-        InventoryManagementJPanel im = new InventoryManagementJPanel("xiang");
-
+        InventoryManagementJPanel im = new InventoryManagementJPanel("gmps-ernievon");
     }
-
 
 }
