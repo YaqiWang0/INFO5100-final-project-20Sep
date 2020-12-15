@@ -21,7 +21,7 @@ public class QueryInventory {
 //  public List<Vehicle> inventory;
 
   public static List<Vehicle> queryInventoryByDealer(String dealerId){
-    String path = "data/vehicles.csv";
+    String path = "data/gmps-shaheen";
     String line = "";
     List<Vehicle> inventory = new ArrayList<Vehicle>();
 
@@ -30,13 +30,14 @@ public class QueryInventory {
 
       while ((line = br.readLine()) != null){
 
-        String[] values = line.split(",");
-        if (values[1].equals(dealerId) ){
+        String[] values = line.split("~");
+//        if (values[1].equals(dealerId) ){
           System.out.println(line);
-          Vehicle vehicle = new Vehicle(values[1],values[2],values[3],values[4],values[5]=="true",values[6],values[7],values[8], BodyType.valueOf(values[9]),values[10]);
-          inventory.add(vehicle);
+//          Vehicle vehicle = new Vehicle(values[1],values[2],values[3],values[4],values[5]=="true",values[6],values[7],values[8], BodyType.valueOf(values[9]),values[10]);
+//          inventory.add(vehicle);
 //          System.out.println(inventory.get(0).getDealerId());
-        }
+//        }
+
 
       }
     } catch (FileNotFoundException e) {

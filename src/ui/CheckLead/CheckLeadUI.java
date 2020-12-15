@@ -8,7 +8,11 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.table.DefaultTableCellRenderer;
 
 
@@ -17,18 +21,22 @@ public class CheckLeadUI extends JFrame {
     private JTable table;
     private JLabel first, second;
     private JButton export, detail, delete;
+    LeadDataHelper helper;
     private List<Lead> forms;
     private TableModel tableModel;
     private JComboBox filter, sortBy;
     private Font tableFont, tableHeadFont;
     private JScrollPane jScrollPane;
-    private MergeFormsHelper mergedFormsHelper;
-    private List<List<String>> mergedIds;
+    private List<List<String>> mergedVehicleIds;
+    private Map<Lead, List<String>> LeadWithIds;
 
-    public CheckLeadUI(String dealerId) {
-        mergedFormsHelper = new MergeFormsHelper(dealerId);
-        forms = mergedFormsHelper.getMergedForms();
-        mergedIds = mergedFormsHelper.getMergedIds();
+    public CheckLeadUI(String dealerName) {
+        helper = LeadDataHelper.instance();
+        helper.mergeLeadsHelper(dealerName);
+        forms = helper.getMergedLeads();
+        mergedVehicleIds = helper.getMergedVehicleIds();
+        LeadWithIds = IntStream.range(0, forms.size()).boxed()
+                .collect(Collectors.toMap(forms::get, mergedVehicleIds::get));
         tableModel = new LeadFormsTableModel(forms);
         table = new JTable(tableModel);
         create();
@@ -95,11 +103,10 @@ public class CheckLeadUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (table.getSelectedRow() != -1) {
                     int i = table.getSelectedRow();
-                    Vehicle[] vehicles = new Vehicle[mergedIds.get(i).size()];
-                    for (int j = 0; j < mergedIds.get(i).size(); j++) {
-                        List<String> ids = mergedIds.get(i);
-                        vehicles[j] = mergedFormsHelper.getHelper().getVehicle(ids.get(j));
-
+                    List<String> vehicleIds = LeadWithIds.get(forms.get(i));
+                    Vehicle[] vehicles = new Vehicle[vehicleIds.size()];
+                    for (int j = 0; j < vehicleIds.size(); j++) {
+                        vehicles[j] = helper.getVehicle(vehicleIds.get(j));
                     }
                     new DetailsWindow(forms.get(i), vehicles).buildGUI();
                     forms.get(i).setRead(true);
@@ -194,11 +201,10 @@ public class CheckLeadUI extends JFrame {
                 if (table.getSelectedRow() != -1) {
                     int i = table.getSelectedRow();
                     if (e.getClickCount() == 2) {
-                        Vehicle[] vehicles = new Vehicle[mergedIds.get(i).size()];
-                        for (int j = 0; j < mergedIds.get(i).size(); j++) {
-                            List<String> ids = mergedIds.get(i);
-                            vehicles[j] = mergedFormsHelper.getHelper().getVehicle(ids.get(j));
-
+                        List<String> vehicleIds = LeadWithIds.get(forms.get(i));
+                        Vehicle[] vehicles = new Vehicle[vehicleIds.size()];
+                        for (int j = 0; j < vehicleIds.size(); j++) {
+                            vehicles[j] = helper.getVehicle(vehicleIds.get(j));
                         }
                         new DetailsWindow(forms.get(i), vehicles).buildGUI();
                         forms.get(i).setRead(true);
@@ -228,7 +234,7 @@ public class CheckLeadUI extends JFrame {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
                                                            int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (forms.get(row).getRead() == true) {
+                if (forms.get(row).getRead()) {
                     c.setFont(new Font("Baskerville", Font.PLAIN, 18));
                 }
                 return this;
