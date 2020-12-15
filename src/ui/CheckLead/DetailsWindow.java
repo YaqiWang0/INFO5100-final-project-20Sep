@@ -10,16 +10,16 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class DetailsWindow {
+
     private Lead lead;
     private Vehicle vehicles[];
     private int vehicleIndex;
     ArrayList<String> vehicleImageUrl;
     private int vehicleImageIndex;
-    private static String CUSTOMER_INFO = "Customer info";
-    private static String VEHICLE_INFO = "Vehicle Info";
-    private static String USER_NOTES = "User Notes";
-    private static int SAVE_TIME_INTERVAL = 1000;
-    private String[] tabNames = {CUSTOMER_INFO, VEHICLE_INFO, USER_NOTES};
+
+    private static int SAVE_TIME_INTERVAL = 1;
+    private static String[] TAB_NAMES = {"Customer info", "Vehicle Info", "User Notes"};
+
     JTextArea userNotesTextArea;
     JTextArea userNotesReplyTextArea;
     JButton replyButton, saveButton;
@@ -37,18 +37,18 @@ public class DetailsWindow {
         vehicleImageUrl = vehicles[vehicleIndex].getImg();
     }
 
-    public static void main (String[] args) {
+    /*public static void main (String[] args) {
         LeadDataHelper helper = LeadDataHelper.instance();
-        MergeFormsHelper mergedFormsHelper = new MergeFormsHelper("bae705d7-20da-4ee2-871f-345b2271992b");
-        ArrayList<Lead> forms = (ArrayList<Lead>) mergedFormsHelper.getMergedForms();
-        java.util.List<java.util.List<String>> mergedIds = mergedFormsHelper.getMergedIds();
+        helper.mergeLeadsHelper("bae705d7-20da-4ee2-871f-345b2271992b");
+        ArrayList<Lead> forms = (ArrayList<Lead>) helper.getMergedLeads();
+        java.util.List<java.util.List<String>> mergedIds = helper.getMergedVehicleIds();
         Vehicle[] vehicles = new Vehicle[mergedIds.get(0).size()];
         for (int j = 0; j < mergedIds.get(0).size(); j++) {
             java.util.List<String> ids = mergedIds.get(0);
-            vehicles[j] = mergedFormsHelper.getHelper().getVehicle(ids.get(j));
+            vehicles[j] = helper.getVehicle(ids.get(j));
         }
 	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }
+    }*/
 
     public void buildGUI () {
 	    theFrame = new JFrame("Details Window");
@@ -57,14 +57,14 @@ public class DetailsWindow {
 	    layoutComponents();
 	    theFrame.getContentPane().add(mainPanel);
 	    theFrame.setPreferredSize(new Dimension(800, 600));
-        //theFrame.setAlwaysOnTop(true);
         theFrame.pack();
 	    theFrame.setLocationRelativeTo(null);
         theFrame.setVisible(true);
+
     }
 
     private void layoutComponents() {
-	    int i = 0;
+	    int tabIndex = 0;
 
 
 
@@ -73,7 +73,8 @@ public class DetailsWindow {
 	    */
         JPanel leadInfoPanel = new JPanel();
         fillLeadPanel(leadInfoPanel);
-        mainPanel.addTab(tabNames[i++], null, leadInfoPanel, "first");
+        changeFont(leadInfoPanel, new Font("Baskerville", Font.PLAIN, 18));
+        mainPanel.addTab(TAB_NAMES[tabIndex++], null, leadInfoPanel, "first");
 
 
 
@@ -88,11 +89,12 @@ public class DetailsWindow {
 
         UpdateVehiclePanel(vehicleInfoSubPanel);
 	    vehicleInfoAddButtons(vehicleToolBar, vehicleInfoSubPanel);
-	
+
 	    vehicleInfoPanel.add(vehicleToolBar,BorderLayout.PAGE_START);
         vehicleInfoPanel.add(vehicleInfoSubPanel,BorderLayout.CENTER);
 
-	    mainPanel.addTab(tabNames[i++], null, vehicleInfoPanel, "second");
+        changeFont(vehicleInfoSubPanel, new Font("Baskerville", Font.PLAIN, 18));
+	    mainPanel.addTab(TAB_NAMES[tabIndex++], null, vehicleInfoPanel, "second");
 
 
 
@@ -101,7 +103,7 @@ public class DetailsWindow {
     	*/
         JPanel userNotesPanel = new JPanel();
         fillUserNotesPanel(userNotesPanel);
-        mainPanel.addTab(tabNames[i++], null, userNotesPanel, "third");
+        mainPanel.addTab(TAB_NAMES[tabIndex++], null, userNotesPanel, "third");
 
 
     }
@@ -114,7 +116,7 @@ public class DetailsWindow {
         /**
          * fill first name
          */
-        leadInfoPanel.setLayout(grid); ;
+        leadInfoPanel.setLayout(grid);
         JLabel firstNameLabel = new JLabel();
         firstNameLabel.setText("First Name: ");
         leadInfoPanel.add(firstNameLabel);
@@ -280,7 +282,7 @@ public class DetailsWindow {
 
         vehicleImageUrl = vehicles[vehicleIndex].getImg();
         String urlString = vehicleImageUrl.get(vehicleImageIndex);
-        int mid = urlString.length() / 2; //get the middle of the String
+        int mid = urlString.length() / 2;
         urlString = "<html>" + urlString.substring(0, mid)+ "<br/>" + urlString.substring(mid) + "<html>";
         vehicleImageLabel.setText(urlString);
         Border border = BorderFactory.createLineBorder(Color.WHITE, 2);
@@ -361,6 +363,7 @@ public class DetailsWindow {
                             public void actionPerformed(ActionEvent e) {
                                 replyButton.setText("reply");
                                 replyButton.setEnabled(true);
+                                ((Timer)e.getSource()).stop();
                             }
                         });
                         timer.start();
@@ -387,6 +390,7 @@ public class DetailsWindow {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 saveLabel.setText("");
+                                ((Timer)e.getSource()).stop();
                             }
                         });
                         timer.start();
@@ -412,6 +416,7 @@ public class DetailsWindow {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             saveLabel.setText("");
+                            ((Timer)e.getSource()).stop();
                         }
                     });
                     timer.start();
@@ -420,23 +425,23 @@ public class DetailsWindow {
         });
 
         /**
-         * save reply notes every 60 seconds
+         * save reply notes every SAVE_TIME_INTERVAL seconds
          */
-        java.util.Timer t = new java.util.Timer();
-        t.schedule(new java.util.TimerTask() {
+        Timer timer = new Timer(1000 * SAVE_TIME_INTERVAL, new ActionListener() {
             @Override
-            public void run() {
-                if (!userNotesReplyTextArea.getText().trim().isEmpty()) {
-                    lead.setReplyNotes(userNotesReplyTextArea.getText());
-                    saveLabel.setText("saved");
-                    try {
-                        Thread.sleep(SAVE_TIME_INTERVAL);
+            public void actionPerformed(ActionEvent e) {
+                saveLabel.setText("saved");
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
                         saveLabel.setText("");
-                    } catch (Exception exp) {
+                        ((Timer)e.getSource()).stop();
                     }
-                }
+                });
+                timer.start();
             }
-        }, 0, 1000 * 60);
+        });
+        timer.start();
 
 
         JPanel buttonPane = new JPanel();
@@ -576,6 +581,18 @@ public class DetailsWindow {
 
     private void sendMessage(Lead lead, String message) {
 	
+    }
+
+    private static void changeFont ( Component component, Font font )
+    {
+        component.setFont ( font );
+        if ( component instanceof Container )
+        {
+            for ( Component child : ( ( Container ) component ).getComponents () )
+            {
+                changeFont ( child, font );
+            }
+        }
     }
 
 }

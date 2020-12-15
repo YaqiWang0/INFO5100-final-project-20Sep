@@ -17,18 +17,19 @@ public class CheckLeadUI extends JFrame {
     private JTable table;
     private JLabel first, second;
     private JButton export, detail, delete;
+    LeadDataHelper helper;
     private List<Lead> forms;
     private TableModel tableModel;
     private JComboBox filter, sortBy;
     private Font tableFont, tableHeadFont;
     private JScrollPane jScrollPane;
-    private MergeFormsHelper mergedFormsHelper;
-    private List<List<String>> mergedIds;
+    private List<List<String>> mergedVehicleIds;
 
-    public CheckLeadUI(String dealerId) {
-        mergedFormsHelper = new MergeFormsHelper(dealerId);
-        forms = mergedFormsHelper.getMergedForms();
-        mergedIds = mergedFormsHelper.getMergedIds();
+    public CheckLeadUI(String dealerName) {
+        helper = LeadDataHelper.instance();
+        helper.mergeLeadsHelper(dealerName);
+        forms = helper.getMergedLeads();
+        mergedVehicleIds = helper.getMergedVehicleIds();
         tableModel = new LeadFormsTableModel(forms);
         table = new JTable(tableModel);
         create();
@@ -95,10 +96,10 @@ public class CheckLeadUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (table.getSelectedRow() != -1) {
                     int i = table.getSelectedRow();
-                    Vehicle[] vehicles = new Vehicle[mergedIds.get(i).size()];
-                    for (int j = 0; j < mergedIds.get(i).size(); j++) {
-                        List<String> ids = mergedIds.get(i);
-                        vehicles[j] = mergedFormsHelper.getHelper().getVehicle(ids.get(j));
+                    Vehicle[] vehicles = new Vehicle[mergedVehicleIds.get(i).size()];
+                    for (int j = 0; j < mergedVehicleIds.get(i).size(); j++) {
+                        List<String> ids = mergedVehicleIds.get(i);
+                        vehicles[j] = helper.getVehicle(ids.get(j));
 
                     }
                     new DetailsWindow(forms.get(i), vehicles).buildGUI();
@@ -194,10 +195,10 @@ public class CheckLeadUI extends JFrame {
                 if (table.getSelectedRow() != -1) {
                     int i = table.getSelectedRow();
                     if (e.getClickCount() == 2) {
-                        Vehicle[] vehicles = new Vehicle[mergedIds.get(i).size()];
-                        for (int j = 0; j < mergedIds.get(i).size(); j++) {
-                            List<String> ids = mergedIds.get(i);
-                            vehicles[j] = mergedFormsHelper.getHelper().getVehicle(ids.get(j));
+                        Vehicle[] vehicles = new Vehicle[mergedVehicleIds.get(i).size()];
+                        for (int j = 0; j < mergedVehicleIds.get(i).size(); j++) {
+                            List<String> ids = mergedVehicleIds.get(i);
+                            vehicles[j] = helper.getVehicle(ids.get(j));
 
                         }
                         new DetailsWindow(forms.get(i), vehicles).buildGUI();
@@ -228,7 +229,7 @@ public class CheckLeadUI extends JFrame {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
                                                            int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (forms.get(row).getRead() == true) {
+                if (forms.get(row).getRead()) {
                     c.setFont(new Font("Baskerville", Font.PLAIN, 18));
                 }
                 return this;
