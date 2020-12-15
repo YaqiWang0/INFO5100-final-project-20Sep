@@ -69,7 +69,7 @@ public class InventoryManagementJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = table1.getSelectedRow();
-                InventoryUpdateJPanel panel = new InventoryUpdateJPanel(table1.getValueAt(row, 0).toString(), table1.getValueAt(row, 1).toString());
+                InventoryUpdateJPanel panel = new InventoryUpdateJPanel(table1.getValueAt(row, 0).toString(),"dealerId");
 //                System.out.println(table1.getValueAt(row, 0).toString() + " " + table1.getValueAt(row, 1).toString());
             }
         });

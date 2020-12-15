@@ -38,6 +38,21 @@ public class InventoryUpdateJPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     InventoryManagementJPanel panel = new InventoryManagementJPanel();
+
+                    //test
+                    System.out.println(111);
+                } catch (MalformedURLException malformedURLException) {
+                    malformedURLException.printStackTrace();
+                }
+            }
+        });
+        confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel();
+                    //test
+                    System.out.println(221);
                 } catch (MalformedURLException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }
