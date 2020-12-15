@@ -132,7 +132,7 @@ public class DealerHome extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
-				} catch (MalformedURLException malformedURLException) {
+				} catch (IOException malformedURLException) {
 					malformedURLException.printStackTrace();
 				}
 			}

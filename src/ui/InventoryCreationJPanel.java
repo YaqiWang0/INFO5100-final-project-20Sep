@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class InventoryCreationJPanel {
@@ -38,7 +39,7 @@ public class InventoryCreationJPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
-                } catch (MalformedURLException malformedURLException) {
+                } catch (IOException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }
             }
