@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Comparator;
 import java.util.List;
 
@@ -189,10 +191,22 @@ public class CheckLeadUI extends JFrame {
     class ExportActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO need export
-            System.out.println("Export");
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");
+             
+            int userSelection = fileChooser.showSaveDialog(null);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                try {
+                    FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".csv");
+                    for (Lead l : leads) {
+                        fw.write(l.toCSVLine() + "\n");
+                    }
+                    fw.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
-        
     }
     
     class DetailActionListener implements ActionListener {
