@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,26 +39,30 @@ public class InventoryManagementJPanel {
             if (fileList[i].getName().equals(dealerId)){
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/"+dealerId)));
                 String line = br.readLine();
+                int j =0;
                 while((line=br.readLine())!=null){
                     String[] info = line.split("~");
 
                     String vehicleImagePath = info[9];
-                    ImageIcon imageIcon = new ImageIcon(vehicleImagePath);
-//                    try {
-//                        URL url = new URL(vehicleImagePath);
-//                        Image image = ImageIO.read(url);
-//                        imageIcon = new ImageIcon(image);
-//                    } catch (MalformedURLException e) {
-//                        //e.printStackTrace();
-//                        vehicleImagePath = "src/ui/pictures/car.png";
-//                        imageIcon = new ImageIcon(vehicleImagePath);
-//                    } catch (IOException e) {
-//                        vehicleImagePath = "src/ui/pictures/car.png";
-//                        imageIcon = new ImageIcon(vehicleImagePath);
-//                    }
+                    ImageIcon imageIcon;
 
+                    URL url = new URL(vehicleImagePath);
+                    HttpURLConnection urlcon = (HttpURLConnection) url.openConnection();
+                    urlcon.setRequestMethod("POST");
+                    urlcon.setRequestProperty("Content-type",
+                            "application/x-www-form-urlencoded");
+                    if (urlcon.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        Image image = ImageIO.read(url);
+                        imageIcon = new ImageIcon(image);
+                    } else {
+                        vehicleImagePath = "src/ui/pictures/default-60x60.png";
+                        imageIcon = new ImageIcon(vehicleImagePath);
+                    }
+
+                    System.out.println(info[3]);
                     Object[] o = new Object[]{info[0],info[3],info[4],info[5],info[2],info[8],info[7],imageIcon};
                     this.data.add(o);
+                    j++;
                 }
                 break;
             }
