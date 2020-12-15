@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.event.WindowEvent;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -51,16 +52,17 @@ public class InventoryManagementJPanel {
                     urlcon.setRequestMethod("POST");
                     urlcon.setRequestProperty("Content-type",
                             "application/x-www-form-urlencoded");
-                    if (urlcon.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        Image image = ImageIO.read(url);
+//                    if (urlcon.getResponseCode() == HttpURLConnection.HTTP_OK) {
+//                        Image image = ImageIO.read(url);
+                    //load imageUrl in the file
                         imageIcon = new ImageIcon(new URL(vehicleImagePath));
-                    } else {
-//                        vehicleImagePath = "src/ui/pictures/default-60x60.png";
-//                        imageIcon = new ImageIcon(vehicleImagePath);
-                        //online image
-                        vehicleImagePath = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=654480783,3410226424&fm=26&gp=0.jpg";
-                        imageIcon = new ImageIcon(new URL(vehicleImagePath));
-                    }
+//                    } else {
+////                        vehicleImagePath = "src/ui/pictures/default-60x60.png";
+////                        imageIcon = new ImageIcon(vehicleImagePath);
+//                        //online image
+//                        vehicleImagePath = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=654480783,3410226424&fm=26&gp=0.jpg";
+//                        imageIcon = new ImageIcon(new URL(vehicleImagePath));
+//                    }
 
                     System.out.println(j);
                     Object[] o = new Object[]{info[0],info[3],info[4],info[5],info[2],info[8],info[7],imageIcon};
@@ -111,6 +113,19 @@ public class InventoryManagementJPanel {
                 sorter.setRowFilter(RowFilter.regexFilter(searchTextField.getText()));
 
                 table1.setRowSorter(sorter);
+
+                //reload data
+                if (searchTextField.getText().equals("")){
+                    try {
+//                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        InventoryManagementJPanel im = new InventoryManagementJPanel(dealerId);
+                        frame.dispatchEvent(new WindowEvent(frame,WindowEvent.WINDOW_CLOSING) );
+                    }catch (IOException e1){
+                        e1.printStackTrace();
+                    }
+
+                }
+
             }
         });
         allButton.addActionListener(new ActionListener() {
