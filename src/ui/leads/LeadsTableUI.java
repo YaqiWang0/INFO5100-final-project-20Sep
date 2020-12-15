@@ -18,6 +18,8 @@ public class LeadsTableUI extends JFrame {
 
     private static final long serialVersionUID = -1484589037032558776L;
     
+    private JButton detailBtn, deleteBtn;
+    
     private LeadDataHelper helper;
     private List<Lead> leads;
     
@@ -79,14 +81,17 @@ public class LeadsTableUI extends JFrame {
         headerPanel.add(exportBtn);
         
         // Detail Button
-        JButton detailBtn = new JButton("Detail");
+        detailBtn = new JButton("Detail");
         detailBtn.addActionListener(new DetailActionListener());
         headerPanel.add(detailBtn);
         
         // Delete Button
-        JButton deleteBtn = new JButton("Delete");
+        deleteBtn = new JButton("Delete");
         deleteBtn.addActionListener(new DeleteActionListener());
         headerPanel.add(deleteBtn);
+        
+        // disable details and delete buttons
+        updateHeaderBtnStatus(false);
         
         mainPanel.add(headerPanel);
     }
@@ -99,9 +104,16 @@ public class LeadsTableUI extends JFrame {
         table.addMouseListener(new TableMouseAdapter());
         
         // Add selected row changed Listener
+        // Update header buttons according the selecting status
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
                 selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    updateHeaderBtnStatus(false);
+                }
+                else {
+                    updateHeaderBtnStatus(true);
+                }
             }
         });
 
@@ -140,6 +152,11 @@ public class LeadsTableUI extends JFrame {
     private void updateLeadRead(int row) {
         leads.get(row).setRead(true);
         tableModel.fireTableDataChanged();
+    }
+    
+    private void updateHeaderBtnStatus(boolean enable) {
+        detailBtn.setEnabled(enable);
+        deleteBtn.setEnabled(enable);
     }
 
     class FilterItemChangeListener implements ItemListener {
