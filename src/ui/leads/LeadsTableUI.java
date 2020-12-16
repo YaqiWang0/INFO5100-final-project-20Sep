@@ -124,12 +124,7 @@ public class LeadsTableUI extends JFrame {
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
                 selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    updateHeaderBtnStatus(false);
-                }
-                else {
-                    updateHeaderBtnStatus(true);
-                }
+                updateHeaderBtnStatus(selectedRow != -1);
             }
         });
 

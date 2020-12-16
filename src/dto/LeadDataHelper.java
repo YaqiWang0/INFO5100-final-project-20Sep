@@ -196,6 +196,7 @@ public class LeadDataHelper {
         }
         
         dp.writeLeads(newLeads);
+        this.reloadData();
     }
 
     public List<Lead> filter(List<Lead> leads, String filterType, String value) {
