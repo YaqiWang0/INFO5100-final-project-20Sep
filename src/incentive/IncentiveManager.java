@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -200,19 +201,27 @@ public class IncentiveManager extends JFrame {
     public void addItemsToComboBoxes() {
         //startMonth.setPreferredSize(80px);
         //add items for start month combo box
+        LocalDate currentdate = LocalDate.now();
+        int month = Calendar.getInstance().get(Calendar.MONTH);
         for (int i = 1; i <= 12; i++) {
             startMonth.addItem(i);
             endMonth.addItem(i);
         }
+        startMonth.setSelectedItem(month);
+        endMonth.setSelectedItem(month);
 
         //add items for start day combo box
+        int day = currentdate.getDayOfMonth();
         for (int i = 1; i <= 31; i++) {
             startDay.addItem(i);
             endDay.addItem(i);
             //filter as/month
         }
+        startDay.setSelectedItem(day);
+        endDay.setSelectedItem(day);
 
-        for (int i = 2020; i < 2050; i++) {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = year; i < year+50; i++) {
             startYear.addItem(i);
             endYear.addItem(i);
         }
@@ -397,7 +406,6 @@ public class IncentiveManager extends JFrame {
             return vehicles.stream().filter(vehicle -> {
                 // Category filter
                 //String selectedCategory = (String) categoryComboBox.getSelectedItem();
-                //if(!selectedCategory.equals("All"))
                 boolean status = vehicle.getStatus();
                 if (selectedCategory == null || selectedCategory.equals("New")) {
                     return status;
