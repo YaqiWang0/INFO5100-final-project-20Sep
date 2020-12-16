@@ -3,8 +3,8 @@ import java.util.regex.Pattern;
 
 public class Validator {
     private static String regex1 = "^[0-9]{5}(?:-[0-9]{4})?$"; // check regex later
-    private static String regex2 = "^[\sa-zA-Z-.]+";
-    private static String regex3 = "^[\sa-zA-Z]+";
+    private static String regex2 = "^[\\sa-zA-Z-.]+";
+    private static String regex3 = "^[\\sa-zA-Z]+";
     private static final int maxNameRange = 100;
     //private static NormalizerImpl.ReorderingBuffer TextUtils;
 
