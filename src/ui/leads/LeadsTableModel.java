@@ -92,5 +92,10 @@ public class LeadsTableModel extends AbstractTableModel {
         leads.remove(index);
         fireTableRowsDeleted(0, leads.size());
     }
+    
+    public void updateLeads(List<Lead> leads) {
+        this.leads = leads;
+    }
+    
 
 }

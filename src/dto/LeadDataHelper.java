@@ -197,4 +197,23 @@ public class LeadDataHelper {
         
         dp.writeLeads(newLeads);
     }
+
+    public List<Lead> filter(List<Lead> leads, String filterType, String value) {
+        List<Lead> filteredLeads = new ArrayList<>();
+        for (Lead lead : leads) {
+            if (filterType.equals("Contact Preference") && lead.getContactPreference().equals(value)) {
+                filteredLeads.add(lead);
+            }
+            else if(filterType.equals("Use Purpose") && lead.getUsePurpose().equals(value)) {
+                filteredLeads.add(lead);
+            }
+            else if(filterType.equals("Read") && lead.getRead() == (value.equals("Read"))) { 
+                filteredLeads.add(lead);
+            }
+            else if(filterType.equals("Contacted") && lead.getContacted() == (value.equals("Contacted"))) { 
+                filteredLeads.add(lead);
+            }
+        }
+        return filteredLeads;
+    }
 }

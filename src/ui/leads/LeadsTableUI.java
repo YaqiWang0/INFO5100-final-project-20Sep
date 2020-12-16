@@ -19,20 +19,23 @@ public class LeadsTableUI extends JFrame {
     private static final long serialVersionUID = -1484589037032558776L;
     
     private JButton detailBtn, deleteBtn;
+    private JComboBox<String> secondLevelFilterCombo;
     
     private LeadDataHelper helper;
     private List<Lead> leads;
+    private List<Lead> originalLeads;
     
     private LeadsTableModel tableModel;
     private int selectedRow = -1;
     
-    private String[] FILTER_ITEMS = {"--Select filter--", "1", "2"};
+    private String[] FILTER_ITEMS = {"ALL", "Contact Preference", "Use Purpose", "Read", "Contacted"};
     private String[] SORT_BY_ITEMS = {"--Select sort--", "Name", "Phone Number", "Email", 
-                                      "Contact Preference","Contact Time", "Use Purpose", "Contacted"};
+                                      "Contact Preference","Contact Time", "Use Purpose", "Read", "Contacted"};
 
     public LeadsTableUI(String dealerName) {
         helper = LeadDataHelper.instance();
-        leads = helper.getMergedLeads(dealerName);
+        originalLeads = helper.getMergedLeads(dealerName);
+        leads = originalLeads;
         tableModel = new LeadsTableModel(leads);
 
         setupUI();
@@ -67,7 +70,15 @@ public class LeadsTableUI extends JFrame {
         // Filter ComboBox
         JComboBox<String> filterCombo = new JComboBox<String>(FILTER_ITEMS);
         filterCombo.addItemListener(new FilterItemChangeListener());
+        filterCombo.setPrototypeDisplayValue("xxxxxxxxx");
         headerPanel.add(filterCombo, gbc);
+        
+        // Second level filter
+        secondLevelFilterCombo = new JComboBox<String>();
+        secondLevelFilterCombo.addItemListener(new SecondLevelFilterItemChangeListener());
+        secondLevelFilterCombo.setEnabled(false);
+        secondLevelFilterCombo.setPrototypeDisplayValue("xxxxxxxxx");
+        headerPanel.add(secondLevelFilterCombo, gbc);
         
         // Sort By Label
         JLabel sortByLabel = new JLabel("Sort by");
@@ -172,15 +183,69 @@ public class LeadsTableUI extends JFrame {
         detailBtn.setEnabled(enable);
         deleteBtn.setEnabled(enable);
     }
-
+    
     class FilterItemChangeListener implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            String item = (String) e.getItem();
+            secondLevelFilterCombo.removeAllItems();
+            secondLevelFilterCombo.setEnabled(true);
+            switch (item) {
+                case "ALL":
+                    secondLevelFilterCombo.setEnabled(false);
+                    leads = originalLeads;
+                    tableModel.updateLeads(leads);
+                    tableModel.fireTableDataChanged();
+                    break;
+                case "Contact Preference":
+                    secondLevelFilterCombo.addItem("Email");
+                    secondLevelFilterCombo.addItem("Phone");
+                    break;
+                case "Use Purpose":
+                    secondLevelFilterCombo.addItem("Business");
+                    secondLevelFilterCombo.addItem("Personal");
+                    break;
+                case "Read":
+                    secondLevelFilterCombo.addItem("Read");
+                    secondLevelFilterCombo.addItem("Unread");
+                    break;
+                case "Contacted":
+                    secondLevelFilterCombo.addItem("Contacted");
+                    secondLevelFilterCombo.addItem("Not Contacted");
+                    break;
+            }
+            
+        }
+    }
+
+    class SecondLevelFilterItemChangeListener implements ItemListener {
+
         @Override
         public void itemStateChanged(ItemEvent event) {
-           if (event.getStateChange() == ItemEvent.SELECTED) {
-              String item = (String)event.getItem();
-              //TODO do something with object
-              System.out.println(item);
-           }
+            if (event.getStateChange() == ItemEvent.SELECTED) {
+                String item = (String) event.getItem();
+                switch (item) {
+                    case "Email":
+                    case "Phone":
+                        leads = helper.filter(originalLeads, "Contact Preference", item);
+                        break;
+                    case "Business":
+                    case "Personal":
+                        leads = helper.filter(originalLeads, "Use Purpose", item);
+                        break;
+                    case "Read":
+                    case "Unread":
+                        leads = helper.filter(originalLeads, "Read", item);
+                        break;
+                    case "Contacted":
+                    case "Not Contacted":
+                        leads = helper.filter(originalLeads, "Contacted", item);
+                        break;
+                }
+                tableModel.updateLeads(leads);
+                tableModel.fireTableDataChanged();
+            }
         }
     }
     
@@ -207,6 +272,9 @@ public class LeadsTableUI extends JFrame {
                        break;
                    case "Use Purpose":
                        leads.sort(Comparator.comparing(a -> a.getUsePurpose()));
+                       break;
+                   case "Read":
+                       leads.sort(Comparator.comparing(a -> a.getRead()));
                        break;
                    case "Contacted":
                        leads.sort(Comparator.comparing(a -> a.getContacted()));
@@ -266,6 +334,14 @@ public class LeadsTableUI extends JFrame {
                     Lead lead = leads.get(selectedRow);
                     tableModel.removeRow(selectedRow);
                     helper.removeAndSave(lead);
+                    
+                    // sync delete between leads and originalLeads
+                    for (int i = originalLeads.size() - 1; i >= 0 ; i--)
+                    {
+                        if (originalLeads.get(i).getEmailAddress().equals(lead.getEmailAddress())) {
+                            originalLeads.remove(i);
+                        }
+                    }
                 }
             }
         }
@@ -280,6 +356,8 @@ public class LeadsTableUI extends JFrame {
             }
         }
     }
+    
+   
     
     
     public static void main(String[] args) {
