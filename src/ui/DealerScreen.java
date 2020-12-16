@@ -7,7 +7,7 @@ import service.*;
 //import ui.*; 
 import validation.*;
 import dto.*;
-
+import dao.Dealer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -375,21 +375,13 @@ public class DealerScreen{
     	        
     	            table.addMouseListener(new java.awt.event.MouseAdapter(){
 
-    	   	             public void mouseClicked(MouseEvent e) {//仅当鼠标单击时响应
-
-    	   	                //得到选中的行列的索引值
-
+    	   	             public void mouseClicked(MouseEvent e) {
     	   	               int r= table.getSelectedRow();
-
     	   	               int c= table.getSelectedColumn();
-
-    	   	               //得到选中的单元格的值，表格中都是字符串
-
     	   	               Object value= table.getValueAt(r, 1);
+    	   	               String info=value.toString();
 
-    	   	            String info=value.toString();
-
-    	   	            javax.swing.JOptionPane.showMessageDialog(null,"Click OK to see the inventory of " + info +".");
+    	   	            javax.swing.JOptionPane.showMessageDialog(null,"Click OK to see the inventory of " + info +". This may take a while.");
     	   	            ShowAndSearchUI2 newInvent  =   new ShowAndSearchUI2(info);
     	   	            newInvent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	            
     	   	            newInvent .setVisible(true);
