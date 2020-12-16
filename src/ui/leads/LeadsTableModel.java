@@ -1,4 +1,4 @@
-package ui.CheckLead;
+package ui.leads;
 
 import dto.*;
 
@@ -6,15 +6,19 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 
-public class LeadFormsTableModel extends AbstractTableModel {
-    public List<Lead> forms;
-    public LeadFormsTableModel(List forms) {
-        this.forms = forms;
+public class LeadsTableModel extends AbstractTableModel {
+    
+    private static final long serialVersionUID = -5171313872366476315L;
+    
+    public List<Lead> leads;
+    
+    public LeadsTableModel(List<Lead> leads) {
+        this.leads = leads;
     }
 
     @Override
     public int getRowCount() {
-        return forms.size();
+        return leads.size();
     }
 
     @Override
@@ -55,7 +59,7 @@ public class LeadFormsTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Lead f = forms.get(rowIndex);
+        Lead f = leads.get(rowIndex);
         if (columnIndex == 0) {
             return f.getFirstName() + " " + f.getLastName();
         }
@@ -85,9 +89,8 @@ public class LeadFormsTableModel extends AbstractTableModel {
     }
 
     public void removeRow(int index) {
-        forms.remove(index);
-        fireTableRowsDeleted(0, forms.size());
+        leads.remove(index);
+        fireTableRowsDeleted(0, leads.size());
     }
-
 
 }

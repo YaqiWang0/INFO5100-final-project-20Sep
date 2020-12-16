@@ -72,6 +72,17 @@ public class DataPersistence implements AbstractPersistent {
         }
         writeModel(models, modelType);
     }
+    
+    
+    @Override
+    public void writeLeads(List<dto.Lead> leads) {
+        String modelType = "leads";
+        List<GenericModel> models = new ArrayList<>();
+        for (dto.Lead lead: leads) {
+            models.add(lead);
+        }
+        writeModel(models, modelType, false);
+    }
 
 
     /**
@@ -219,8 +230,9 @@ public class DataPersistence implements AbstractPersistent {
         }
         writeModel(models, modelType);
     }
-
-    private void writeModel(List<GenericModel> model, String modelType){
+    
+    private void writeModel(List<GenericModel> model, String modelType, Boolean append){
+        
         String filePath = this.dataPath + modelType + ".csv";
         File csv = new File(filePath);
         BufferedWriter bw = null;
@@ -232,7 +244,7 @@ public class DataPersistence implements AbstractPersistent {
             }
         }
         try {
-            bw = new BufferedWriter(new FileWriter(csv, true));
+            bw = new BufferedWriter(new FileWriter(csv, append));
             for (GenericModel m : model) {
                 bw.write(m.toCSVLine());
                 bw.newLine();
@@ -248,6 +260,10 @@ public class DataPersistence implements AbstractPersistent {
                 }
             }
         }
+    }
+
+    private void writeModel(List<GenericModel> model, String modelType){
+        writeModel(model, modelType, true);
     }
 
     @Override

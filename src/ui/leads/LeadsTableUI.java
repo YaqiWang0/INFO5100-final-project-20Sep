@@ -1,4 +1,4 @@
-package ui.CheckLead;
+package ui.leads;
 
 import dao.*;
 import dto.*;
@@ -8,30 +8,29 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.FileWriter;
 import java.util.Comparator;
 import java.util.List;
 
 
-public class CheckLeadUI extends JFrame {
+public class LeadsTableUI extends JFrame {
 
     private static final long serialVersionUID = -1484589037032558776L;
     
     private LeadDataHelper helper;
     private List<Lead> leads;
     
-    private LeadFormsTableModel tableModel;
+    private LeadsTableModel tableModel;
     private int selectedRow = -1;
     
     private String[] FILTER_ITEMS = {"--Select filter--", "1", "2"};
     private String[] SORT_BY_ITEMS = {"--Select sort--", "Name", "Phone Number", "Email", 
                                       "Contact Preference","Contact Time", "Use Purpose", "Contacted"};
 
-    public CheckLeadUI(String dealerName) {
+    public LeadsTableUI(String dealerName) {
         helper = LeadDataHelper.instance();
         leads = helper.getMergedLeads(dealerName);
-        tableModel = new LeadFormsTableModel(leads);
+        tableModel = new LeadsTableModel(leads);
 
         setupUI();
         display();
@@ -134,7 +133,7 @@ public class CheckLeadUI extends JFrame {
     private void openDetailWindow(int row) {
         Lead lead = leads.get(row);
         Vehicle[] vehicles = helper.getVehiclesByEmail(lead.getDealerName(), lead.getEmailAddress());
-        new DetailsWindow(lead, vehicles).buildGUI();
+        new LeadDetailsUI(lead, vehicles).buildGUI();
     }
     
     private void updateLeadRead(int row) {
@@ -232,8 +231,9 @@ public class CheckLeadUI extends JFrame {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION) {
-                    // TODO add delete feature
+                    Lead lead = leads.get(selectedRow);
                     tableModel.removeRow(selectedRow);
+                    helper.removeAndSave(lead);
                 }
             }
         }
@@ -251,7 +251,7 @@ public class CheckLeadUI extends JFrame {
     
     
     public static void main(String[] args) {
-        new CheckLeadUI("bae705d7-20da-4ee2-871f-345b2271992b");
+        new LeadsTableUI("bae705d7-20da-4ee2-871f-345b2271992b");
     }
 }
 

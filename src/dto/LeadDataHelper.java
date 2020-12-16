@@ -187,19 +187,14 @@ public class LeadDataHelper {
     }
     
     
-//    public static void main(String[] args) {
-//        LeadDataHelper helper = LeadDataHelper.instance();
-//        
-//        List<Lead> leads = helper.getLeads();
-//        System.out.println(leads);
-//        
-//        leads = helper.getLeadsByDealer("bae705d7-20da-4ee2-871f-345b2271992b");
-//        System.out.println(leads);
-//        
-//        Dealer dealer = helper.getDealer("bae705d7-20da-4ee2-871f-345b2271992b");
-//        System.out.println(dealer);
-//        
-//        Vehicle vehicle = helper.getVehicle("47026c7e-e6b6-49c9-ba43-cad17cb38b3f");
-//        System.out.println(vehicle);
-//    }
+    public void removeAndSave(Lead leadRemoved) {
+        List<Lead> newLeads = new ArrayList<Lead>();
+        for (Lead lead : getLeads()) {
+            if (!lead.getEmailAddress().equals(leadRemoved.getEmailAddress())) {
+                newLeads.add(lead);
+            }
+        }
+        
+        dp.writeLeads(newLeads);
+    }
 }

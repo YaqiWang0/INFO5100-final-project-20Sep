@@ -15,4 +15,5 @@ public interface AbstractPersistent {
     void writeVehicles(List<Vehicle> vehicles);
     List<Lead> getAllLeads();
     void writeLead(Lead lead);
+    void writeLeads(List<Lead> leads);
 }

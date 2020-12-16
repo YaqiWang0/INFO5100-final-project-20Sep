@@ -147,7 +147,7 @@ public class IncentiveManager extends JFrame {
 
         vehicleTable.setModel(new DefaultTableModel(
                 data,
-                new String[]{"VIN", "Category", "Year", "Make", "Model", "Price", "Mileage"}
+                new String[]{"VehicleID", "Category", "Year", "Make", "Model", "Price", "Mileage"}
         ));
     }
 
@@ -426,6 +426,7 @@ public class IncentiveManager extends JFrame {
 
     /*
     dealer: id:xiang with password:12345 or id:jing with the same password.
+    This method will be called from DealerHome
      */
     public void mainCaller(String dealerId) throws ParseException {
         IncentiveManager frame = new IncentiveManager(dealerId);
@@ -437,6 +438,9 @@ public class IncentiveManager extends JFrame {
         frame.setVisible(true);
     }
 
+    /*
+    This method is only for testing the case#5 independently
+     */
     public static void main(String[] args) throws ParseException {
         String dealerId = "bae705d7-20da-4ee2-871f-345b2271992b";
         IncentiveManager frame = new IncentiveManager(dealerId);
