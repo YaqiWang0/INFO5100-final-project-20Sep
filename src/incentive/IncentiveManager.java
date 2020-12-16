@@ -83,7 +83,7 @@ public class IncentiveManager extends JFrame {
 
     private void initComponents() {
         this.vehicleList = dataPersistence
-                            .getAllVehicles()
+                            .getVehicles(this.spl.getDealerId())
                             .stream()
                             .filter(vehicle ->
                             vehicle.getDealerId().equals(this.spl.getDealerId())).collect(Collectors.toList());
@@ -121,8 +121,6 @@ public class IncentiveManager extends JFrame {
             clearModelItems();
             priceOperatorComboBox.setSelectedIndex(0);
             priceTextField.setText("");
-            mileageOperatorComboBox.setSelectedIndex(0);
-            mileageTextField.setText("");
         });
     }
 
@@ -141,13 +139,12 @@ public class IncentiveManager extends JFrame {
                     vehicle.getYear(),
                     vehicle.getBrand(),
                     vehicle.getModel(),
-                    vehicle.getPrice(),
-                    vehicle.getMiles()};
+                    vehicle.getPrice()};
         }
 
         vehicleTable.setModel(new DefaultTableModel(
                 data,
-                new String[]{"VehicleID", "Category", "Year", "Make", "Model", "Price", "Mileage"}
+                new String[]{"VehicleID", "Category", "Year", "Make", "Model", "Price"}
         ));
     }
 
@@ -304,7 +301,6 @@ public class IncentiveManager extends JFrame {
         }
         spl.setBrand((String) makeComboBox.getSelectedItem());
         spl.setBodyType((String) modelComboBox.getSelectedItem());
-        spl.setScopeMiles(mileageTextField.getText());
     }
 
     public Special publish() {
@@ -398,29 +394,6 @@ public class IncentiveManager extends JFrame {
                 return vehiclePrice <= price;
             }
             return vehiclePrice >= price;
-        }).filter(vehicle -> {
-            // Mileage filter
-            int mileage = 0;
-            try {
-                mileage = Integer.parseInt(mileageTextField.getText());
-            } catch (Exception e) {
-                return true;
-            }
-            String operator = (String) mileageOperatorComboBox.getSelectedItem();
-            if (mileage == 0) {
-                return true;
-            }
-
-            int vehicleMileage = 0;
-            try {
-                vehicleMileage = Integer.parseInt(vehicle.getMiles());
-            } catch (Exception e) {
-                return true;
-            }
-            if (operator == null || operator.equals("< or =")) {
-                return vehicleMileage <= mileage;
-            }
-            return vehicleMileage >= mileage;
         }).collect(Collectors.toList());
     }
 
@@ -442,7 +415,7 @@ public class IncentiveManager extends JFrame {
     This method is only for testing the case#5 independently
      */
     public static void main(String[] args) throws ParseException {
-        String dealerId = "bae705d7-20da-4ee2-871f-345b2271992b";
+        String dealerId = "a199e835-4514-43c3-9ba9-c028e61bb81a";
         IncentiveManager frame = new IncentiveManager(dealerId);
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);

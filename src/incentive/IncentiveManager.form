@@ -360,28 +360,9 @@
                   <text value="Search by Price"/>
                 </properties>
               </component>
-              <component id="b0c5b" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Mileage"/>
-                </properties>
-              </component>
               <component id="2db51" class="javax.swing.JComboBox" binding="priceOperatorComboBox">
                 <constraints>
                   <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="&lt; or ="/>
-                    <item value="&gt; or ="/>
-                  </model>
-                </properties>
-              </component>
-              <component id="adfb2" class="javax.swing.JComboBox" binding="mileageOperatorComboBox">
-                <constraints>
-                  <grid row="5" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <model>
@@ -399,14 +380,6 @@
                 <properties>
                   <text value=""/>
                 </properties>
-              </component>
-              <component id="659e" class="javax.swing.JTextField" binding="mileageTextField">
-                <constraints>
-                  <grid row="5" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
               </component>
               <component id="14143" class="javax.swing.JButton" binding="searchTheResultButton" default-binding="true">
                 <constraints>
