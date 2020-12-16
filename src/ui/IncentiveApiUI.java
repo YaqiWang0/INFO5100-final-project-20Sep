@@ -50,7 +50,7 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
         int count = 0;
         for (Vehicle vehicle: vehicles) {
 
-            SpecialModel specialModel = incentiveApi.updateSpecialPrice(vehicle);
+            SpecialModel specialModel = incentiveApi.updateSpecialPrice(vehicle.getDealerId(), vehicle.getVehicleId(), vehicle.getPrice());
             Special special = specialModel.getSpecial();
 
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));

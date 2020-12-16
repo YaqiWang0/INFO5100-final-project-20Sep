@@ -5,6 +5,6 @@ import dao.Vehicle;
 
 public interface IncentiveApi {
 
-    SpecialModel updateSpecialPrice(Vehicle vehicle);
+    SpecialModel updateSpecialPrice(String dealerId, String vehicleId, String oldPrice);
 
 }
