@@ -7,7 +7,9 @@ public enum BodyType {
 
     CAR("CAR"),
 
-    TRUCK("TRUCK");
+    TRUCK("TRUCK"),
+
+    WAGON("WAGON");
 
     String type;
 

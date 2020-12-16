@@ -1,7 +1,5 @@
 package ui;
 
-import dao.Dealer;
-import dao.Vehicle;
 import dto.DataPersistence;
 import dto.Lead;
 
@@ -20,7 +18,7 @@ import java.io.IOException;
 public class LeadUI extends JFrame {
 
     private JLabel quoteTitle, firstName, lastName, emailAddress, phone, message,
-            zipcode, contactPreference, purpose, time, dealerInfo, vehicleInfo;// change dealerName to dealerInfo; change dealerAddress to vehicleInfo
+            zipcode, contactPreference, purpose, time, dealerInfo, vehicleInfo;
     private JTextField firstNameText, lastNameText, emailText, phoneDigit, zipcodeDigit;
     private JTextArea msgArea;
     private JComboBox<String> usePurpose;
@@ -31,28 +29,10 @@ public class LeadUI extends JFrame {
     private JButton submit, cancel;
 
     private String vehicleId;
-    private String vehicleYearMakeModel; // add new field for display vehicle info to customer
-    private String dealerId; // this field will be removed later
-    private String dealerNAME; // this field will be removed later
-    private String dealerADDRESS; // this field will be removed later
-    private String dealerName; // add new field for connect lead to dealer, and display dealerInfo to customer
+    private String vehicleYearMakeModel;
+    private String dealerName;
 
-    // this constructor will be removed later after case8 merge without conflict.
-    public LeadUI(Vehicle v, Dealer d) {
-        vehicleId = v.getVehicleId();
-        dealerId = d.getDealerId();
-        dealerNAME = d.getDealerName();
-        dealerADDRESS = d.getDealerAddress().toCSVLine();
-        createUI();
-        addComponents();
-        addActions();
-        setSize(700, 800);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        pack();
-        setVisible(true);
-    }
 
-    // new modified constructor, will replace the above one
     public LeadUI(String vehicleId, String dealerName, String vehicleYearMakeModel) {
         this.vehicleId = vehicleId;
         this.dealerName = dealerName;
@@ -61,7 +41,7 @@ public class LeadUI extends JFrame {
         addComponents();
         addActions();
         setSize(700, 800);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
     }
@@ -112,7 +92,7 @@ public class LeadUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter 10 digit phone number!",
                         "Reminder", JOptionPane.WARNING_MESSAGE);
             } else {
-                // modified Lead initialization parameter name: changed dealerId to dealerName
+                
                 Lead lead = new Lead(vehicleId, dealerName);
                 lead.setFirstName(firstNameText.getText());
                 lead.setLastName(lastNameText.getText());

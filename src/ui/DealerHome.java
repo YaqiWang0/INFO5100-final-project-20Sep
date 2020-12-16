@@ -3,6 +3,7 @@ package ui;
 import incentive.IncentiveManager;
 import ui.leads.LeadsTableUI;
 
+
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -78,7 +79,8 @@ public class DealerHome extends JFrame {
                if (a == JOptionPane.YES_OPTION) {
                    dispose();
                    // redirect to login
-                   
+				   CustomerLogin login= new CustomerLogin();
+				   login.setVisible(true);
                }
 				
 			}
@@ -100,10 +102,11 @@ public class DealerHome extends JFrame {
 		createIncLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 		MainPanel.add(createIncLabel);
 		
-		case_5Button = new JButton("Manage Incentives(case5)");
+
+		case_5Button = new JButton("Create Incentive");
 		MainPanel.add(case_5Button);
 		
-		JLabel messageLabel = new JLabel("      Look at all the leads sent by the customers and respond :");
+		JLabel messageLabel = new JLabel("Look at all the leads sent by the customers and respond :");
 		messageLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 		MainPanel.add(messageLabel);
 		
@@ -146,12 +149,11 @@ public class DealerHome extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				IncentiveManager im = new IncentiveManager();
 				try {
-					im.mainCaller("bae705d7-20da-4ee2-871f-345b2271992b");
+					im.mainCaller(dealerId);
 				} catch (ParseException parseException) {
 					parseException.printStackTrace();
 				}
 			}
 		});
 	}
-
 }
