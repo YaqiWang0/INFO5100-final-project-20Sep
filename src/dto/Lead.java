@@ -172,7 +172,7 @@ public class Lead extends GenericModel {
 
     // change third variable from dealerId to dealerName
     public String toCSVLine() {
-        return leadId + "," + vehicleId + "," + dealerName + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
+        return leadId + "," + vehicleId + "," + dealerName + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + 
                 zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
     }
 
