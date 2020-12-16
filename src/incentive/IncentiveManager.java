@@ -434,7 +434,7 @@ public class IncentiveManager extends JFrame {
     This method is only for testing the case#5 independently
      */
     public static void main(String[] args) throws ParseException {
-        String dealerId = "a199e835-4514-43c3-9ba9-c028e61bb81a";
+        String dealerId = "1f3f02f6-1d69-4874-b976-e45d0d44a5bc";
         IncentiveManager frame = new IncentiveManager(dealerId);
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);

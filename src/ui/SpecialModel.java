@@ -5,9 +5,9 @@ import dao.Vehicle;
 
 import java.util.List;
 
+
 public class SpecialModel {
 
-    private Vehicle vehicle;
     //Cheapest active special
     private Special special;
 
@@ -19,18 +19,11 @@ public class SpecialModel {
 	//All specials
     private List<SpecialModel> allSpecials;
 
+	public SpecialModel() {
+	}
 
-	public SpecialModel(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-        
-	public SpecialModel(Vehicle vehicle, Special special) {
-        this.vehicle = vehicle;
+	public SpecialModel(Special special) {
         this.special = special;
-    }
-
-    public Vehicle getVehicle() {
-        return vehicle;
     }
 
     public Special getSpecial() {
@@ -57,10 +50,6 @@ public class SpecialModel {
 		this.specialId = specialId;
 	}
 
-	public void setVehicle(Vehicle vehicle) {
-		this.vehicle = vehicle;
-	}
-
 	public void setSpecial(Special special) {
 		this.special = special;
 	}
@@ -76,7 +65,6 @@ public class SpecialModel {
 	public void setAllSpecials(List<SpecialModel> allSpecials) {
 		this.allSpecials = allSpecials;
 	}
-	
 	
 	public void addToAllSpecials(SpecialModel special) {
 		allSpecials.add(special);
