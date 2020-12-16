@@ -15,22 +15,19 @@ public class InventoryUpdateJPanel {
     private JTextField modelTextField;
     private JTextField isNewTextField;
     private JTextField priceTextField;
-    private JTextField exteriorColorTextField;
-    private JTextField interiorColorTextField;
     private JTextField bodyTypeTextField;
     private JTextField featuresTextField;
-    private JTextField milesTextField;
     private JTextField imagesTextField;
     private JButton confirmButton;
     private JButton cancelButton;
 
-    public InventoryUpdateJPanel(String id, String dealerId,String year,String brand, String model, String category, String price, String type, String feature,String image){
+    public InventoryUpdateJPanel(JFrame oldFrame, JPanel InventoryMgmtPanel, String id, String dealerId,String year,String brand, String model, String category, String price, String type, String feature,String image){
         super();
         JFrame frame = new JFrame("Inventory Management");
         frame.setContentPane(UpdateJPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
-        frame.setSize(500, 600);
+        frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
@@ -47,11 +44,7 @@ public class InventoryUpdateJPanel {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
-                } catch (IOException malformedURLException) {
-                    malformedURLException.printStackTrace();
-                }
+                frame.dispose();
             }
         });
 
@@ -59,14 +52,12 @@ public class InventoryUpdateJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
-                    //System.out.println(modelTextField.getText());
-
                     //update vehicle data
-
                     UpdateInventory.updateInventoryByDealer(idTextField.getText(),dealerId,isNewTextField.getText(),yearTextField.getText(),brandTextField.getText(),modelTextField.getText(),featuresTextField.getText(),bodyTypeTextField.getText(),priceTextField.getText(),imagesTextField.getText());
                     JOptionPane.showMessageDialog(null,"update successfully");
-
+                    oldFrame.dispose();
+                    frame.dispose();
+                    InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
                 } catch (IOException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }

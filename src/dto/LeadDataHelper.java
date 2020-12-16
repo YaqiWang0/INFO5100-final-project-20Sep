@@ -2,8 +2,10 @@ package dto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import dao.Dealer;
@@ -28,9 +30,6 @@ public class LeadDataHelper {
     
     private List<Dealer> dealers;
     private Map<String, Integer> dealerNameMapping = new HashMap<>();
-
-    private List<Lead> mergedLeads;
-    private List<List<String>> mergedVehicleIds;
     
     
     private LeadDataHelper() {
@@ -60,7 +59,10 @@ public class LeadDataHelper {
         initIdMapping(leads, leadIdMapping);
         
         dealers = dp.getAllDealers();
-        initIdMapping(dealers, dealerNameMapping);
+        dealerNameMapping.clear();
+        for (int i = 0; i < dealers.size(); i++) {
+            dealerNameMapping.put(dealers.get(i).getDealerName(), i);
+        }
         
         vehicles = dp.getAllVehicles();
         initIdMapping(vehicles, vehicleIdMapping);
@@ -110,32 +112,39 @@ public class LeadDataHelper {
         return leads;
     }
 
-    /**
-     * merge leads by email address which are filtered by specific dealer id
-     * @param dealerName  specify dealer which the leads data belongs to.
-     */
-    public void mergeLeadsHelper(String dealerName) {
-        List<Lead> originalLeads = getLeadsByDealer(dealerName);
-        Map<String, List<Lead>> groupedMap = originalLeads.stream().
-                                        collect(groupingBy(Lead::getEmailAddress));
-        mergedLeads = groupedMap.entrySet().stream().
-                                    map(v -> v.getValue().get(0)).collect(toList());
-        mergedVehicleIds = groupedMap.entrySet().stream().map(v -> v.getValue()).
-                                            map(v -> v.stream().map(u -> u.getVehicleId()).
-                                            collect(toList())).collect(Collectors.toList());
-    }
-
+    
     /**
      * Get merged leads
      * @return merged leads
      */
-    public List<Lead> getMergedLeads() { return this.mergedLeads; }
-
-    /**
-     * Get merged vehicle ids
-     * @return merged vehicle ids
-     */
-    public List<List<String>> getMergedVehicleIds() { return this.mergedVehicleIds; }
+    public List<Lead> getMergedLeads(String dealerName) { 
+        List<Lead> mergedLeads = new ArrayList<Lead>();
+        Set<String> emailSet = new HashSet<>();
+        
+        for (Lead lead : getLeadsByDealer(dealerName)) {
+            String email = lead.getEmailAddress();
+            if (!emailSet.contains(email)) {
+                mergedLeads.add(lead);
+                emailSet.add(email);
+            }
+        }
+        
+        return mergedLeads;
+    }
+    
+    public Vehicle[] getVehiclesByEmail(String dealerName, String email) {
+        List<Lead> originalLeads = getLeadsByDealer(dealerName);
+        List<Vehicle>  vehicles = new ArrayList<>();
+        for (Lead lead : originalLeads) {
+            if (lead.getEmailAddress().equals(email)) {
+                Vehicle v = getVehicle(lead.getVehicleId());
+                if (v != null) vehicles.add(v);
+            }
+        }
+        
+        Vehicle[] vehicleArr = new Vehicle[vehicles.size()];
+        return vehicles.toArray(vehicleArr);
+    }
 
 
     /**
@@ -178,19 +187,44 @@ public class LeadDataHelper {
         return (Dealer) getObject(dealerName, dealers, dealerNameMapping);
     }
     
-//    public static void main(String[] args) {
-//        LeadDataHelper helper = LeadDataHelper.instance();
-//        
-//        List<Lead> leads = helper.getLeads();
-//        System.out.println(leads);
-//        
-//        leads = helper.getLeadsByDealer("bae705d7-20da-4ee2-871f-345b2271992b");
-//        System.out.println(leads);
-//        
-//        Dealer dealer = helper.getDealer("bae705d7-20da-4ee2-871f-345b2271992b");
-//        System.out.println(dealer);
-//        
-//        Vehicle vehicle = helper.getVehicle("47026c7e-e6b6-49c9-ba43-cad17cb38b3f");
-//        System.out.println(vehicle);
-//    }
+    
+    public void removeAndSave(Lead leadRemoved) {
+        List<Lead> newLeads = new ArrayList<Lead>();
+        for (Lead lead : getLeads()) {
+            if (!lead.getEmailAddress().equals(leadRemoved.getEmailAddress())) {
+                newLeads.add(lead);
+            }
+        }
+        
+        dp.writeLeads(newLeads);
+        this.reloadData();
+    }
+
+    public List<Lead> filter(List<Lead> leads, String filterType, String value) {
+        List<Lead> filteredLeads = new ArrayList<>();
+        for (Lead lead : leads) {
+            if (filterType.equals("Contact Preference") && lead.getContactPreference().equals(value)) {
+                filteredLeads.add(lead);
+            }
+            else if(filterType.equals("Use Purpose") && lead.getUsePurpose().equals(value)) {
+                filteredLeads.add(lead);
+            }
+            else if(filterType.equals("Read") && lead.getRead() == (value.equals("Read"))) { 
+                filteredLeads.add(lead);
+            }
+            else if(filterType.equals("Contacted") && lead.getContacted() == (value.equals("Contacted"))) { 
+                filteredLeads.add(lead);
+            }
+        }
+        return filteredLeads;
+    }
+
+    public String getDealerName(String dealerId) {
+        for (Dealer dealer : dealers) {
+            if(dealer.getDealerId().equals(dealerId)) {
+                return dealer.getDealerName();
+            }
+        }
+        return null;
+    }
 }

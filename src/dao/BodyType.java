@@ -7,7 +7,13 @@ public enum BodyType {
 
     CAR("CAR"),
 
-    TRUCK("TRUCK");
+    TRUCK("TRUCK"),
+
+    WAGON("WAGON"),
+
+    CARGO_VAN("CARGO VAN"),
+
+    COMMERCIAL_VEHICLE("COMMERCIAL VEHICLE");
 
     String type;
 

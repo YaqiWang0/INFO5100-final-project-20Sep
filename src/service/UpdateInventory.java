@@ -9,12 +9,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UpdateInventory {
 
   public static void updateInventoryByDealer(String vehicleId,String webId, String category,
-      String year, String make, String model,
-      String trim, String type,String price, String photo
+                                             String year, String make, String model,
+                                             String trim, String type,String price, String photo
   ){
 
 
@@ -59,7 +61,19 @@ public class UpdateInventory {
 
   }
 
+  public static boolean isHttpUrl(String urls) {
+    boolean isurl = false;
+    String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
+            + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";
 
+    Pattern pat = Pattern.compile(regex.trim());
+    Matcher mat = pat.matcher(urls.trim());
+    isurl = mat.matches();
+    if (isurl) {
+      isurl = true;
+    }
+    return isurl;
+  }
 
   public static void main(String[] args) {
     updateInventoryByDealer("2957999103","gmps-shaheen","used","999","Chevrolet","Equinox","FWD LS","SUV","22","http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2018/3436853/default/ext_G7Q_deg01x90.jpg");

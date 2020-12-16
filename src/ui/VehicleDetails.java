@@ -37,7 +37,7 @@ public class VehicleDetails extends JFrame{
     private JTextField engineTxt;
     private JTextField conditionTxt;
     private static String[] data;
-    private static String defaultData = "2228104413~gmps-aj-dohmann~new~2014~Vox Wagon~CTS Sedan~3.6L V6 AWD Luxury~CAR~517620.0~http://inventory-dmg.assets-cdk.com/5/1/7/13411480715x90.jpg";
+    private static String defaultData = "2228104413~gmps-aj-dohmann~new~2014~VolksWagen~CTS Sedan~3.6L V6 AWD Luxury~CAR~517620.0~http://inventory-dmg.assets-cdk.com/5/1/7/13411480715x90.jpg";
     private JTextField modelTxt;
     private JLabel image;
 
@@ -73,9 +73,9 @@ public class VehicleDetails extends JFrame{
 
     public VehicleDetails(String[] data) {
         if (data == null || data.length == 0) {
-            this.data = defaultData.split("~");
+            VehicleDetails.data = defaultData.split("~");
         }else {
-            this.data = data;
+        	VehicleDetails.data = data;
         }
         
         initialize();
@@ -123,7 +123,7 @@ public class VehicleDetails extends JFrame{
         frame.getContentPane().setBackground(new Color(250, 250, 210));
         frame.getContentPane().setForeground(UIManager.getColor("InternalFrame.activeTitleGradient"));
         frame.setBounds(100, 100, 819, 542);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(null);
          
         //Save
@@ -134,7 +134,7 @@ public class VehicleDetails extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		saveButton.setBounds(139, 379, 179, 26);
+		saveButton.setBounds(141, 442, 92, 26);
 		frame.getContentPane().add(saveButton);
         
         //Unsave
@@ -147,21 +147,8 @@ public class VehicleDetails extends JFrame{
 
             }
         });
-        unsaveButton.setBounds(139, 410, 178, 26);
+        unsaveButton.setBounds(267, 442, 92, 26);
         frame.getContentPane().add(unsaveButton);
-        
-        //Start Buying Process
-        JButton buyingButton = new JButton("Start Buying Process");
-        buyingButton.setForeground(UIManager.getColor("InternalFrame.activeTitleGradient"));
-        buyingButton.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-        buyingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        buyingButton.setBounds(509, 348, 180, 26);
-        frame.getContentPane().add(buyingButton);
         
         //Request Quote
         JButton reqQuoteBtn = new JButton("Request Quote");
@@ -179,18 +166,18 @@ public class VehicleDetails extends JFrame{
                 String vehicleId = data[0];
                 String dealerName = data[1];
                 String vehicleYearMakeModel = data[3] + "," + data[4] + "," + data[5];
-                //new LeadUI(vehicleId,dealerName,vehicleYearMakeModel).frame.setVisible(true);
+                new LeadUI(vehicleId,dealerName,vehicleYearMakeModel);
             }
         });
-        reqQuoteBtn.setBounds(139, 348, 179, 26);
+        reqQuoteBtn.setBounds(509, 410, 203, 26);
         frame.getContentPane().add(reqQuoteBtn);
 
 		//Monthly Calc
 		JButton calculatorButton = new JButton("Monthly Payment Calculator");
 		calculatorButton.setForeground(UIManager.getColor("InternalFrame.activeTitleGradient"));
 		calculatorButton.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		calculatorButton.addActionListener((ActionEvent) -> new MonthPayCalc());
-		calculatorButton.setBounds(509, 379, 179, 26);
+		//calculatorButton.addActionListener((ActionEvent) -> new MonthPayCalc());
+		calculatorButton.setBounds(509, 442, 203, 26);
 		frame.getContentPane().add(calculatorButton);
 
         JLabel detailLabel = new JLabel("Car Details");
@@ -200,22 +187,22 @@ public class VehicleDetails extends JFrame{
 
         JLabel modelLabel = new JLabel("Model");
         modelLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        modelLabel.setBounds(139, 212, 45, 13);
+        modelLabel.setBounds(140, 217, 45, 13);
         frame.getContentPane().add(modelLabel);
 
         JLabel typeLabel = new JLabel("Type");
         typeLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        typeLabel.setBounds(139, 235, 45, 16);
+        typeLabel.setBounds(140, 254, 45, 16);
         frame.getContentPane().add(typeLabel);
 
         JLabel modelYearLabel = new JLabel("Model Year");
         modelYearLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        modelYearLabel.setBounds(139, 258, 83, 13);
+        modelYearLabel.setBounds(140, 300, 83, 13);
         frame.getContentPane().add(modelYearLabel);
 
         modelTxt = new JTextField();
         modelTxt.setEnabled(false);
-        modelTxt.setBounds(222, 209, 140, 19);
+        modelTxt.setBounds(222, 209, 148, 33);
         frame.getContentPane().add(modelTxt);
         modelTxt.setColumns(10);
         modelTxt.setText(String.valueOf(data[5]));
@@ -223,14 +210,14 @@ public class VehicleDetails extends JFrame{
         typeTxt = new JTextField();
         typeTxt.setEnabled(false);
         typeTxt.setFont(new Font("Tahoma", Font.BOLD, 10));
-        typeTxt.setBounds(222, 232, 140, 19);
+        typeTxt.setBounds(222, 248, 148, 33);
         frame.getContentPane().add(typeTxt);
         typeTxt.setColumns(10);
         typeTxt.setText(String.valueOf(data[7]));
 
         modelYearTxt = new JTextField();
         modelYearTxt.setEnabled(false);
-        modelYearTxt.setBounds(222, 255, 140, 19);
+        modelYearTxt.setBounds(222, 292, 148, 33);
         frame.getContentPane().add(modelYearTxt);
         modelYearTxt.setColumns(10);
         modelYearTxt.setText(String.valueOf(data[3]));
@@ -242,35 +229,35 @@ public class VehicleDetails extends JFrame{
 
         JLabel priceLabel = new JLabel("Price");
         priceLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        priceLabel.setBounds(509, 101, 45, 13);
+        priceLabel.setBounds(509, 126, 45, 13);
         frame.getContentPane().add(priceLabel);
 
         JLabel incentiveLabel = new JLabel("Incentives");
         incentiveLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        incentiveLabel.setBounds(509, 127, 67, 13);
+        incentiveLabel.setBounds(509, 183, 67, 13);
         frame.getContentPane().add(incentiveLabel);
 
         JLabel taxLabel = new JLabel("Tax");
         taxLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        taxLabel.setBounds(509, 158, 45, 13);
+        taxLabel.setBounds(509, 234, 45, 13);
         frame.getContentPane().add(taxLabel);
 
         JLabel totalLabel = new JLabel("Total Price");
         totalLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        totalLabel.setBounds(509, 181, 67, 13);
+        totalLabel.setBounds(509, 288, 67, 13);
         frame.getContentPane().add(totalLabel);
 
         priceTxt = new JTextField();
         priceTxt.setEnabled(false);
         priceTxt.setToolTipText("");
-        priceTxt.setBounds(593, 98, 96, 19);
+        priceTxt.setBounds(593, 118, 122, 33);
         frame.getContentPane().add(priceTxt);
         priceTxt.setColumns(10);
         priceTxt.setText(String.valueOf(data[8]));
 
         incentiveTxt = new JTextField();
         incentiveTxt.setEnabled(false);
-        incentiveTxt.setBounds(593, 124, 96, 19);
+        incentiveTxt.setBounds(593, 175, 122, 33);
         frame.getContentPane().add(incentiveTxt);
         incentiveTxt.setColumns(10);
         incentiveTxt.setText(getIncentives(Arrays.toString(data)));
@@ -278,38 +265,38 @@ public class VehicleDetails extends JFrame{
 
         taxTxt = new JTextField();
         taxTxt.setEnabled(false);
-        taxTxt.setBounds(593, 153, 96, 19);
+        taxTxt.setBounds(593, 226, 122, 33);
         frame.getContentPane().add(taxTxt);
         taxTxt.setColumns(10);
         taxTxt.setText(getTax(Arrays.toString(data)));
 
         totalTxt = new JTextField();
         totalTxt.setEnabled(false);
-        totalTxt.setBounds(593, 178, 96, 19);
+        totalTxt.setBounds(593, 280, 122, 33);
         frame.getContentPane().add(totalTxt);
         totalTxt.setColumns(10);
         totalTxt.setText(calculateTotalPrice(Arrays.toString(data)));
 
         JLabel engineLabel = new JLabel("Engine");
         engineLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        engineLabel.setBounds(139, 281, 67, 21);
+        engineLabel.setBounds(140, 338, 67, 21);
         frame.getContentPane().add(engineLabel);
 
         JLabel conditionLabel = new JLabel("Condition");
         conditionLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        conditionLabel.setBounds(139, 304, 67, 21);
+        conditionLabel.setBounds(140, 379, 67, 21);
         frame.getContentPane().add(conditionLabel);
 
         engineTxt = new JTextField();
         engineTxt.setEnabled(false);
-        engineTxt.setBounds(222, 279, 140, 19);
+        engineTxt.setBounds(222, 335, 148, 31);
         frame.getContentPane().add(engineTxt);
         engineTxt.setColumns(10);
         engineTxt.setText(data[6]);
 
         conditionTxt = new JTextField();
         conditionTxt.setEnabled(false);
-        conditionTxt.setBounds(222, 302, 140, 19);
+        conditionTxt.setBounds(222, 376, 148, 31);
         frame.getContentPane().add(conditionTxt);
         conditionTxt.setColumns(10);
         conditionTxt.setText(String.valueOf(data[2]));
@@ -324,16 +311,16 @@ public class VehicleDetails extends JFrame{
 
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(SystemColor.inactiveCaption);
-        panel_1.setBounds(10, 39, 394, 52);
+        panel_1.setBounds(0, 39, 404, 52);
         frame.getContentPane().add(panel_1);
 
         JPanel panel_2 = new JPanel();
         panel_2.setBackground(SystemColor.inactiveCaption);
-        panel_2.setBounds(401, 39, 394, 52);
+        panel_2.setBounds(401, 39, 404, 52);
         frame.getContentPane().add(panel_2);
 
         image = new JLabel("");
-        image.setBounds(170, 101, 148, 98);
+        image.setBounds(150, 101, 210, 98);
         frame.getContentPane().add(image);
         ImageIcon imageFromUrl = getImageFromUrl(data[9]);
         image.setIcon(imageFromUrl);
