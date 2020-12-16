@@ -398,7 +398,7 @@ public class ShowAndSearchUI2 extends JFrame {
                 }
                 if(column==4) {
                     // JOptionPane.showMessageDialog(null, "Call UC3");
-                    // new VehicleDetailNew(Data).frame.setVisible(true);
+                    new VehicleDetails(data).frame.setVisible(true);
                     }
                 if(column==5){
                     // for case6
