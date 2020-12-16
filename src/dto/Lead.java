@@ -8,8 +8,7 @@ public class Lead extends GenericModel {
 
     private String leadId;
     private String vehicleId;
-    private String dealerId; // this member field will be removed after case8 modify code and merge without conflict.
-    private String dealerName; // this member field will replace dealerId.
+    private String dealerName;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -26,7 +25,6 @@ public class Lead extends GenericModel {
     public Lead() {
     }
 
-    // new modified constructor, replace dealerId with dealerName
     public Lead(String vehicleId, String dealerName) {
         this.vehicleId = vehicleId;
         this.dealerName = dealerName;
@@ -44,12 +42,6 @@ public class Lead extends GenericModel {
         this.vehicleId = vehicleId;
     }
 
-    // setDealerId will be removed later
-    public void setDealerId(String dealerId) {
-        this.dealerId = dealerId;
-    }
-
-    // setter for dealerName
     public void setDealerName(String dealerName) {
         this.dealerName = dealerName;
     }
@@ -110,12 +102,6 @@ public class Lead extends GenericModel {
         return vehicleId;
     }
 
-    // getDealerId will be removed later
-    public String getDealerId() {
-        return dealerId;
-    }
-
-    // getter for dealerName
     public String getDealerName() {
         return dealerName;
     }
@@ -169,8 +155,7 @@ public class Lead extends GenericModel {
     public boolean getContacted() {
         return contacted;
     }
-
-    // change third variable from dealerId to dealerName
+    
     public String toCSVLine() {
         return leadId + "," + vehicleId + "," + dealerName + "," + firstName + "," + lastName + "," + emailAddress + "," + phoneNumber + "," + zipCode + "," +
                 zipCode + "," + usePurpose + "," + contactPreference + "," + contactTime + "," + message;
