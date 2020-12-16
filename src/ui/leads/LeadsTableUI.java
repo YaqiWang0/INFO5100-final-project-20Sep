@@ -168,7 +168,15 @@ public class LeadsTableUI extends JFrame {
     private void openDetailWindow(int row) {
         Lead lead = leads.get(row);
         Vehicle[] vehicles = helper.getVehiclesByEmail(lead.getDealerName(), lead.getEmailAddress());
-        new LeadDetailsUI(lead, vehicles).buildGUI();
+        if (vehicles.length > 0) {
+            new LeadDetailsUI(lead, vehicles).buildGUI();
+        } else {
+            JDialog dialog = new JDialog();
+            dialog.setAlwaysOnTop(true);
+            JOptionPane.showConfirmDialog(dialog, "No vehicle found in the inventory, please check data!",
+                    "Warning",JOptionPane.WARNING_MESSAGE);
+        }
+
     }
     
     private void updateLeadRead(int row) {
