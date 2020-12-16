@@ -116,7 +116,6 @@ public class DealerHome extends JFrame {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                // NOTE: in fact, the dealerID here is dealer Name
                 new LeadsTableUI(dealerId);
                 
             }

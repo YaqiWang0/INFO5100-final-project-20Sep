@@ -32,8 +32,10 @@ public class LeadsTableUI extends JFrame {
     private String[] SORT_BY_ITEMS = {"--Select sort--", "Name", "Phone Number", "Email", 
                                       "Contact Preference","Contact Time", "Use Purpose", "Read", "Contacted"};
 
-    public LeadsTableUI(String dealerName) {
+    public LeadsTableUI(String dealerId) {
+        
         helper = LeadDataHelper.instance();
+        String dealerName = helper.getDealerName(dealerId);
         originalLeads = helper.getMergedLeads(dealerName);
         leads = originalLeads;
         tableModel = new LeadsTableModel(leads);
@@ -122,12 +124,7 @@ public class LeadsTableUI extends JFrame {
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
                 selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    updateHeaderBtnStatus(false);
-                }
-                else {
-                    updateHeaderBtnStatus(true);
-                }
+                updateHeaderBtnStatus(selectedRow != -1);
             }
         });
 
@@ -158,7 +155,7 @@ public class LeadsTableUI extends JFrame {
         jScrollPane.setPreferredSize(new Dimension(1000, 600));
         jScrollPane.setBackground(getContentPane().getBackground());
         
-        mainPanel.add(jScrollPane, BorderLayout.EAST);
+        mainPanel.add(jScrollPane, BorderLayout.CENTER);
     }
     
     private void display() {
@@ -171,7 +168,15 @@ public class LeadsTableUI extends JFrame {
     private void openDetailWindow(int row) {
         Lead lead = leads.get(row);
         Vehicle[] vehicles = helper.getVehiclesByEmail(lead.getDealerName(), lead.getEmailAddress());
-        new LeadDetailsUI(lead, vehicles).buildGUI();
+        if (vehicles.length > 0) {
+            new LeadDetailsUI(lead, vehicles).buildGUI();
+        } else {
+            JDialog dialog = new JDialog();
+            dialog.setAlwaysOnTop(true);
+            JOptionPane.showConfirmDialog(dialog, "No vehicle found in the inventory, please check data!",
+                    "Warning",JOptionPane.WARNING_MESSAGE);
+        }
+
     }
     
     private void updateLeadRead(int row) {
@@ -356,9 +361,6 @@ public class LeadsTableUI extends JFrame {
             }
         }
     }
-    
-   
-    
     
     public static void main(String[] args) {
         new LeadsTableUI("bae705d7-20da-4ee2-871f-345b2271992b");
