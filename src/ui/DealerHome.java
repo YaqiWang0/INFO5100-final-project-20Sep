@@ -79,7 +79,8 @@ public class DealerHome extends JFrame {
                if (a == JOptionPane.YES_OPTION) {
                    dispose();
                    // redirect to login
-                   
+				   CustomerLogin login= new CustomerLogin();
+				   login.setVisible(true);
                }
 				
 			}
