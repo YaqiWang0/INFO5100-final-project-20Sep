@@ -137,7 +137,8 @@ public class LeadDataHelper {
         List<Vehicle>  vehicles = new ArrayList<>();
         for (Lead lead : originalLeads) {
             if (lead.getEmailAddress().equals(email)) {
-                vehicles.add(getVehicle(lead.getVehicleId()));
+                Vehicle v = getVehicle(lead.getVehicleId());
+                if (v != null) vehicles.add(v);
             }
         }
         
