@@ -89,9 +89,9 @@ public class IncentiveManager extends JFrame {
                             vehicle.getDealerId().equals(this.spl.getDealerId())).collect(Collectors.toList());
         publish();
         addItemsToComboBoxes();
+        selectMake();
         clearCriteria();
         searchResult();
-        selectMake();
         specialScopeButtonGroup();
         discountButtonGroup();
         createTable();
@@ -361,6 +361,7 @@ public class IncentiveManager extends JFrame {
         }).filter(vehicle -> {
             // Make and model filter
             String selectedMake = (String) makeComboBox.getSelectedItem();
+            //selectMake();
             String selectedModel = (String) modelComboBox.getSelectedItem();
             if (selectedMake == null || selectedMake.equals("All Makes")) {
                 return true;
