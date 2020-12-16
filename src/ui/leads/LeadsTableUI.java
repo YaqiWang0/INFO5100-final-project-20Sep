@@ -160,7 +160,7 @@ public class LeadsTableUI extends JFrame {
         jScrollPane.setPreferredSize(new Dimension(1000, 600));
         jScrollPane.setBackground(getContentPane().getBackground());
         
-        mainPanel.add(jScrollPane, BorderLayout.EAST);
+        mainPanel.add(jScrollPane, BorderLayout.CENTER);
     }
     
     private void display() {
@@ -358,9 +358,6 @@ public class LeadsTableUI extends JFrame {
             }
         }
     }
-    
-   
-    
     
     public static void main(String[] args) {
         new LeadsTableUI("bae705d7-20da-4ee2-871f-345b2271992b");
