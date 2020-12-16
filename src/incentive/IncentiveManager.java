@@ -218,7 +218,7 @@ public class IncentiveManager extends JFrame {
             //filter as/month
         }
         startDay.setSelectedItem(day);
-        endDay.setSelectedItem(day);
+        endDay.setSelectedItem(day+1);
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = year; i < year+50; i++) {
@@ -292,10 +292,22 @@ public class IncentiveManager extends JFrame {
         }
     }
 
-    public void setTitleAndDescription() {
-        spl.setTitle(titleField.getText());
+    public boolean setTitleAndDescription() {
+        boolean b1 = checkforNulls(titleField.getText());
+        if(b1==true) {
+            spl.setTitle(titleField.getText());
+            return false;
+        }
         spl.setDescription(descriptionArea.getText());
         spl.setDisclaimer(disclaimerArea.getText());
+        return true;
+    }
+
+    private boolean checkforNulls(String text) {
+        if(text.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     public void setVehicleFilters(){
@@ -323,17 +335,21 @@ public class IncentiveManager extends JFrame {
             }
             setDiscountValue();
             setPaymentValidity();
-            setTitleAndDescription();
             setSpecialScope();
             setVehicleFilters();
+            if(setTitleAndDescription()==true) {
 
-            DataPersistence dp = new DataPersistence();
-            //add this special to database
-            System.out.println("#2 " + spl.getDiscountValue());
-            ;
-            dp.writeSpecial(spl, this.spl.getDealerId());
+                DataPersistence dp = new DataPersistence();
+                //add this special to database
+                System.out.println("#2 " + spl.getDiscountValue());
+                ;
+                dp.writeSpecial(spl, this.spl.getDealerId());
 
-            JOptionPane.showMessageDialog(null, "Incentive Created!");
+                JOptionPane.showMessageDialog(null, "Incentive Created!");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Please enter a Title");
+            }
 
         });
 
