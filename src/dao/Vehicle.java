@@ -18,6 +18,7 @@ public class Vehicle extends GenericModel{
 	private String miles;
 	private ArrayList<String> features;
 	private ArrayList<String> imgUrls;
+	private String trim;
 
 	public Vehicle() { this.modelType = "vehicles"; }
 	
@@ -28,7 +29,15 @@ public class Vehicle extends GenericModel{
 		this.imgUrls=new ArrayList<>();
 		this.modelType="vehicles";
 	}
-	
+
+	public Vehicle(String dealerId, String vehicleId) {
+		this.dealerId=Objects.requireNonNull(dealerId,"Dealer's Id cannot be null");
+		this.vehicleId=vehicleId;
+		this.features=new ArrayList<>();
+		this.imgUrls=new ArrayList<>();
+		this.modelType="vehicles";
+	}
+
 	public Vehicle(String dealerId, String year, 
 			String brand, String model, boolean isNew, 
 			String price, String exteriorColor, 
@@ -85,7 +94,11 @@ public class Vehicle extends GenericModel{
 	public void setBodyType(BodyType bodytype) {
 		this.bodyType=bodytype;
 	}
-	
+
+	public void setTrim (String trim) {
+		this.trim = trim;
+	}
+
 	public void addFeatures(String feature) {
 		this.features.add(feature);
 	}
