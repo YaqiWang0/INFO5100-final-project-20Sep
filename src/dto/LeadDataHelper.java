@@ -216,4 +216,13 @@ public class LeadDataHelper {
         }
         return filteredLeads;
     }
+
+    public String getDealerName(String dealerId) {
+        for (Dealer dealer : dealers) {
+            if(dealer.getDealerId().equals(dealerId)) {
+                return dealer.getDealerName();
+            }
+        }
+        return null;
+    }
 }

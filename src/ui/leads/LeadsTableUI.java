@@ -32,8 +32,10 @@ public class LeadsTableUI extends JFrame {
     private String[] SORT_BY_ITEMS = {"--Select sort--", "Name", "Phone Number", "Email", 
                                       "Contact Preference","Contact Time", "Use Purpose", "Read", "Contacted"};
 
-    public LeadsTableUI(String dealerName) {
+    public LeadsTableUI(String dealerId) {
+        
         helper = LeadDataHelper.instance();
+        String dealerName = helper.getDealerName(dealerId);
         originalLeads = helper.getMergedLeads(dealerName);
         leads = originalLeads;
         tableModel = new LeadsTableModel(leads);
