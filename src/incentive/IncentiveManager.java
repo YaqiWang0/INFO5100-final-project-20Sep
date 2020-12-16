@@ -337,20 +337,9 @@ public class IncentiveManager extends JFrame {
             return vehicleList.stream().filter(vehicle -> vehicle.getVehicleId().equals(vin)).collect(Collectors.toList());
         }
 
-        return vehicleList.stream().filter(vehicle -> {
-            // Category filter
-            String selectedCategory = (String) categoryComboBox.getSelectedItem();
-            boolean status = vehicle.getStatus();
-            if (selectedCategory == null || selectedCategory.equals("New")) {
-                return status;
-            }
-
-            if (selectedCategory.equals("Used")) {
-                return !status;
-            }
-
-            return true;
-        }).filter(vehicle -> {
+        List<Vehicle> vehicles = vehicleList
+                .stream()
+                .filter(vehicle -> {
             // Year filter
             String selectedYear = (String) yearComboBox.getSelectedItem();
             if (selectedYear == null || selectedYear.equals("All Years")) {
@@ -396,6 +385,27 @@ public class IncentiveManager extends JFrame {
             }
             return vehiclePrice >= price;
         }).collect(Collectors.toList());
+
+        String selectedCategory = (String) categoryComboBox.getSelectedItem();
+        if(selectedCategory.equals("All")) {
+            //System.out.println("All is selected");
+            return vehicles;
+        }
+
+        else {
+            //System.out.println("All is not selected");
+            return vehicles.stream().filter(vehicle -> {
+                // Category filter
+                //String selectedCategory = (String) categoryComboBox.getSelectedItem();
+                //if(!selectedCategory.equals("All"))
+                boolean status = vehicle.getStatus();
+                if (selectedCategory == null || selectedCategory.equals("New")) {
+                    return status;
+                }
+                return !status;
+            }).collect(Collectors.toList());
+        }
+
     }
 
     /*
