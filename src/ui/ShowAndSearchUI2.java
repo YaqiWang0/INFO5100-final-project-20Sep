@@ -401,6 +401,7 @@ public class ShowAndSearchUI2 extends JFrame {
                     selectedRowData.add(fullInventoryData.get(row));
                 for(int i=0;i<selectedRowData.size();i++){
                     for(int j=0;j<selectedRowData.get(i).length;j++){
+                        data=selectedRowData.get(i);
                         System.out.println(selectedRowData.get(i)[j]);
                     }
 
