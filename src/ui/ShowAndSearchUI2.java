@@ -502,7 +502,7 @@ public class ShowAndSearchUI2 extends JFrame {
 
             // for case6
             String specialPrice = "none";
-            if (i > 0) {
+            if (i > 0) { // need to remove
                 incentiveApi = new IncentiveApiImpl();
 
                 String dealerName = arrayListOfString.get(i)[1];
@@ -513,9 +513,10 @@ public class ShowAndSearchUI2 extends JFrame {
 
                 if (special != null) {
                     float sPrice = specialModel.getSpecialPrice();
-                    specialPrice = String.valueOf(specialPrice);
+                    specialPrice = String.valueOf(sPrice);
                 } else {
                     showIncentives.setVisible(false);
+                    specialPrice = "none";
                 }
             }
 
