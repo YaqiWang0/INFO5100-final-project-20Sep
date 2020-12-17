@@ -69,7 +69,7 @@ public class MonthPayCalc extends JFrame {
 
 
     private void create() {
-
+        this.setTitle("Monthly Payment Calculator");
         calculatorTitlePanel = new JPanel ();
         calculatorTitle = new JLabel ("Monthly Payment Calculator");
         calculatorTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -493,18 +493,10 @@ public class MonthPayCalc extends JFrame {
 
     private void display() {
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 500);
         setVisible(true);
 
     }
-
-
-    public static void main (String args[]) {
-
-        new MonthPayCalc();
-
-    }
-
 
 }
