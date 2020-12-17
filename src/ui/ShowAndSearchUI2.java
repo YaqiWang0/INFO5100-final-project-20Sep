@@ -41,9 +41,18 @@ public class ShowAndSearchUI2 extends JFrame {
     // to determine showing sorted data or default data
     private boolean sortingImplemented = false;
 
+    // for case6
+    private IncentiveApi incentiveApi;
+    private IncentiveUI incentiveUI;
+    private CountdownTimeJob timeJob;
 
 
     public ShowAndSearchUI2(String dealerName) {
+          // for case6
+        incentiveUI = new IncentiveUI();
+        timeJob = new CountdownTimeJob();
+        timeJob.addObserver(incentiveUI);
+
         this.dealerName=dealerName;
         initComponents();
 
@@ -395,10 +404,30 @@ public class ShowAndSearchUI2 extends JFrame {
                 }
                 if(column==4) {
                     // JOptionPane.showMessageDialog(null, "Call UC3");
-                    //new VehicleDetails(data).frame.setVisible(true);
+                    new VehicleDetails(data).frame.setVisible(true);
                 }
                 if(column==5){
-                    JOptionPane.showMessageDialog(null, "Call UC6");
+                    //JOptionPane.showMessageDialog(null, "Call UC6");
+                    // for case6
+                    if (incentiveApi == null)
+                        incentiveApi = new IncentiveApiImpl();
+
+                    String dealerName = data[1];
+                    String vehicleId = data[0];
+                    String price = data[8];
+                    SpecialModel specialModel = incentiveApi.updateSpecialPrice(dealerName, vehicleId, price);
+                    Special special = specialModel.getSpecial();
+
+                    if (special != null) {
+                        timeJob.start(specialModel);
+                        JOptionPane.showConfirmDialog(null, incentiveUI, "Incentive details",
+                                JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                        if (specialModel.getSpecial().getEndDate().getTime() < new Date().getTime()) {
+                            source.getComponents();
+                        }
+                        timeJob.stop();
+                    }
                 }
 
 
@@ -476,6 +505,24 @@ public class ShowAndSearchUI2 extends JFrame {
             JLabel imageLabel=new JLabel();
             JButton viewMore_button=new JButton("View More");
             JButton showIncentives=new JButton("Show Incentives");
+            // for case6
+            String specialPrice = "none";
+            if (!"price".equals(arrayListOfString.get(i)[8])) {
+                incentiveApi = new IncentiveApiImpl();
+
+                String dealerName = arrayListOfString.get(i)[1];
+                String vehicleId = arrayListOfString.get(i)[0];
+                String price = arrayListOfString.get(i)[8];
+                SpecialModel specialModel = incentiveApi.updateSpecialPrice(dealerName, vehicleId, price);
+                Special special = specialModel.getSpecial();
+
+                if (special != null) {
+                    float sPrice = specialModel.getSpecialPrice();
+                    specialPrice = String.valueOf(sPrice);
+                } else {
+                    showIncentives.setVisible(false);
+                    specialPrice = "none";
+                }
             imageLabel.setIcon(new ImageIcon(img));
             model.addRow(new Object[] { arrayListOfString.get(i)[5],arrayListOfString.get(i)[7],arrayListOfString.get(i)[3] ,
                     arrayListOfString.get(i)[8],viewMore_button,showIncentives,imageLabel,"Show special price"});
