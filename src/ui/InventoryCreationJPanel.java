@@ -43,9 +43,6 @@ public class InventoryCreationJPanel {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(imagesTextField.getText().equals("") || imagesTextField.getText().equals("~")){
-                    imagesTextField.setText("null");
-                }
                 CreateInventory.createInventoryByDealer(idTextField.getText(), dealerId, isNewTextField.getText(), yearTextField.getText(), brandTextField.getText(), modelTextField.getText(), featuresTextField.getText(), bodyTypeTextField.getText(), priceTextField.getText(), imagesTextField.getText());
                 try {
 //                    oldFrame.remove(InventoryMgmtPanel);

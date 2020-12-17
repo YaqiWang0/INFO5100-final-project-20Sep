@@ -1,6 +1,7 @@
 package ui;
 
 import controller.CustomerController;
+import dao.Customer;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -12,7 +13,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Locale;
 
 public class CustomerLogin extends JFrame {
 
@@ -33,7 +33,6 @@ public class CustomerLogin extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en","US"));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

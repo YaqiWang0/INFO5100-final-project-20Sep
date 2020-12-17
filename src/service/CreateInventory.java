@@ -24,8 +24,7 @@ public class CreateInventory {
 
         String line = "";
 
-        try
-        {
+        try{
             //read
             BufferedReader br = new BufferedReader(new FileReader(path));
             //write
@@ -52,7 +51,6 @@ public class CreateInventory {
 
             pw.flush();
             pw.close();
-            br.close();
             File old = new File(path);
             old.delete();
             newFile.renameTo(old);

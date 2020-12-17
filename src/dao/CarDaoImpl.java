@@ -8,6 +8,7 @@ import java.util.List;
 interface CarDao {
     public List<Vehicle> findAllVehicle(Customer customer) throws Exception;
     public void insertVehicle(String vehicleID,String dealerId,Customer customer) throws Exception;
+    public void insertVehicleFromCar(String vehicleID, Customer customer) throws Exception;
     public void deleteVehicle(String vehicleID,Customer customer) throws Exception;
 }
 
@@ -41,6 +42,21 @@ public class CarDaoImpl extends BaseDao implements CarDao{
         stmt.setString (1, customer.getID());
         stmt.setString (2, vehicleID);
         stmt.setString   (3, dealerId);
+        stmt.execute();
+        BaseDao.closeConnStat(conn,stmt);
+    }
+
+    @Override
+    public void insertVehicleFromCar(String vehicleID, Customer customer) throws Exception {
+        Connection conn=BaseDao.getConnection();
+        // the mysql insert statement
+        String insertCarsItems = "insert into car (customerID,vehicleID)"
+                + " values (?, ?)";
+
+        // create the mysql insert preparedstatement
+        PreparedStatement stmt = conn.prepareStatement(insertCarsItems);
+        stmt.setString (1, customer.getID());
+        stmt.setString (2, vehicleID);
         stmt.execute();
         BaseDao.closeConnStat(conn,stmt);
     }
