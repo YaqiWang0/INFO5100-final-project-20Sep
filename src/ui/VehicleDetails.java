@@ -238,9 +238,9 @@ public class VehicleDetails extends JFrame{
         incentiveLabel.setBounds(509, 183, 67, 13);
         frame.getContentPane().add(incentiveLabel);
 
-        JLabel taxLabel = new JLabel("Tax");
+        JLabel taxLabel = new JLabel("Tax (10%)");
         taxLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        taxLabel.setBounds(509, 234, 45, 13);
+        taxLabel.setBounds(509, 234, 100, 13);
         frame.getContentPane().add(taxLabel);
 
         JLabel totalLabel = new JLabel("Total Price");
