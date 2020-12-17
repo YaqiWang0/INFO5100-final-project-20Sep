@@ -350,7 +350,12 @@ public class DataPersistence implements AbstractPersistent {
                 lead.setUsePurpose(fields[8]);
                 lead.setContactPreference(fields[9]);
                 lead.setContactTime(fields[10]);
-                lead.setMessage(fields[11]);
+                
+                // in case user not submitting message
+                if(fields.length == 12) {
+                    lead.setMessage(fields[11]);
+                }
+                
 
                 result.add(lead);
                 line = br.readLine();
