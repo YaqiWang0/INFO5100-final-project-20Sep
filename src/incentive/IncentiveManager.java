@@ -298,6 +298,7 @@ public class IncentiveManager extends JFrame {
             spl.setTitle(titleField.getText());
             return false;
         }
+        spl.setTitle(titleField.getText());
         spl.setDescription(descriptionArea.getText());
         spl.setDisclaimer(disclaimerArea.getText());
         return true;
