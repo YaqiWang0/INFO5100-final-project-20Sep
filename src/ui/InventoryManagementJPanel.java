@@ -16,6 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InventoryManagementJPanel {
     private JPanel InventoryMgmtPanel;
@@ -37,14 +39,14 @@ public class InventoryManagementJPanel {
     private JFrame frame;
 
     public String[] InitialData(String dealerId, int count) throws IOException {
-        String[] urls = new String[count];
+        String[] urls = new String[count + 1];
         int c = 0;
         File file = new File("data");
         File[] fileList = file.listFiles();
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].getName().equals(dealerId)){
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/"+dealerId)));
-                String line = br.readLine();
+                String line = "";
                 int j =0;
                 while((line=br.readLine())!=null){
                     String[] info = line.split("~");
@@ -55,13 +57,18 @@ public class InventoryManagementJPanel {
 //                    System.out.println(urls[i] + "*");
                     ImageIcon imageIcon;
 
-                    URL url = new URL(vehicleImagePath);
-                    HttpURLConnection urlcon = (HttpURLConnection) url.openConnection();
-                    urlcon.setRequestMethod("POST");
-                    urlcon.setRequestProperty("Content-type",
-                            "application/x-www-form-urlencoded");
-                    imageIcon = new ImageIcon(new URL(vehicleImagePath));
+//                    URL url = new URL(vehicleImagePath);
+//                    HttpURLConnection urlcon = (HttpURLConnection) url.openConnection();
+//                    urlcon.setRequestMethod("POST");
+//                    urlcon.setRequestProperty("Content-type",
+//                            "application/x-www-form-urlencoded");
                     try {
+                        URL url = new URL(vehicleImagePath);
+                        HttpURLConnection urlcon = (HttpURLConnection) url.openConnection();
+                        urlcon.setRequestMethod("POST");
+                        urlcon.setRequestProperty("Content-type",
+                                "application/x-www-form-urlencoded");
+                        imageIcon = new ImageIcon(new URL(vehicleImagePath));
                         url = new URL(vehicleImagePath);
 //                        if(String.valueOf(url).equals("src/ui/pictures/default-60x60.png")){
 //                            vehicleImagePath = "src/ui/pictures/default-60x60.png";
@@ -76,6 +83,9 @@ public class InventoryManagementJPanel {
                         vehicleImagePath = "src/ui/pictures/default-60x60.png";
                         imageIcon = new ImageIcon(vehicleImagePath);
                     } catch (IOException e) {
+                        vehicleImagePath = "src/ui/pictures/default-60x60.png";
+                        imageIcon = new ImageIcon(vehicleImagePath);
+                    }catch (NullPointerException e){
                         vehicleImagePath = "src/ui/pictures/default-60x60.png";
                         imageIcon = new ImageIcon(vehicleImagePath);
                     }
@@ -131,7 +141,7 @@ public class InventoryManagementJPanel {
                 }
             }
         }
-        final String[] urls = InitialData(dealerId, count);
+        String[] urls = InitialData(dealerId, count);
 
 //        tableVales[0] = new Object[]{"2960297373", "2016", "Buick", "Cascada", "New", "37400.0", "CAR", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))};
 //        tableVales = new Object[][]{{"2960297373", "2016", "Buick", "Cascada", "New", "37400.0", "Black", "Black", "CAR", "2dr Conv Premium", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2016/2945603/default/ext_GAR_deg01x90.jpg"))}, {"2966525563", "2017", "Buick", "Enclave", "New", "46660.0", "Brown", "Black", "SUV", "Leather FWD", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Buick/2017/3273383/default/ext_G1F_deg01x90.jpg"))}, {"2932765103", "2017", "Chevrolet", "Malibu", "New", "24140.0", "Black", "Black", "CAR", "1LS", "0", new ImageIcon(new URL("http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2017/3343993/default/ext_GAZ_deg01x90.jpg"))}};
@@ -216,6 +226,20 @@ public class InventoryManagementJPanel {
             }
         });
     }
+
+//    public static boolean isCommonUrl(String urls) {
+//        boolean isurl = false;
+//        String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
+//                + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";
+//
+//        Pattern pat = Pattern.compile(regex.trim());
+//        Matcher mat = pat.matcher(urls.trim());
+//        isurl = mat.matches();
+//        if (isurl) {
+//            isurl = true;
+//        }
+//        return isurl;
+//    }
 
     public static void main(String[] args) throws IOException {
         InventoryManagementJPanel im = new InventoryManagementJPanel("gmps-ernievon");
