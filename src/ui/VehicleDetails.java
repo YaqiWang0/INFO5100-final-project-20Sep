@@ -179,6 +179,7 @@ public class VehicleDetails extends JFrame{
 		//calculatorButton.addActionListener((ActionEvent) -> new MonthPayCalc());
 		calculatorButton.setBounds(509, 442, 203, 26);
 		frame.getContentPane().add(calculatorButton);
+		calculatorButton.addActionListener((ActionEvent) -> new MonthPayCalc());
 
         JLabel detailLabel = new JLabel("Car Details");
         detailLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
