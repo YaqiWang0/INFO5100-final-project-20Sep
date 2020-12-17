@@ -53,6 +53,18 @@ public final class IncentiveApiImpl implements IncentiveApi {
 				dealerId = dealer.getId();
 		}
 
+		if (dealerId==null || "".equals(dealerId)) {
+			return new SpecialModel();
+		}
+
+		if (vehicleId==null || "".equals(vehicleId)) {
+			return new SpecialModel();
+		}
+
+		if (oldPrice==null || "".equals(oldPrice)) {
+			return new SpecialModel();
+		}
+
 		String id = vehicleId;
 		List<Special> sList = dao.getAllSpecials(dealerId);
 
