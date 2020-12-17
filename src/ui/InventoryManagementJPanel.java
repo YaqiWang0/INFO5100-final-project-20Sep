@@ -43,9 +43,20 @@ public class InventoryManagementJPanel {
         int c = 0;
         File file = new File("data");
         File[] fileList = file.listFiles();
+
+
+        FileInputStream a=null;
+        InputStreamReader b =null;
+        BufferedReader br =null;
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].getName().equals(dealerId)){
-                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/"+dealerId)));
+
+                // BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/"+dealerId)));
+
+                a =new FileInputStream("data/"+dealerId);
+                b =  new InputStreamReader(a);
+                br = new BufferedReader(b);
+
                 String line = "";
                 int j =0;
                 while((line=br.readLine())!=null){
@@ -75,8 +86,8 @@ public class InventoryManagementJPanel {
 //                            imageIcon = new ImageIcon(vehicleImagePath);
 //                        }
 //                        else{
-                            Image image = ImageIO.read(url);
-                            imageIcon = new ImageIcon(image);
+                        Image image = ImageIO.read(url);
+                        imageIcon = new ImageIcon(image);
 //                        }
                     } catch (MalformedURLException e) {
                         //e.printStackTrace();
@@ -97,9 +108,13 @@ public class InventoryManagementJPanel {
                     this.data.add(o);
                     j++;
                 }
+                a.close();
+                br.close();
                 break;
             }
+
         }
+
 //        String[] columnNames = {"ID", "Year", "Brand", "Model", "New/Used", "Price", "Body Type", "Images"};
 //        TableModel tableModel = new DefaultTableModel(tableVales, columnNames){
 //            public Class getColumnClass(int column) {
@@ -132,13 +147,22 @@ public class InventoryManagementJPanel {
         File f = new File("data");
         File[] fileList = f.listFiles();
         int count = 0;
+
+        FileInputStream fis=null;
+        InputStreamReader isr =null;
+        BufferedReader br =null;
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].getName().equals(dealerId)) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/" + dealerId)));
+//                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/" + dealerId)));
+                fis =new FileInputStream("data/"+dealerId);
+                isr =  new InputStreamReader(fis);
+                br = new BufferedReader(isr);
                 String line = br.readLine();
                 while ((line = br.readLine()) != null) {
                     count++;
                 }
+                br.close();
+                fis.close();
             }
         }
         String[] urls = InitialData(dealerId, count);
