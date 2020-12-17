@@ -1,6 +1,11 @@
 package ui;
 
 
+import dao.Special;
+import service.CountdownTimeJob;
+import service.IncentiveApi;
+import service.IncentiveApiImpl;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,10 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class ShowAndSearchUI2 extends JFrame {
 
@@ -388,6 +390,7 @@ public class ShowAndSearchUI2 extends JFrame {
         vehicleDisplay.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                String[] data=new String[10];
                 JTable source = (JTable)e.getSource();
                 int row = source.rowAtPoint( e.getPoint() );
                 int column = source.columnAtPoint( e.getPoint() );
@@ -447,7 +450,7 @@ public class ShowAndSearchUI2 extends JFrame {
     }
 
     private void setTableCellValues(ArrayList<String[]> arrayListOfString) throws MalformedURLException {
-        DefaultTableModel model=(DefaultTableModel) vehicleDisplay.getModel();
+        DefaultTableModel model = (DefaultTableModel) vehicleDisplay.getModel();
         vehicleDisplay.setModel(model);
         String vehicleImagePath;
         URL url = null;
@@ -466,7 +469,7 @@ public class ShowAndSearchUI2 extends JFrame {
         vehicleDisplay.getColumn("View More").setCellRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                TableColumn tbButton=vehicleDisplay.getColumn("View More");
+                TableColumn tbButton = vehicleDisplay.getColumn("View More");
                 tbButton.setMaxWidth(100);
                 tbButton.setMaxWidth(100);
                 return (Component) value;
@@ -475,7 +478,7 @@ public class ShowAndSearchUI2 extends JFrame {
         vehicleDisplay.getColumn("Show Incentives").setCellRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                TableColumn tbButton=vehicleDisplay.getColumn("Show Incentives");
+                TableColumn tbButton = vehicleDisplay.getColumn("Show Incentives");
                 tbButton.setMaxWidth(100);
                 tbButton.setMaxWidth(100);
                 return (Component) value;
@@ -484,27 +487,27 @@ public class ShowAndSearchUI2 extends JFrame {
 
         //System.out.println(vehicleImagePath);
 
-        for(int i=0;i<arrayListOfString.size();i++){
-            vehicleImagePath=arrayListOfString.get(i)[9];
-           // System.out.println(vehicleImagePath);
+        for (int i = 0; i < arrayListOfString.size(); i++) {
+            vehicleImagePath = arrayListOfString.get(i)[9];
+            // System.out.println(vehicleImagePath);
             try {
-                url =new URL(vehicleImagePath);
+                url = new URL(vehicleImagePath);
                 image = ImageIO.read(url);
-                imageIcon= new ImageIcon(image);
+                imageIcon = new ImageIcon(image);
             } catch (MalformedURLException e) {
                 //e.printStackTrace();
-                vehicleImagePath =PATH +"404NotFound.png";
-                imageIcon= new ImageIcon(vehicleImagePath);
+                vehicleImagePath = PATH + "404NotFound.png";
+                imageIcon = new ImageIcon(vehicleImagePath);
 
             } catch (IOException e) {
-                vehicleImagePath=PATH +"404NotFound.png";
-                imageIcon= new ImageIcon(vehicleImagePath);
+                vehicleImagePath = PATH + "404NotFound.png";
+                imageIcon = new ImageIcon(vehicleImagePath);
 
             }
             Image img = imageIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-            JLabel imageLabel=new JLabel();
-            JButton viewMore_button=new JButton("View More");
-            JButton showIncentives=new JButton("Show Incentives");
+            JLabel imageLabel = new JLabel();
+            JButton viewMore_button = new JButton("View More");
+            JButton showIncentives = new JButton("Show Incentives");
             // for case6
             String specialPrice = "none";
             if (!"price".equals(arrayListOfString.get(i)[8])) {
@@ -523,11 +526,12 @@ public class ShowAndSearchUI2 extends JFrame {
                     showIncentives.setVisible(false);
                     specialPrice = "none";
                 }
-            imageLabel.setIcon(new ImageIcon(img));
-            model.addRow(new Object[] { arrayListOfString.get(i)[5],arrayListOfString.get(i)[7],arrayListOfString.get(i)[3] ,
-                    arrayListOfString.get(i)[8],viewMore_button,showIncentives,imageLabel,"Show special price"});
-        }
+                imageLabel.setIcon(new ImageIcon(img));
+                model.addRow(new Object[]{arrayListOfString.get(i)[5], arrayListOfString.get(i)[7], arrayListOfString.get(i)[3],
+                        arrayListOfString.get(i)[8], viewMore_button, showIncentives, imageLabel, "Show special price"});
+            }
 
+        }
     }
 
 
