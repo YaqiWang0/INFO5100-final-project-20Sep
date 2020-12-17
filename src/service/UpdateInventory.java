@@ -56,6 +56,9 @@ public class UpdateInventory {
       }
       pw.flush();
       pw.close();
+      bw.close();
+      fw.close();
+      br.close();
       File old = new File(path);
       old.delete();
       newFile.renameTo(old);
