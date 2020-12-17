@@ -1,6 +1,12 @@
 package service;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,13 +39,14 @@ public class CreateInventory {
             }
 
 //            bw.newLine();
-//            if(!isHttpUrl(photo)){
-////                System.out.println("false");
+//            if(!isImage(photo)){
+//                System.out.println("false");
 //                pw.println(vehicleId + "~" + webId + "~" + category + "~" + year + "~" + brand + "~" + model + "~" + features + "~" + type + "~" + price+"~" + "http://inventory-dmg.assets-cdk.com/6/7/1/14217691176x90.jpg");
 //            }
 //            else{
 //                System.out.println("true");
-                pw.println(vehicleId + "~" + webId + "~" + category + "~" + year + "~" + brand + "~" + model + "~" + features + "~" + type + "~" + price+"~" + photo);
+//            String photoUrl = returnImage(photo);
+            pw.println(vehicleId + "~" + webId + "~" + category + "~" + year + "~" + brand + "~" + model + "~" + features + "~" + type + "~" + price+"~" + photo);
 //            }
 
             pw.flush();
@@ -55,17 +62,21 @@ public class CreateInventory {
 
     }
 
-    public static boolean isHttpUrl(String urls) {
-        boolean isurl = false;
-        String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
-                + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";
+//    public static String returnImage(String vehicleImagePath) throws IOException {
+//        String result = vehicleImagePath;
+//        ImageIcon imageIcon;
+//
+//        try {
+//            URL url = new URL(vehicleImagePath);
+//            Image image = ImageIO.read(url);
+//        } catch (MalformedURLException e) {
+//            //e.printStackTrace();
+//            result = "http://inventory-dmg.assets-cdk.com/6/7/1/14217691176x90.jpg";
+//        } catch (IOException e) {
+//            result = "http://inventory-dmg.assets-cdk.com/6/7/1/14217691176x90.jpg";
+//        }
+//
+//        return result;
+//    }
 
-        Pattern pat = Pattern.compile(regex.trim());
-        Matcher mat = pat.matcher(urls.trim());
-        isurl = mat.matches();
-        if (isurl) {
-            isurl = true;
-        }
-        return isurl;
-    }
 }
