@@ -415,9 +415,9 @@ public class ShowAndSearchUI2 extends JFrame {
                     if (incentiveApi == null)
                         incentiveApi = new IncentiveApiImpl();
 
-                    String dealerName = data[1];
-                    String vehicleId = data[0];
-                    String price = data[8];
+                    String dealerName = fullInventoryData.get(row)[1];
+                    String vehicleId = fullInventoryData.get(row)[0];
+                    String price = fullInventoryData.get(row)[8];
                     SpecialModel specialModel = incentiveApi.updateSpecialPrice(dealerName, vehicleId, price);
                     Special special = specialModel.getSpecial();
 
