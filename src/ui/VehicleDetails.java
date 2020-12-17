@@ -2,6 +2,10 @@ package ui;
 
 //import dao.VehicleDetailsObj;
 
+        import dao.CarDaoImpl;
+        import dao.Customer;
+        import dao.UserHome;
+
         import java.awt.*;
         import java.awt.event.ActionEvent;
         import java.awt.event.ActionListener;
@@ -37,9 +41,15 @@ public class VehicleDetails extends JFrame{
     private JTextField engineTxt;
     private JTextField conditionTxt;
     private static String[] data;
-    private static String defaultData = "2228104413~gmps-aj-dohmann~new~2014~VolksWagen~CTS Sedan~3.6L V6 AWD Luxury~CAR~517620.0~http://inventory-dmg.assets-cdk.com/5/1/7/13411480715x90.jpg";
+    private static String defaultData = "44134dsdsd444~gmps-aj-dohmann~new~2014~VolksWagen~CTS Sedan~3.6L V6 AWD Luxury~CAR~517620.0~http://inventory-dmg.assets-cdk.com/5/1/7/13411480715x90.jpg";
     private JTextField modelTxt;
     private JLabel image;
+    private CarDaoImpl carData = new CarDaoImpl();
+    private Customer customer;
+
+    public static String vehicleID() {
+        return data[0];
+    }
 
     //    /*------------------------------------------------------------------------*/
     public static void main(String[] args) throws Exception {
@@ -132,7 +142,9 @@ public class VehicleDetails extends JFrame{
 		saveButton.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			}
+                CustomerLogPage login= new CustomerLogPage();
+                login.setVisible(true);
+            }
 		});
 		saveButton.setBounds(141, 442, 92, 26);
 		frame.getContentPane().add(saveButton);
@@ -144,7 +156,11 @@ public class VehicleDetails extends JFrame{
         unsaveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    carData.deleteVehicle("6 8a345", customer);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
         unsaveButton.setBounds(267, 442, 92, 26);
