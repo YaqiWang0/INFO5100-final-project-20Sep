@@ -207,8 +207,8 @@ public class IncentiveManager extends JFrame {
             startMonth.addItem(i);
             endMonth.addItem(i);
         }
-        startMonth.setSelectedItem(month);
-        endMonth.setSelectedItem(month);
+        startMonth.setSelectedItem(month+1);
+        endMonth.setSelectedItem(month+1);
 
         //add items for start day combo box
         int day = currentdate.getDayOfMonth();
@@ -440,7 +440,8 @@ public class IncentiveManager extends JFrame {
         IncentiveManager frame = new IncentiveManager(dealerId);
         frame.setTitle("Create Incentive");
         frame.setContentPane(frame.panelMain);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1000, 400));
         frame.pack();
         frame.setVisible(true);
