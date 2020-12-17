@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import dao.Dealer;
 
 public class DataPersistence implements AbstractPersistent {
 
@@ -220,6 +221,64 @@ public class DataPersistence implements AbstractPersistent {
         }
         return result;
     }
+
+    public List<Vehicle> getVehicles(String dealerID) {
+        List<Vehicle> result = new ArrayList<>();
+        List<dao.Dealer> dealers = this.getAllDealers();
+        String vehicleFileName = "vehicles.csv";
+        for (dao.Dealer dealer: dealers) {
+            if (dealer.getDealerId().equals(dealerID)) {
+                vehicleFileName = dealer.getDealerName();
+            }
+        }
+        if (vehicleFileName.equals("vehicles.csv")) {
+            return this.getAllVehicles();
+        }
+        BufferedReader br = null;
+        String vehicleFilePath = this.dataPath + vehicleFileName;
+        File vehicleFile = new File(vehicleFilePath);
+        try {
+            br = new BufferedReader(new FileReader(vehicleFile));
+
+            String line = br.readLine();
+            int lineNum = 0;
+            while (line != null) {
+                if (lineNum == 0) {
+                    lineNum += 1;
+                    line = br.readLine();
+                    continue;
+                }
+                String[] fields = line.split("~");
+                VehicleFile fileModel = new VehicleFile(dealerID);
+                fileModel.setVehicleId(fields[0]);
+                fileModel.setCategory(fields[2]);
+                fileModel.setYear(fields[3]);
+                fileModel.setMake(fields[4]);
+                fileModel.setModel(fields[5]);
+                fileModel.setTrim(fields[6]);
+                fileModel.setType(fields[7]);
+                fileModel.setPrice(fields[8]);
+                fileModel.setPhoto(fields[9]);
+                result.add(fileModel.toVehicle());
+                lineNum += 1;
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+
+
+    }
+
 
     @Override
     public void writeVehicles(List<Vehicle> vehicles) {

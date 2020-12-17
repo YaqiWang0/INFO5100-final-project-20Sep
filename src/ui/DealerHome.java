@@ -40,6 +40,21 @@ public class DealerHome extends JFrame {
 		}
 	}
 
+	public String findName(String id) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/dealers.csv")));
+		String result = "";
+		String line;
+		while((line=br.readLine())!=null){
+			String[] info = line.split(",");
+			if (info[0].equals(id)){
+				result = info[1];
+				System.out.println(result);
+				break;
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * Launch the application.
 	 */
@@ -116,7 +131,6 @@ public class DealerHome extends JFrame {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                // NOTE: in fact, the dealerID here is dealer Name
                 new LeadsTableUI(dealerId);
                 
             }
@@ -135,7 +149,8 @@ public class DealerHome extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerId);
+					String dealerName = findName(dealerId);
+					InventoryManagementJPanel panel = new InventoryManagementJPanel(dealerName);
 				} catch (IOException malformedURLException) {
 					malformedURLException.printStackTrace();
 				}

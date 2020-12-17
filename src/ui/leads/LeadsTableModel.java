@@ -33,7 +33,7 @@ public class LeadsTableModel extends AbstractTableModel {
             return "Name";
         }
         if (columnIndex == 1) {
-            return "Phone Number";
+            return "Phone";
         }
         if (columnIndex == 2) {
             return "Email";
@@ -92,5 +92,10 @@ public class LeadsTableModel extends AbstractTableModel {
         leads.remove(index);
         fireTableRowsDeleted(0, leads.size());
     }
+    
+    public void updateLeads(List<Lead> leads) {
+        this.leads = leads;
+    }
+    
 
 }

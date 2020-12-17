@@ -17,7 +17,7 @@ public class LeadDetailsUI {
     ArrayList<String> vehicleImageUrl;
     private int vehicleImageIndex;
 
-    private static int SAVE_TIME_INTERVAL = 1;
+    private static int SAVE_TIME_INTERVAL = 60;
     private static String[] TAB_NAMES = {"Customer info", "Vehicle Info", "User Notes"};
 
     JTextArea userNotesTextArea;
@@ -90,10 +90,11 @@ public class LeadDetailsUI {
         UpdateVehiclePanel(vehicleInfoSubPanel);
 	    vehicleInfoAddButtons(vehicleToolBar, vehicleInfoSubPanel);
 
+        changeFont(vehicleInfoSubPanel, new Font("Baskerville", Font.PLAIN, 18));
 	    vehicleInfoPanel.add(vehicleToolBar,BorderLayout.PAGE_START);
         vehicleInfoPanel.add(vehicleInfoSubPanel,BorderLayout.CENTER);
 
-        changeFont(vehicleInfoSubPanel, new Font("Baskerville", Font.PLAIN, 18));
+
 	    mainPanel.addTab(TAB_NAMES[tabIndex++], null, vehicleInfoPanel, "second");
 
 
@@ -211,7 +212,6 @@ public class LeadDetailsUI {
         /**
          * fill brand
          */
-
         JLabel brandLabel = new JLabel();
         brandLabel.setText("Brand: ");
         vehicleDataPanel.add(brandLabel);
@@ -273,6 +273,8 @@ public class LeadDetailsUI {
         miles.setText(vehicles[vehicleIndex].getMiles() + " miles");
         vehicleDataPanel.add(miles);
 
+        changeFont(vehicleInfoSubPanel, new Font("Baskerville", Font.PLAIN, 18));
+        changeFont(vehicleDataPanel, new Font("Baskerville", Font.PLAIN, 18));
         vehicleInfoSubPanel.add(vehicleDataPanel);
 
     }
@@ -354,19 +356,15 @@ public class LeadDetailsUI {
                         lead.setReplyNotes(userNotesReplyTextArea.getText());
                         replyButton.setText("message sent");
                         sendMessage(lead, userNotesReplyTextArea.getText());
+                        JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showConfirmDialog(dialog, "The message is sent",
+                                "Message",JOptionPane.DEFAULT_OPTION);
                         lead.setContacted(true);
-                        replyButton.setEnabled(false);
                         userNotesReplyTextArea.setText(null);
                         lead.setReplyNotes("");
-                        Timer timer = new Timer(1000, new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                replyButton.setText("reply");
-                                replyButton.setEnabled(true);
-                                ((Timer)e.getSource()).stop();
-                            }
-                        });
-                        timer.start();
+
+
                     }
                 }
             }

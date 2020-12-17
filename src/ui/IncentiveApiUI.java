@@ -49,7 +49,8 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
         // add Component to centerPanel
         int count = 0;
         for (Vehicle vehicle: vehicles) {
-            SpecialModel specialModel = incentiveApi.updateSpecialPrice(vehicle);
+
+            SpecialModel specialModel = incentiveApi.updateSpecialPrice(vehicle.getDealerId(), vehicle.getVehicleId(), vehicle.getPrice());
             Special special = specialModel.getSpecial();
 
             centerPanel.add(new JLabel("Car " + (++count), JLabel.CENTER));
@@ -61,6 +62,7 @@ public class IncentiveApiUI extends IncentiveApiUIAbstract {
             if (special != null) {
                 centerPanel.add(new JLabel("Special Price", JLabel.CENTER));
                 centerPanel.add(new JLabel(specialModel.getSpecialPrice() + ""));
+
 
                 Date startDate = special.getStartDate();
                 Date endDate = special.getEndDate();

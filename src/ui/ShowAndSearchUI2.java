@@ -1,6 +1,11 @@
 package ui;
 
 
+import dao.Special;
+import service.CountdownTimeJob;
+import service.IncentiveApi;
+import service.IncentiveApiImpl;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,12 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.logging.Filter;
-
+import java.util.*;
 
 public class ShowAndSearchUI2 extends JFrame {
 
@@ -33,18 +33,28 @@ public class ShowAndSearchUI2 extends JFrame {
     private static JTable vehicleDisplay;
     private JPanel filterPanel;
     private JPanel mainDisplay;
+    private DefaultTableModel model;
     private final int[] selectedSort = {0};
     private HashMap<String, HashSet<String>> container;
     String[] dealerInventoryData;
     ArrayList<String[]> fullInventoryData;
     static String dealerName= "gmps-aj-dohmann";
     private static final String PATH ="././data/";
-    ArrayList<String[]> sortedList;
-    ArrayList<String[]> filteredList;
+    // to determine showing sorted data or default data
+    private boolean sortingImplemented = false;
 
+    // for case6
+    private IncentiveApi incentiveApi;
+    private IncentiveUI incentiveUI;
+    private CountdownTimeJob timeJob;
 
 
     public ShowAndSearchUI2(String dealerName) {
+          // for case6
+        incentiveUI = new IncentiveUI();
+        timeJob = new CountdownTimeJob();
+        timeJob.addObserver(incentiveUI);
+
         this.dealerName=dealerName;
         initComponents();
 
@@ -63,6 +73,8 @@ public class ShowAndSearchUI2 extends JFrame {
         jScrollPane2 = new JScrollPane();
         vehicleDisplay = new JTable();
         sortPanel = new JPanel();
+        model = (DefaultTableModel) vehicleDisplay.getModel();
+        fullInventoryData = new ArrayList<>();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainDisplay.setBackground(new Color(153, 153, 153));
         pageHeading.setFont(new Font("Tahoma", 0, 48)); // NOI18N
@@ -139,7 +151,6 @@ public class ShowAndSearchUI2 extends JFrame {
         mainDisplay.add(getFilterPanel());
         mainDisplay.add(getSortPanel());
         mainDisplay.add(getTable(dealerName));
-
         return mainDisplay;
     }
 
@@ -150,14 +161,10 @@ public class ShowAndSearchUI2 extends JFrame {
         filterPanel = new JPanel();
         filterPanel.setBackground(Color.red);
         filterPanel.add(new JLabel("FILTER"));
-        addFilterChoice("CATEGORY", filterPanel);
-        addFilterChoice("MAKE", filterPanel);
         addFilterChoice("MODEL", filterPanel);
         addFilterChoice("TYPE", filterPanel);
-        addFilterChoice("BODY STYLE", filterPanel);
         addFilterChoice("ABOVE PRICE", filterPanel);
         addFilterChoice("BELOW PRICE", filterPanel);
-        addFilterChoice("MORE", filterPanel);
         ((AbstractButton) filterPanel.add(new JButton("Clear All"))).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -320,20 +327,37 @@ public class ShowAndSearchUI2 extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // call the sort method to implement sorting based on user's selection
-
-                ShowAndSearchUI2 ui = new ShowAndSearchUI2();
-                 filteredList = FilterAndSort.filter(fullInventoryData, container);
-                 sortedList = FilterAndSort.sort(selectedSort[0], filteredList);
+               // ShowAndSearchUI2 ui = null;
+//                try {
+//                    //ui = new ShowAndSearchUI2();
+//                //} catch (MalformedURLException ex) {
+//                //    ex.printStackTrace();
+//                }
+                //SearchSort searchSortObj=new SearchSort();
+              //  ArrayList filteredList = searchSortObj.filter(ui.fullInventoryData);
+               // ArrayList sortedList = searchSortObj.sort(selectedSort[0], filteredList);
+                ArrayList<String[]> filteredList = FiltAndSort.filter(fullInventoryData, container);
+                ArrayList<String[]> sortedList = FiltAndSort.sort(selectedSort[0], filteredList);
+                sortingImplemented = true;
                 System.out.println(container);
-                for (String[] a : sortedList) {
-                    System.out.println(Arrays.toString(a));
-                }
-                try {
-
-                    ui.setTableCellValues(sortedList);
-                } catch (MalformedURLException malformedURLException) {
-                    malformedURLException.printStackTrace();
-                }
+//                for (String[] a : sortedList) {
+//                    System.out.println(Arrays.toString(a));
+//                }
+//                try {
+                    new DisplayData(sortedList);
+//                    setTableCellValues(sortedList);
+//                    mainDisplay.revalidate();
+//                    mainDisplay.remove(vehicleDisplay);
+//                    //mainDisplay.add(vehicleDisplay);
+//                    DefaultTableModel model = (DefaultTableModel) vehicleDisplay.getModel();
+//                    model.fireTableDataChanged();
+//
+//                    vehicleDisplay.repaint();
+//                    initComponents();
+//                    System.out.println("kkk");
+//                } catch (MalformedURLException malformedURLException) {
+//                    malformedURLException.printStackTrace();
+//                }
             }
         });
         sortPanel.add(confirm);
@@ -357,12 +381,10 @@ public class ShowAndSearchUI2 extends JFrame {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         addVehicleDisplayTableListner(vehicleDisplay);
 
         return vehicleDisplay;
     }
-
 
     private void addVehicleDisplayTableListner(JTable vehicleDisplay) {
         vehicleDisplay.addMouseListener(new MouseListener() {
@@ -379,18 +401,38 @@ public class ShowAndSearchUI2 extends JFrame {
                     selectedRowData.add(fullInventoryData.get(row));
                 for(int i=0;i<selectedRowData.size();i++){
                     for(int j=0;j<selectedRowData.get(i).length;j++){
-                        data=selectedRowData.get(i);
                         System.out.println(selectedRowData.get(i)[j]);
                     }
 
                 }
                 if(column==4) {
                     // JOptionPane.showMessageDialog(null, "Call UC3");
-                     new VehicleDetailNew(Data).frame.setVisible(true);
-                    }
-                if(column==5){
-                    JOptionPane.showMessageDialog(null, "Call UC6");
+                    new VehicleDetails(data).frame.setVisible(true);
                 }
+                if(column==5){
+                    //JOptionPane.showMessageDialog(null, "Call UC6");
+                    // for case6
+                    if (incentiveApi == null)
+                        incentiveApi = new IncentiveApiImpl();
+
+                    String dealerName = fullInventoryData.get(row)[1];
+                    String vehicleId = fullInventoryData.get(row)[0];
+                    String price = fullInventoryData.get(row)[8];
+                    SpecialModel specialModel = incentiveApi.updateSpecialPrice(dealerName, vehicleId, price);
+                    Special special = specialModel.getSpecial();
+
+                    if (special != null) {
+                        timeJob.start(specialModel);
+                        JOptionPane.showConfirmDialog(null, incentiveUI, "Incentive details",
+                                JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                        if (specialModel.getSpecial().getEndDate().getTime() < new Date().getTime()) {
+                            source.getComponents();
+                        }
+                        timeJob.stop();
+                    }
+                }
+
 
             }
             @Override
@@ -408,9 +450,7 @@ public class ShowAndSearchUI2 extends JFrame {
     }
 
     private void setTableCellValues(ArrayList<String[]> arrayListOfString) throws MalformedURLException {
-
-        DefaultTableModel model=(DefaultTableModel) vehicleDisplay.getModel();
-        model.fireTableDataChanged();
+        DefaultTableModel model = (DefaultTableModel) vehicleDisplay.getModel();
         vehicleDisplay.setModel(model);
         String vehicleImagePath;
         URL url = null;
@@ -429,7 +469,7 @@ public class ShowAndSearchUI2 extends JFrame {
         vehicleDisplay.getColumn("View More").setCellRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                TableColumn tbButton=vehicleDisplay.getColumn("View More");
+                TableColumn tbButton = vehicleDisplay.getColumn("View More");
                 tbButton.setMaxWidth(100);
                 tbButton.setMaxWidth(100);
                 return (Component) value;
@@ -438,7 +478,7 @@ public class ShowAndSearchUI2 extends JFrame {
         vehicleDisplay.getColumn("Show Incentives").setCellRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                TableColumn tbButton=vehicleDisplay.getColumn("Show Incentives");
+                TableColumn tbButton = vehicleDisplay.getColumn("Show Incentives");
                 tbButton.setMaxWidth(100);
                 tbButton.setMaxWidth(100);
                 return (Component) value;
@@ -447,33 +487,53 @@ public class ShowAndSearchUI2 extends JFrame {
 
         //System.out.println(vehicleImagePath);
 
-        for(int i=0;i<arrayListOfString.size();i++){
-            vehicleImagePath=arrayListOfString.get(i)[9];
-           // System.out.println(vehicleImagePath);
+        for (int i = 0; i < arrayListOfString.size(); i++) {
+            vehicleImagePath = arrayListOfString.get(i)[9];
+            // System.out.println(vehicleImagePath);
             try {
-                url =new URL(vehicleImagePath);
+                url = new URL(vehicleImagePath);
                 image = ImageIO.read(url);
-                imageIcon= new ImageIcon(image);
+                imageIcon = new ImageIcon(image);
             } catch (MalformedURLException e) {
                 //e.printStackTrace();
-                vehicleImagePath =PATH +"404NotFound.png";
-                imageIcon= new ImageIcon(vehicleImagePath);
+                vehicleImagePath = PATH + "404NotFound.png";
+                imageIcon = new ImageIcon(vehicleImagePath);
 
             } catch (IOException e) {
-                vehicleImagePath=PATH +"404NotFound.png";
-                imageIcon= new ImageIcon(vehicleImagePath);
+                vehicleImagePath = PATH + "404NotFound.png";
+                imageIcon = new ImageIcon(vehicleImagePath);
 
             }
             Image img = imageIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-            JLabel imageLabel=new JLabel();
-            JButton viewMore_button=new JButton("View More");
-            JButton showIncentives=new JButton("Show Incentives");
-            imageLabel.setIcon(new ImageIcon(img));
-            model.addRow(new Object[] { arrayListOfString.get(i)[5],arrayListOfString.get(i)[7],arrayListOfString.get(i)[3] ,
-                    arrayListOfString.get(i)[8],viewMore_button,showIncentives,imageLabel,"Show special price"});
-        }
+            JLabel imageLabel = new JLabel();
+            JButton viewMore_button = new JButton("View More");
+            JButton showIncentives = new JButton("Show Incentives");
+            // for case6
+            String specialPrice = "none";
+            if (!"price".equals(arrayListOfString.get(i)[8])) {
+                incentiveApi = new IncentiveApiImpl();
 
+                String dealerName = arrayListOfString.get(i)[1];
+                String vehicleId = arrayListOfString.get(i)[0];
+                String price = arrayListOfString.get(i)[8];
+                SpecialModel specialModel = incentiveApi.updateSpecialPrice(dealerName, vehicleId, price);
+                Special special = specialModel.getSpecial();
+
+                if (special != null) {
+                    float sPrice = specialModel.getSpecialPrice();
+                    specialPrice = String.valueOf(sPrice);
+                } else {
+                    showIncentives.setVisible(false);
+                    specialPrice = "none";
+                }
+                imageLabel.setIcon(new ImageIcon(img));
+                model.addRow(new Object[]{arrayListOfString.get(i)[5], arrayListOfString.get(i)[7], arrayListOfString.get(i)[3],
+                        arrayListOfString.get(i)[8], viewMore_button, showIncentives, imageLabel, specialPrice});
+            }
+
+        }
     }
+
 
     public ArrayList<String[]> readDealerInventory(String dealerName) {
         fullInventoryData=new ArrayList<String[]>();
