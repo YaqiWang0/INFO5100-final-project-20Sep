@@ -502,7 +502,7 @@ public class ShowAndSearchUI2 extends JFrame {
 
             // for case6
             String specialPrice = "none";
-            if (i > 0) { // need to remove
+            if (!"price".equals(arrayListOfString.get(i)[8])) {
                 incentiveApi = new IncentiveApiImpl();
 
                 String dealerName = arrayListOfString.get(i)[1];
