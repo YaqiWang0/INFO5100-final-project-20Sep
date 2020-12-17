@@ -528,7 +528,7 @@ public class ShowAndSearchUI2 extends JFrame {
                 }
                 imageLabel.setIcon(new ImageIcon(img));
                 model.addRow(new Object[]{arrayListOfString.get(i)[5], arrayListOfString.get(i)[7], arrayListOfString.get(i)[3],
-                        arrayListOfString.get(i)[8], viewMore_button, showIncentives, imageLabel, "Show special price"});
+                        arrayListOfString.get(i)[8], viewMore_button, showIncentives, imageLabel, specialPrice});
             }
 
         }
