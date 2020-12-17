@@ -13,9 +13,9 @@ If you want to run our code, run 'CustomerLogin'. Please use IntelliJ IDEA! Usin
 
 The database contains two forms:
 
-1.dealer: webId id password When you log in, you can use id:QIAN with password:123456 or id:CHENG with the same password.
+1.customer: webId id password When you log in, you can use id:QIAN with password:123456 or id:CHENG with the same password.
 
-2.customer:webId id password Also, When you log in, you can use id:xiang with password:12345 or id:jing with the same password.
+2.dealer:webId id password Also, When you log in, you can use id:xiang with password:12345 or id:jing with the same password.
 
 Do not worry, though we use SQLite, you need not install any SQLite software if you do not want to change our database.
 
