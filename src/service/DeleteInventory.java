@@ -10,13 +10,17 @@ public class DeleteInventory {
 
         String line = "";
 
+        BufferedReader br=null;
+        FileWriter fw =null;
+        BufferedWriter bw= null;
+        PrintWriter pw= null;
         try{
             //read
-            BufferedReader br = new BufferedReader(new FileReader(path));
+            br = new BufferedReader(new FileReader(path));
             //write
-            FileWriter fw = new FileWriter(tempFile,true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
+            fw = new FileWriter(tempFile,true);
+            bw = new BufferedWriter(fw);
+            pw = new PrintWriter(bw);
 
 //      pw.println();
             while ((line = br.readLine()) != null){
@@ -31,6 +35,9 @@ public class DeleteInventory {
 
             pw.flush();
             pw.close();
+            //bw.close();
+            //fw.close();
+            br.close();
             File old = new File(path);
             old.delete();
             newFile.renameTo(old);
@@ -39,6 +46,9 @@ public class DeleteInventory {
         } catch (IOException e){
             e.printStackTrace();
         }
+
+
+
 
     }
 }

@@ -10,26 +10,19 @@ import java.util.List;
 interface NotiDao {
     public List<Notification> findAllNotification(Customer customer) throws Exception;
     public List<Notification> findAllUnread(Customer customer) throws Exception;
-    public List<Notification> findAllRead(Customer customer) throws Exception;
     public void insertNotification(String content,Customer customer) throws Exception;
-    //Delete notification
-    public void deleteNotification(String customer,String tempTime, String content) throws Exception;
-    public void deleteNotificationUnread(Customer customer) throws Exception;
+    public void deleteNotification(String customer,String tempTime) throws Exception;
     public void deleteNotificationRead(Customer customer) throws Exception;
     public void deleteNotificationAll(Customer customer) throws Exception;
-    //Mark
-    public void markRead(String customer,String tempTime, String content) throws Exception;
-    public void markReadAll(Customer customer) throws Exception;
-    public void markUnread(String customer,String tempTime, String content) throws Exception;
-    public void markUnreadAll(Customer customer) throws Exception;
-    //Find customer
-    public boolean isFindCustomer(String customer,String password) throws Exception;
     //public void markRead(Customer customer) throws Exception;
+    public void markRead(String customer,String tempTime) throws Exception;
+    public void markReadAll(Customer customer) throws Exception;
     //public void markUnread(Customer customer) throws Exception;
+    public void markUnread(String customer,String tempTime) throws Exception;
+    public boolean isFindCustomer(String customer,String password) throws Exception;
 }
 
 public class NotiDaoImpl extends BaseDao implements NotiDao{
-    @Override
     public List<Notification> findAllNotification(Customer customer) throws Exception {
         Connection conn=BaseDao.getConnection();
         String sql="select * from notification where customerID ="+customer.getID();
@@ -48,13 +41,10 @@ public class NotiDaoImpl extends BaseDao implements NotiDao{
         BaseDao.closeAll(conn, stmt, rs);
         return NotificationList;
     }
-
-    @Override
     public List<Notification> findAllUnread(Customer customer) throws Exception {
         Connection conn=BaseDao.getConnection();
-        String sql="select * from notification where customerID = ? and isRead = false";
+        String sql="select * from notification where customerID ="+customer.getID()+"and isRead = false";
         PreparedStatement stmt= conn.prepareStatement(sql);
-        stmt.setString(1, customer.getID());
         ResultSet rs=  stmt.executeQuery();
         List<Notification> NotificationList =new ArrayList<Notification>();
         while(rs.next()) {
@@ -69,29 +59,6 @@ public class NotiDaoImpl extends BaseDao implements NotiDao{
         BaseDao.closeAll(conn, stmt, rs);
         return NotificationList;
     }
-
-    @Override
-    public List<Notification> findAllRead(Customer customer) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        String sql="select * from notification where customerID = ? and isRead = true";
-        PreparedStatement stmt= conn.prepareStatement(sql);
-        stmt.setString(1, customer.getID());
-        ResultSet rs=  stmt.executeQuery();
-        List<Notification> NotificationList =new ArrayList<Notification>();
-        while(rs.next()) {
-            Notification notiTemp=new Notification(
-                    rs.getString("customerID"),
-                    rs.getString("content"),
-                    rs.getString("time"),
-                    rs.getBoolean("isRead")
-            );
-            NotificationList.add(notiTemp);
-        }
-        BaseDao.closeAll(conn, stmt, rs);
-        return NotificationList;
-    }
-
-    @Override
     public void insertNotification(String content,Customer customer) throws Exception{
         Connection conn=BaseDao.getConnection();
         // the mysql insert statement
@@ -110,135 +77,18 @@ public class NotiDaoImpl extends BaseDao implements NotiDao{
     }
 
     @Override
-    public void deleteNotification(String customer,String tempTime, String content) throws Exception{
+    public void deleteNotification(String customer,String tempTime) throws Exception{
         Connection conn=BaseDao.getConnection();
         // create the mysql delete statement.
-        String deleteNotiItems = "delete from notification where customerID = ? and time = ? and content = ?";
+        String deleteNotiItems = "delete from notification where customerID = ? and time = ?";
         PreparedStatement stmt = conn.prepareStatement(deleteNotiItems);
         stmt.setString(1, customer);
         stmt.setString(2, tempTime);
-        stmt.setString(3, content);
         // execute the preparedstatement
         stmt.execute();
         BaseDao.closeConnStat(conn,stmt);
     }
-
-
-    @Override
-    public void deleteNotificationRead(Customer customer) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        // create the mysql delete statement.
-        String deleteNotiItems = "delete from notification where customerID = ? and isRead = true";
-        PreparedStatement stmt = conn.prepareStatement(deleteNotiItems);
-        stmt.setString(1, customer.getID());
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-    @Override
-    public void deleteNotificationUnread(Customer customer) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        // create the mysql delete statement.
-        String deleteNotiItems = "delete from notification where customerID = ? and isRead = false";
-        PreparedStatement stmt = conn.prepareStatement(deleteNotiItems);
-        stmt.setString(1, customer.getID());
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-    @Override
-    public void deleteNotificationAll(Customer customer) throws Exception{
-        Connection conn=BaseDao.getConnection();
-        // create the mysql delete statement.
-        String deleteNotiItems = "delete from notification where customerID = ?";
-        PreparedStatement stmt = conn.prepareStatement(deleteNotiItems);
-        stmt.setString(1, customer.getID());
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-    @Override
-    public void markRead(String customer,String tempTime, String content) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        // create the mysql update statement.
-        String MarkNotiItems = "update notification set isRead = true where customerID = ? and time = ? and content = ?";
-        PreparedStatement stmt = conn.prepareStatement(MarkNotiItems);
-        stmt.setString(1, customer);
-        stmt.setString(2, tempTime);
-        stmt.setString(3, content);
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-
-    @Override
-    public void markReadAll(Customer customer) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        // create the mysql update statement.
-        String MarkNotiItems = "update notification set isRead = true where customerID = ? ";
-        PreparedStatement stmt = conn.prepareStatement(MarkNotiItems);
-        stmt.setString(1, customer.getID());
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-    @Override
-    public void markUnread(String customer,String tempTime, String content) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        // create the mysql update statement.
-        String unMarkNotiItems = "update notification set isRead = false where customerID = ? and time = ? anc content";
-        PreparedStatement stmt = conn.prepareStatement(unMarkNotiItems);
-        stmt.setString(1, customer);
-        stmt.setString(2, tempTime);
-        stmt.setString(3, content);
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-    @Override
-    public void markUnreadAll(Customer customer) throws Exception {
-        Connection conn=BaseDao.getConnection();
-        // create the mysql update statement.
-        String MarkNotiItems = "update notification set isRead = false where customerID = ? ";
-        PreparedStatement stmt = conn.prepareStatement(MarkNotiItems);
-        stmt.setString(1, customer.getID());
-        // execute the preparedstatement
-        stmt.execute();
-        BaseDao.closeConnStat(conn,stmt);
-    }
-
-    @Override
-    public boolean isFindCustomer(String customer,String customerPassword) throws Exception{
-        Connection conn=BaseDao.getConnection();
-        String sql="select * from customer where customerID = ?  and password = ?";
-        PreparedStatement stmt= conn.prepareStatement(sql);
-        stmt.setString(1,customer);
-        stmt.setString(2,customerPassword);
-        ResultSet rs=  stmt.executeQuery();
-        try{
-            if(rs.next()){
-                return true;
-            }
-            else
-                return false;
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        finally {
-            BaseDao.closeAll(conn, stmt, rs);
-        }
-    }
-
-
-     /*
+    /*
     public void deleteNotification(Customer customer) throws Exception {
         Connection conn=BaseDao.getConnection();
         // create the mysql delete statement.
@@ -260,28 +110,43 @@ public class NotiDaoImpl extends BaseDao implements NotiDao{
     }
 
      */
-     /*
-    public void markUnread(Customer customer) throws Exception {
+
+    @Override
+    public void deleteNotificationRead(Customer customer) throws Exception {
         Connection conn=BaseDao.getConnection();
-        // create the mysql update statement.
-        String sql = "select time from notification where isRead = true and CustomerID = ? order by time desc limit 1";
-        PreparedStatement prestmt= conn.prepareStatement(sql);
-        prestmt.setString(1,customer.getID());
-        ResultSet rs=  prestmt.executeQuery();
-        String tempTime = "";
-        while (rs.next()) {
-            tempTime = rs.getString("time");
-        }
-        String unMarkNotiItems = "update notification set isRead = false where customerID = ? and time = ?";
-        PreparedStatement stmt = conn.prepareStatement(unMarkNotiItems);
+        // create the mysql delete statement.
+        String deleteNotiItems = "delete from notification where customerID = ? and isRead = true";
+        PreparedStatement stmt = conn.prepareStatement(deleteNotiItems);
         stmt.setString(1, customer.getID());
-        stmt.setString(2,tempTime);
         // execute the preparedstatement
         stmt.execute();
         BaseDao.closeConnStat(conn,stmt);
     }
 
-     */
+    public void deleteNotificationAll(Customer customer) throws Exception{
+        Connection conn=BaseDao.getConnection();
+        // create the mysql delete statement.
+        String deleteNotiItems = "delete from notification where customerID = ?";
+        PreparedStatement stmt = conn.prepareStatement(deleteNotiItems);
+        stmt.setString(1, customer.getID());
+        // execute the preparedstatement
+        stmt.execute();
+        BaseDao.closeConnStat(conn,stmt);
+    }
+
+    @Override
+    public void markRead(String customer,String tempTime) throws Exception {  //mark as Read for the first unread notification base on time
+        Connection conn=BaseDao.getConnection();
+        // create the mysql update statement.
+        String MarkNotiItems = "update notification set isRead = true where customerID = ? and time = ?";
+        PreparedStatement stmt = conn.prepareStatement(MarkNotiItems);
+        stmt.setString(1, customer);
+        stmt.setString(2, tempTime);
+        // execute the preparedstatement
+        stmt.execute();
+        BaseDao.closeConnStat(conn,stmt);
+    }
+
     /*
     public void markRead(Customer customer) throws Exception {  //mark as Read for the first unread notification base on time
         Connection conn=BaseDao.getConnection();
@@ -305,4 +170,73 @@ public class NotiDaoImpl extends BaseDao implements NotiDao{
 
      */
 
+    @Override
+    public void markReadAll(Customer customer) throws Exception {
+        Connection conn=BaseDao.getConnection();
+        // create the mysql update statement.
+        String MarkNotiItems = "update notification set isRead = true where customerID = ? ";
+        PreparedStatement stmt = conn.prepareStatement(MarkNotiItems);
+        stmt.setString(1, customer.getID());
+        // execute the preparedstatement
+        stmt.execute();
+        BaseDao.closeConnStat(conn,stmt);
+    }
+
+    @Override
+    public void markUnread(String customer,String tempTime) throws Exception {
+        Connection conn=BaseDao.getConnection();
+        // create the mysql update statement.
+        String unMarkNotiItems = "update notification set isRead = false where customerID = ? and time = ?";
+        PreparedStatement stmt = conn.prepareStatement(unMarkNotiItems);
+        stmt.setString(1, customer);
+        stmt.setString(2,tempTime);
+        // execute the preparedstatement
+        stmt.execute();
+        BaseDao.closeConnStat(conn,stmt);
+    }
+
+    /*
+    public void markUnread(Customer customer) throws Exception {
+        Connection conn=BaseDao.getConnection();
+        // create the mysql update statement.
+        String sql = "select time from notification where isRead = true and CustomerID = ? order by time desc limit 1";
+        PreparedStatement prestmt= conn.prepareStatement(sql);
+        prestmt.setString(1,customer.getID());
+        ResultSet rs=  prestmt.executeQuery();
+        String tempTime = "";
+        while (rs.next()) {
+            tempTime = rs.getString("time");
+        }
+        String unMarkNotiItems = "update notification set isRead = false where customerID = ? and time = ?";
+        PreparedStatement stmt = conn.prepareStatement(unMarkNotiItems);
+        stmt.setString(1, customer.getID());
+        stmt.setString(2,tempTime);
+        // execute the preparedstatement
+        stmt.execute();
+        BaseDao.closeConnStat(conn,stmt);
+    }
+
+     */
+    public boolean isFindCustomer(String customer,String customerPassword) throws Exception{
+        Connection conn=BaseDao.getConnection();
+        String sql="select * from customer where customerID = ? and password = ?";
+        PreparedStatement stmt= conn.prepareStatement(sql);
+        stmt.setString(1,customer);
+        stmt.setString(2,customerPassword);
+        ResultSet rs=  stmt.executeQuery();
+        try{
+            if(rs.next()){
+                return true;
+            }
+            else
+                return false;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            BaseDao.closeAll(conn, stmt, rs);
+        }
+    }
 }
