@@ -9,13 +9,23 @@ public class Dealer extends GenericModel{
 	private String dealerName;
 	private Address dealerAddress;
 	private double distanceInMiles;
-
-	public Dealer() {}
+	
+	
+	public Dealer() {this.modelType = "dealers"; }
 
 	public Dealer(String dealerId, String dealerName, Address dealerAddress) {
 		this.dealerId=dealerId==null ? UUID.randomUUID().toString(): dealerId;
 		this.dealerName=Objects.requireNonNull(dealerName,"Dealer's name cannot be null");
 		this.dealerAddress=dealerAddress;
+		this.modelType="dealers";
+		this.distanceInMiles = 0;
+	}
+
+	public Dealer(String dealerId, String dealerName) {
+		this.dealerId=dealerId==null ? UUID.randomUUID().toString(): dealerId;
+		this.dealerName=Objects.requireNonNull(dealerName,"Dealer's name cannot be null");
+		this.dealerAddress= null;
+		this.distanceInMiles = 0;
 	}
 
 	public void setDealerId(String dealerId) {
@@ -33,7 +43,7 @@ public class Dealer extends GenericModel{
 	public void setDistanceInMiles(double distanceInMiles) {
 		this.distanceInMiles = distanceInMiles;
 	}
-
+	
 	public void setDealerAddress(Address address) {
 		this.dealerAddress=address;
 	}
@@ -60,6 +70,9 @@ public class Dealer extends GenericModel{
 	public String toCSVLine() {
 		return this.dealerId + "," + this.dealerName + "," + this.dealerAddress.toCSVLine();
 	}
-	
+	@Override
+	public String getId() {
+	    return this.getDealerId();
+	}
 	
 }
